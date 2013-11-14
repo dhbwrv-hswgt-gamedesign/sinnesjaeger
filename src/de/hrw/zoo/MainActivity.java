@@ -10,7 +10,8 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.text.InputType;
@@ -21,15 +22,15 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import de.hrw.zoo.listener.PlayerCircleAnimator;
 import de.hrw.zoo.model.Player;
+import de.hrw.zoo.view.PlayerView;
 
 public class MainActivity extends Activity {
 	
 	final List<Player> players = new ArrayList<Player>();
-	final Map<Player, ImageView> drawnPlayers = new HashMap<Player, ImageView>();
+	final Map<Player, View> drawnPlayers = new HashMap<Player, View>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class MainActivity extends Activity {
 		    @Override
 		    public void onClick(View v) {
 		    	AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-				builder.setTitle("Title");
+				builder.setTitle("Spieler erstellen");
 
 				// Set up the input
 				final EditText input = new EditText(v.getContext());
@@ -79,68 +80,67 @@ public class MainActivity extends Activity {
 	}
 	
 	public void update() {
-		int i = 1;
+		int i = 0;
 		
 		RelativeLayout rl = (RelativeLayout)findViewById(R.id.player_layout);
 		RelativeLayout.LayoutParams params;
-		Point center = new Point((rl.getWidth()/2)-75,(rl.getHeight()/2)-75);
+		Point center = new Point((rl.getWidth()/2)-100,(rl.getHeight()/2)-100);
 		
-		int rot = 0;
-		int oldRot = 0;
+		int rotation = 0;
 		int offset = 500;
 		
-		if(players.size() > 0) {
-			rot = 360/players.size();
-			
-			if(players.size() > 1) 
-				oldRot = 360/(players.size()-1);
+		Log.d("Zoo", "update: "+players.size()+" ("+drawnPlayers.size()+")");
 		
-			for(final Player p: players) {
-				ImageView iv = drawnPlayers.get(p);
-				
-				params = new RelativeLayout.LayoutParams(150, 150);
-				params.leftMargin = (int) (center.x + Math.cos(rot*i*Math.PI/180)*offset);
-				params.topMargin = (int) (center.y + Math.sin(rot*i*Math.PI/180)*offset);
-				
-				if(iv == null) {
-					iv = new ImageView(this);
-					iv.setImageResource(R.drawable.ic_launcher);
-					iv.setBackgroundColor(Color.YELLOW);
-					iv.setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							players.remove(p);
-							ImageView i = drawnPlayers.get(p);
-							RelativeLayout rl = (RelativeLayout)findViewById(R.id.player_layout);
-							rl.removeViewInLayout(i);
-							update();
-							
-							Log.d("Zoo", "delete: "+p);
-						}
-					});
+		if(players.size() > 0)
+			rotation = 360/players.size();
+	
+		for(final Player p: players) {
+			View v = drawnPlayers.get(p);
+			
+			params = new RelativeLayout.LayoutParams(200, 200);
+			params.leftMargin = (int) (center.x - Math.sin(rotation*i*Math.PI/180)*offset);
+			params.topMargin = (int) (center.y - Math.cos(rotation*i*Math.PI/180)*offset);
+			
+			if(v == null) {
+				v = new PlayerView(this, p.getName());
+				v.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						players.remove(p);
+						View i = drawnPlayers.get(p);
+						RelativeLayout rl = (RelativeLayout)findViewById(R.id.player_layout);
+						rl.removeView(i);
+						update();
 						
-					Animation animation = new AlphaAnimation(0.0f, 1.0f);
-					animation.setDuration(1000);
-					animation.setStartOffset(2000);
-					animation.setFillAfter(true);
-					iv.setAnimation(animation);
-					rl.addView(iv, params);	
+						Log.d("Zoo", "delete: "+p);
+					}
+				});
 					
-					Log.d("Zoo", "new player: "+p);
-				} else {
-					ValueAnimator animation = ValueAnimator.ofInt(oldRot*i, rot*i);
-		            animation.setDuration(2000);
-		            AnimatorUpdateListener listener = new PlayerCircleAnimator(iv, center, offset);
-		            animation.addUpdateListener(listener);
-		            animation.start();
-					
-					Log.d("Zoo", "update: "+p);
-				}
+				Animation animation = new AlphaAnimation(0.0f, 1.0f);
+				animation.setDuration(1000);
+				if(players.size() > 2)
+					animation.setStartOffset(1000);
+				animation.setFillAfter(true);
+				v.setAnimation(animation);
 				
-				drawnPlayers.put(p, iv);
+				rl.addView(v, params);
 				
-				i++;
+				Log.d("Zoo", "new player: "+p);
+			} else {
+				ValueAnimator animation = ValueAnimator.ofFloat(v.getRotation(), rotation*i);
+	            animation.setDuration(2000);
+	            AnimatorUpdateListener listener = new PlayerCircleAnimator(v, center, offset);
+	            animation.addUpdateListener(listener);
+	            animation.start();
+				
+				Log.d("Zoo", "update: "+p);
 			}
+			
+			v.setRotation(rotation*i);
+			
+			drawnPlayers.put(p, v);
+			
+			i++;
 		}
 		
 		Button button= (Button) findViewById(R.id.player_add_button);
@@ -149,6 +149,7 @@ public class MainActivity extends Activity {
 		} else {
 			button.setEnabled(true);
 		}
+		
 	}
-
+	
 }
