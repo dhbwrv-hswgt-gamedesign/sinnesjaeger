@@ -1,0 +1,45 @@
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="2"
+    android:orientation="horizontal"
+    tools:context=".MainActivity" >
+
+    <Space
+        android:layout_column="1"
+        android:layout_gravity="fill_vertical"
+        android:layout_row="1" />
+
+    <Button
+        android:id="@+id/player_add_button"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_column="0"
+        android:layout_gravity="left|top"
+        android:layout_row="1"
+        android:text="@string/player_add"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/player_done_button"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_column="0"
+        android:layout_gravity="right|bottom"
+        android:layout_row="1"
+        android:text="@string/player_done"
+        android:textSize="20sp" />
+
+    <RelativeLayout
+        android:id="@+id/player_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_column="0"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_row="1" >
+
+    </RelativeLayout>
+
+</GridLayout>
