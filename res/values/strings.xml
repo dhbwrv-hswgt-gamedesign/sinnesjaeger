@@ -7,5 +7,10 @@
     <string name="player_add">Neuer Spieler</string>
     <string name="player_done">Weiter</string>
     <string name="player_add_desc">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</string>
+    <string name="filter_see">Sehen</string>
+    <string name="filter_hear">Hören</string>
+    <string name="filter_touch">Fühlen</string>
+    <string name="filter_6sense">6. Sinn</string>
+    <string name="filter_all">Alle</string>
 
 </resources>

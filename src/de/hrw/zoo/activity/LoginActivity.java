@@ -1,4 +1,4 @@
-package de.hrw.zoo;
+package de.hrw.zoo.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,22 +8,25 @@ import java.util.Map;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import de.hrw.zoo.R;
 import de.hrw.zoo.dialog.NewPlayerDialog;
 import de.hrw.zoo.listener.NewPlayerListener;
 import de.hrw.zoo.listener.PlayerCircleAnimatorListener;
 import de.hrw.zoo.model.Player;
 import de.hrw.zoo.view.PlayerView;
 
-public class MainActivity extends Activity {
+public class LoginActivity extends Activity {
 	
 	final List<Player> players = new ArrayList<Player>();
 	final Map<Player, View> drawnPlayers = new HashMap<Player, View>();
@@ -31,10 +34,19 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_login);
 		
-		Button button= (Button) findViewById(R.id.add_button);
-		button.setOnClickListener(new View.OnClickListener() {
+		Button button_back = (Button) findViewById(R.id.back_button);
+		button_back.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(v.getContext(), MainActivity.class);
+				startActivity(intent);
+			}
+		});
+		
+		Button button = (Button) findViewById(R.id.add_button);
+		button.setOnClickListener(new OnClickListener() {
 		    @Override
 		    public void onClick(View v) {
 		    	final NewPlayerDialog dlg = new NewPlayerDialog(v.getContext());
