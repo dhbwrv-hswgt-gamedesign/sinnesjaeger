@@ -17,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
@@ -32,6 +34,7 @@ public class LoginFragment extends Fragment {
 	
 	List<Player> players;
 	Map<Player, View> drawnPlayers;
+	Point center = new Point(1130, 602);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class LoginFragment extends Fragment {
         	players = new ArrayList<Player>();
         }
         drawnPlayers = new HashMap<Player, View>();
+        update(false);
         
         final ViewPager mPager = (ViewPager) container.findViewById(R.id.pager);
         
@@ -71,7 +75,7 @@ public class LoginFragment extends Fragment {
 					@Override
 					public void onEvent() {
 						players.add(dlg.getNewPlayer());
-						update();
+						update(true);
 						
 						Log.i("Zoo", "new player: "+dlg.getNewPlayer());
 					}
@@ -87,7 +91,7 @@ public class LoginFragment extends Fragment {
     public void onResume() {
     	super.onResume();
     	
-    	update();
+    	update(false);
     }
     
     @Override
@@ -97,13 +101,16 @@ public class LoginFragment extends Fragment {
 		savedInstanceState.putSerializable("players", (Serializable) players);
     }
 
-    public void update() {
+    public void update(boolean animate) {
+    	if(getView() == null) {
+    		Log.d("Zoo", "null");
+    		return;
+    	}
+    	
 		int i = 0;
 		
 		RelativeLayout rl = (RelativeLayout)getView().findViewById(R.id.player_layout);
-		rl.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-		RelativeLayout.LayoutParams params;
-		Point center = new Point((rl.getWidth()/2)-150,(rl.getHeight()/2)-150);	
+		RelativeLayout.LayoutParams params;	
 		Log.d("Zoo", center.x+" | "+center.y);
 		int rotation = 0;
 		int offset = 500;
@@ -128,14 +135,17 @@ public class LoginFragment extends Fragment {
 						View i = drawnPlayers.get(p);
 						RelativeLayout rl = (RelativeLayout)getActivity().findViewById(R.id.player_layout);
 						rl.removeView(i);
-						update();
+						update(true);
 						
 						Log.d("Zoo", "delete: "+p);
 					}
 				});
 					
 				Animation animation = new AlphaAnimation(0.0f, 1.0f);
-				animation.setDuration(1000);
+				if(animate)
+					animation.setDuration(1000);
+				else
+					animation.setDuration(0);
 				if(players.size() > 2)
 					animation.setStartOffset(1000);
 				animation.setFillAfter(true);
