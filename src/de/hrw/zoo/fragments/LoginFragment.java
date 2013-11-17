@@ -1,5 +1,6 @@
-package de.hrw.zoo.activity;
+package de.hrw.zoo.fragments;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,14 +8,15 @@ import java.util.Map;
 
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Menu;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
@@ -26,26 +28,41 @@ import de.hrw.zoo.listener.PlayerCircleAnimatorListener;
 import de.hrw.zoo.model.Player;
 import de.hrw.zoo.view.PlayerView;
 
-public class LoginActivity extends Activity {
+public class LoginFragment extends Fragment {
 	
-	final List<Player> players = new ArrayList<Player>();
-	final Map<Player, View> drawnPlayers = new HashMap<Player, View>();
+	List<Player> players;
+	Map<Player, View> drawnPlayers;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_login);
-		
-		Button button_back = (Button) findViewById(R.id.back_button);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    	final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_login, container, false);
+        
+        if(savedInstanceState != null) {
+	        players = (List<Player>) savedInstanceState.getSerializable("players");
+        } else {
+        	players = new ArrayList<Player>();
+        }
+        drawnPlayers = new HashMap<Player, View>();
+        
+        final ViewPager mPager = (ViewPager) container.findViewById(R.id.pager);
+        
+        Button button_back = (Button) rootView.findViewById(R.id.back_button);
 		button_back.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(v.getContext(), MainActivity.class);
-				startActivity(intent);
+					mPager.setCurrentItem(mPager.getCurrentItem() - 1);
 			}
 		});
 		
-		Button button = (Button) findViewById(R.id.add_button);
+		Button button_next = (Button) rootView.findViewById(R.id.next_button);
+		button_next.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mPager.setCurrentItem(mPager.getCurrentItem() + 1);
+			}
+		});
+        
+        Button button = (Button) rootView.findViewById(R.id.add_button);
 		button.setOnClickListener(new OnClickListener() {
 		    @Override
 		    public void onClick(View v) {
@@ -62,25 +79,36 @@ public class LoginActivity extends Activity {
 		    	dlg.show();
 		    }
 		});
-	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-	
-	public void update() {
+        return rootView;
+    }
+    
+    @Override
+    public void onResume() {
+    	super.onResume();
+    	
+    	update();
+    }
+    
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
+
+		savedInstanceState.putSerializable("players", (Serializable) players);
+    }
+
+    public void update() {
 		int i = 0;
 		
-		RelativeLayout rl = (RelativeLayout)findViewById(R.id.player_layout);
+		RelativeLayout rl = (RelativeLayout)getView().findViewById(R.id.player_layout);
+		rl.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 		RelativeLayout.LayoutParams params;
-		Point center = new Point((rl.getWidth()/2)-150,(rl.getHeight()/2)-150);		
+		Point center = new Point((rl.getWidth()/2)-150,(rl.getHeight()/2)-150);	
+		Log.d("Zoo", center.x+" | "+center.y);
 		int rotation = 0;
 		int offset = 500;
 		
-		Log.d("Zoo", "update: "+players.size()+" ("+drawnPlayers.size()+")");
+		//Log.d("Zoo", "update: "+players.size()+" ("+drawnPlayers.size()+")");
 		
 		if(players.size() > 0)
 			rotation = 360/players.size();
@@ -93,12 +121,12 @@ public class LoginActivity extends Activity {
 			params.topMargin = (int) (center.y - Math.cos(rotation*i*Math.PI/180)*offset);
 			
 			if(v == null) {
-				v = new PlayerView(this, p.getName(), new View.OnClickListener() {
+				v = new PlayerView(getActivity().getBaseContext(), p.getName(), new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						players.remove(p);
 						View i = drawnPlayers.get(p);
-						RelativeLayout rl = (RelativeLayout)findViewById(R.id.player_layout);
+						RelativeLayout rl = (RelativeLayout)getActivity().findViewById(R.id.player_layout);
 						rl.removeView(i);
 						update();
 						
@@ -133,7 +161,7 @@ public class LoginActivity extends Activity {
 			i++;
 		}
 		
-		Button button= (Button) findViewById(R.id.add_button);
+		Button button = (Button)getView().findViewById(R.id.add_button);
 		if(players.size() >= 8) {
 			button.setEnabled(false);
 		} else {
@@ -141,5 +169,4 @@ public class LoginActivity extends Activity {
 		}
 		
 	}
-	
 }
