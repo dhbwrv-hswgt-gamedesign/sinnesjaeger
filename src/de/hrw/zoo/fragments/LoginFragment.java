@@ -111,11 +111,10 @@ public class LoginFragment extends Fragment {
 		
 		RelativeLayout rl = (RelativeLayout)getView().findViewById(R.id.player_layout);
 		RelativeLayout.LayoutParams params;	
-		Log.d("Zoo", center.x+" | "+center.y);
 		int rotation = 0;
 		int offset = 500;
 		
-		//Log.d("Zoo", "update: "+players.size()+" ("+drawnPlayers.size()+")");
+		Log.d("Zoo", "update: "+players.size()+" ("+drawnPlayers.size()+")");
 		
 		if(players.size() > 0)
 			rotation = 360/players.size();
@@ -128,13 +127,13 @@ public class LoginFragment extends Fragment {
 			params.topMargin = (int) (center.y - Math.cos(rotation*i*Math.PI/180)*offset);
 			
 			if(v == null) {
-				v = new PlayerView(getActivity().getBaseContext(), p.getName(), new OnClickListener() {
+				v = new PlayerView(rl.getContext(), p.getName(), new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						players.remove(p);
-						View i = drawnPlayers.get(p);
-						RelativeLayout rl = (RelativeLayout)getActivity().findViewById(R.id.player_layout);
-						rl.removeView(i);
+						View view = drawnPlayers.get(p);
+						RelativeLayout rl = (RelativeLayout)getView().findViewById(R.id.player_layout);
+						rl.removeView(view);
 						update(true);
 						
 						Log.d("Zoo", "delete: "+p);

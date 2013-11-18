@@ -3,6 +3,7 @@ package de.hrw.zoo.activity;
 import de.hrw.zoo.R;
 import de.hrw.zoo.R.id;
 import de.hrw.zoo.R.layout;
+import de.hrw.zoo.fragments.HomeFragment;
 import de.hrw.zoo.fragments.LoginFragment;
 import de.hrw.zoo.fragments.MainFragment;
 import android.os.Bundle;
@@ -17,7 +18,7 @@ public class PagerActivity extends FragmentActivity {
     /**
      * The number of pages (wizard steps) to show in this demo.
      */
-    private static final int NUM_PAGES = 5;
+    private static final int NUM_PAGES = 3;
 
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
@@ -71,11 +72,7 @@ public class PagerActivity extends FragmentActivity {
         	case 1:
         		return new LoginFragment();
         	case 2:
-        		return new LoginFragment();
-        	case 3:
-        		return new MainFragment();
-        	case 4:
-        		return new MainFragment();
+        		return new HomeFragment();
         	}
         	
         	return null;
