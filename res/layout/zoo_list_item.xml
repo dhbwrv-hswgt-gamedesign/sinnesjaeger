@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:text="Stuttgart"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="#FFFFFF" />
 
 </LinearLayout>
