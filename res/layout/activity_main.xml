@@ -15,49 +15,52 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="@color/filter_background"
-        android:padding="10dp" >
+        android:layout_centerHorizontal="true" >
 
         <ImageView
             android:id="@+id/filter_see"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
             android:contentDescription="@string/filter_see"
-            android:src="@drawable/ic_launcher" />
+            android:padding="10dp"
+            android:src="@drawable/ok_icon" />
 
         <ImageView
             android:id="@+id/filter_hear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
             android:contentDescription="@string/filter_hear"
-            android:src="@drawable/ic_launcher" />
+            android:padding="10dp"
+            android:src="@drawable/ok_icon" />
 
         <ImageView
             android:id="@+id/filter_touch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
             android:contentDescription="@string/filter_touch"
-            android:src="@drawable/ic_launcher" />
+            android:padding="10dp"
+            android:src="@drawable/ok_icon" />
 
         <ImageView
             android:id="@+id/filter_6sense"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
             android:contentDescription="@string/filter_6sense"
-            android:src="@drawable/ic_launcher" />
+            android:padding="10dp"
+            android:src="@drawable/ok_icon" />
 
         <ImageView
             android:id="@+id/filter_all"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
             android:contentDescription="@string/filter_all"
-            android:src="@drawable/ic_launcher" />
+            android:padding="10dp"
+            android:src="@drawable/ok_icon" />
 
     </LinearLayout>
 

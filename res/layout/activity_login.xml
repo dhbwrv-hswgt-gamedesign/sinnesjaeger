@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/textDescription"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="597dp"
+        android:layout_marginTop="353dp"
+        android:background="@color/filter_background"
+        android:gravity="center"
+        android:lineSpacingExtra="10dp"
+        android:lines="4"
+        android:padding="20dp"
+        android:text="@string/players_description"
+        android:textAllCaps="true"
+        android:textSize="18sp" />
+
+</RelativeLayout>

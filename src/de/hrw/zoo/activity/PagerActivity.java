@@ -37,7 +37,7 @@ public class PagerActivity extends FragmentActivity {
         setContentView(R.layout.activity_pager);
 
         // Instantiate a ViewPager and a PagerAdapter.
-        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager = (ViewPager) findViewById(R.id.page);
         getFragmentManager();
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);

@@ -25,7 +25,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import de.hrw.zoo.R;
 import de.hrw.zoo.dialog.NewPlayerDialog;
-import de.hrw.zoo.listener.NewPlayerListener;
+import de.hrw.zoo.listener.INewPlayerListener;
 import de.hrw.zoo.listener.PlayerCircleAnimatorListener;
 import de.hrw.zoo.model.Player;
 import de.hrw.zoo.view.PlayerView;
@@ -48,30 +48,14 @@ public class LoginFragment extends Fragment {
         drawnPlayers = new HashMap<Player, View>();
         update(false);
         
-        final ViewPager mPager = (ViewPager) container.findViewById(R.id.pager);
-        
-        Button button_back = (Button) rootView.findViewById(R.id.back_button);
-		button_back.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-					mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-			}
-		});
-		
-		Button button_next = (Button) rootView.findViewById(R.id.next_button);
-		button_next.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mPager.setCurrentItem(mPager.getCurrentItem() + 1);
-			}
-		});
+        final ViewPager mPager = (ViewPager) container.findViewById(R.id.page);
         
         Button button = (Button) rootView.findViewById(R.id.add_button);
 		button.setOnClickListener(new OnClickListener() {
 		    @Override
 		    public void onClick(View v) {
 		    	final NewPlayerDialog dlg = new NewPlayerDialog(v.getContext());
-		    	dlg.setNewPlayerEventListener(new NewPlayerListener() {
+		    	dlg.setNewPlayerEventListener(new INewPlayerListener() {
 					@Override
 					public void onEvent() {
 						players.add(dlg.getNewPlayer());
