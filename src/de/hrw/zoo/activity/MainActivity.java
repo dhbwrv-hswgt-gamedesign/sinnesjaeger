@@ -22,7 +22,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import de.hrw.zoo.R;
 import de.hrw.zoo.dialog.LoginDialog;
 import de.hrw.zoo.dialog.NewPlayerDialog;
-import de.hrw.zoo.listener.INewPlayerListener;
+import de.hrw.zoo.listener.OnCreatePlayerListener;
 
 public class MainActivity extends Activity {
 	
@@ -60,12 +60,6 @@ public class MainActivity extends Activity {
 		    public void onClick(View v) {
 		    	View view = getLayoutInflater().inflate(R.layout.fragment_login, null);
 		    	final LoginDialog dlg = new LoginDialog(v.getContext(), view);
-		    	dlg.setNewPlayerEventListener(new INewPlayerListener() {
-					@Override
-					public void onEvent() {				
-						Log.i("Zoo", "new player: "+dlg.getNewPlayer());
-					}
-				});
 		    	AlertDialog a = dlg.show();
 		    	Point size = new Point();
 		    	getWindowManager().getDefaultDisplay().getSize(size);

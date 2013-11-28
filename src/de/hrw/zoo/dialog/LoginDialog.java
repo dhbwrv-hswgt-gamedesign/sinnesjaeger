@@ -1,59 +1,58 @@
 package de.hrw.zoo.dialog;
 
-import de.hrw.zoo.R;
-import de.hrw.zoo.listener.INewPlayerListener;
-import de.hrw.zoo.model.Player;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.text.InputType;
-import android.util.Log;
+import android.graphics.Point;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.RelativeLayout;
+import de.hrw.zoo.R;
+import de.hrw.zoo.model.Player;
+import de.hrw.zoo.view.PlayerView;
 
 public class LoginDialog extends AlertDialog.Builder {
 	
-	private INewPlayerListener listener;
+	private final int MAX_PLAYERS = 5;
 	
-	private EditText nameEdit;
-	private Player newPlayer;
+	private PlayerView[] playerViews = new PlayerView[MAX_PLAYERS];
 
 	public LoginDialog(Context context, View view) {
 		super(context);
-		
-		setTitle("Neuer Spieler");
-		
-		nameEdit = new EditText(context);
-		nameEdit.setInputType(InputType.TYPE_CLASS_TEXT);
-		
+
 		setView(view);
 
-		Button button = (Button) view.findViewById(R.id.add_button);
-		button.setOnClickListener(new OnClickListener() {
-		    @Override
-		    public void onClick(View v) {
-		    	final NewPlayerDialog dlg = new NewPlayerDialog(v.getContext());
-		    	dlg.setNewPlayerEventListener(new INewPlayerListener() {
-					@Override
-					public void onEvent() {
-						Log.i("Zoo", "new player: "+dlg.getNewPlayer());
-					}
-				});
-		    	dlg.show();
-		    }
-		});
+        for(int i=0; i<MAX_PLAYERS; i++) {
+            playerViews[i] = new PlayerView(view.getContext(), null);
+        }
+        
+        RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.player_layout);
+		RelativeLayout.LayoutParams params; 
+		
+		Point center = new Point(1060, 570);
+        int rotation = 360/5;
+        int offset = 500;
+        
+		for(int i=0; i<MAX_PLAYERS; i++) {
+	        params = new RelativeLayout.LayoutParams(300, 300);
+            params.leftMargin = (int) (center.x - Math.sin(rotation*(i+1)*Math.PI/180)*(offset+100));
+            params.topMargin = (int) (center.y - Math.cos(rotation*(i+1)*Math.PI/180)*offset);
+            
+            rl.addView(playerViews[i], params);
+		}
 	}
 	
-	public Player getNewPlayer() {
-		return newPlayer;
+	public Player[] getPlayers() {
+		Player[] players = new Player[MAX_PLAYERS];
+		
+		for(int i=0; i<MAX_PLAYERS; i++) {
+			players[i] = playerViews[i].getPlayer();
+		}
+		
+		return players;
 	}
 	
-	public void setNewPlayerEventListener(INewPlayerListener listener) {
-		this.listener = listener;
+	public void setPlayer(Player[] players) {
+		// TODO
 	}
-
 }
 	
 	

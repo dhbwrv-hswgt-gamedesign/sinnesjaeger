@@ -1,6 +1,6 @@
 package de.hrw.zoo.dialog;
 
-import de.hrw.zoo.listener.INewPlayerListener;
+import de.hrw.zoo.listener.OnCreatePlayerListener;
 import de.hrw.zoo.model.Player;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -10,10 +10,9 @@ import android.widget.EditText;
 
 public class NewPlayerDialog extends AlertDialog.Builder {
 	
-	private INewPlayerListener listener;
+	private OnCreatePlayerListener listener;
 	
 	private EditText nameEdit;
-	private Player newPlayer;
 
 	public NewPlayerDialog(Context context) {
 		super(context);
@@ -25,12 +24,11 @@ public class NewPlayerDialog extends AlertDialog.Builder {
 		
 		setView(nameEdit);
 		
-		/*
 		setPositiveButton("OK", new DialogInterface.OnClickListener() { 
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
-		    	newPlayer = new Player(nameEdit.getText().toString());
-		    	listener.onEvent();
+		    	Player newPlayer = new Player(nameEdit.getText().toString());
+		    	listener.onCreate(newPlayer);
 		    }
 		});
 		setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -39,14 +37,9 @@ public class NewPlayerDialog extends AlertDialog.Builder {
 		        dialog.cancel();
 		    }
 		});
-		*/
 	}
-	
-	public Player getNewPlayer() {
-		return newPlayer;
-	}
-	
-	public void setNewPlayerEventListener(INewPlayerListener listener) {
+
+	public void setOnCreatePlayerListener(OnCreatePlayerListener listener) {
 		this.listener = listener;
 	}
 

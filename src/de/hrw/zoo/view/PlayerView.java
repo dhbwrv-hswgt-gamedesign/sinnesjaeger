@@ -1,65 +1,105 @@
 package de.hrw.zoo.view;
 
 import android.content.Context;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import de.hrw.zoo.R;
+import de.hrw.zoo.dialog.NewPlayerDialog;
+import de.hrw.zoo.listener.OnCreatePlayerListener;
+import de.hrw.zoo.model.Player;
 
 public class PlayerView extends RelativeLayout {
 	
+	private Player data;
 	private TextView name;
 	private ImageView avatar;
-	private ImageView remove;
-	private float rotation;
+	private ImageView clear;
 	
 	public PlayerView(Context context) {
 		super(context);
-		
-		//setBackgroundColor(Color.CYAN);
 	}
 
-	public PlayerView(Context context, String name, OnClickListener listener) {
+	public PlayerView(Context context, Player player) {
 		this(context);
 		
-		this.name = new TextView(context);
-		this.name.setText(name);
-		this.name.setTextSize(20);
-		this.name.setGravity(TEXT_ALIGNMENT_CENTER);
+		data = (Player) player;
 		
-		this.avatar = new ImageView(context);
-		this.avatar.setImageResource(R.drawable.user_icon);
+		avatar = new ImageView(context);
+		avatar.setImageResource(R.drawable.user_icon);
+		avatar.setOnLongClickListener(new OnLongClickListener() {
+		    @Override
+		    public boolean onLongClick(View v) {
+		    	final NewPlayerDialog dlg = new NewPlayerDialog(v.getContext());
+		    	dlg.setOnCreatePlayerListener(new OnCreatePlayerListener() {
+					@Override
+					public void onCreate(Player player) {
+						data = player;
+						Log.i("Zoo", "new player: "+data);
+						updateData();
+					}
+				});
+		    	dlg.show();
+				return false;
+		    }
+		});
 		
-		this.remove = new ImageView(context);
-		this.remove.setImageResource(R.drawable.delete_icon);
-		this.remove.setOnClickListener(listener);
+		LayoutParams params;
 		
-		this.rotation = 0;
+		name = new TextView(context);
+		name.setTextSize(20);
+		name.setGravity(TEXT_ALIGNMENT_CENTER);
 		
-		LayoutParams params = new LayoutParams(250, 250);
-		params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-		addView(avatar, params);
+		clear = new ImageView(context);
+		clear.setImageResource(R.drawable.delete_icon);
+		clear.setOnClickListener(new OnClickListener() {
+		    @Override
+		    public void onClick(View v) {
+		    	Log.i("Zoo", "remove player: "+data);
+		    	data = null;
+		    	updateData();
+		    }
+		});
 		
 		params = new LayoutParams(75, 75);
 		params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		addView(remove, params);
+		addView(clear, params);
 		
 		params = new LayoutParams(300, 50);
 		params.height = LayoutParams.WRAP_CONTENT;
 		params.width = LayoutParams.WRAP_CONTENT;
 		params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-		addView(this.name, params);
+		addView(name, params);
+		
+		params = new LayoutParams(250, 250);
+		params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		addView(avatar, params);
+		
+		clear.bringToFront();
+		
+		updateData();
 	}
 	
-	public void setRotation(float rot) {
-		this.rotation = rot;
+	public Player getPlayer() {
+		return data;
 	}
 	
-	public float getRotation() {
-		return this.rotation;
+	private void updateData() {
+		if(this.data == null) {
+			name.setVisibility(INVISIBLE);
+			avatar.setImageResource(R.drawable.user_icon_empty);
+			clear.setVisibility(INVISIBLE);
+		} else {
+			name.setText(data.getName());
+			name.setVisibility(VISIBLE);
+			avatar.setImageResource(R.drawable.user_icon);
+			clear.setVisibility(VISIBLE);
+		}
 	}
 
 }
