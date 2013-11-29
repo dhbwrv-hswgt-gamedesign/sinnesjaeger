@@ -1,6 +1,7 @@
 package de.hrw.zoo.dialog;
 
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.graphics.Point;
 import android.view.View;
@@ -13,30 +14,44 @@ public class LoginDialog extends AlertDialog.Builder {
 	
 	private final int MAX_PLAYERS = 5;
 	
+	private View view;
 	private PlayerView[] playerViews = new PlayerView[MAX_PLAYERS];
 
 	public LoginDialog(Context context, View view) {
 		super(context);
-
+		
 		setView(view);
 
         for(int i=0; i<MAX_PLAYERS; i++) {
             playerViews[i] = new PlayerView(view.getContext(), null);
         }
-        
-        RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.player_layout);
-		RelativeLayout.LayoutParams params; 
+	}
+	
+	public Builder setView(View v) {
+		view = v;
+		return super.setView(v);
+	}
+	
+	public AlertDialog show() {
+		updatePlayers();
+		return super.show();
+	}
+	
+	public void updatePlayers() {
+		RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.player_layout);
+		layout.removeAllViews();
 		
+		RelativeLayout.LayoutParams params; 
 		Point center = new Point(1060, 570);
         int rotation = 360/5;
         int offset = 500;
         
 		for(int i=0; i<MAX_PLAYERS; i++) {
 	        params = new RelativeLayout.LayoutParams(300, 300);
-            params.leftMargin = (int) (center.x - Math.sin(rotation*(i+1)*Math.PI/180)*(offset+100));
+            params.leftMargin = (int) (center.x - Math.sin(rotation*(i+1)*Math.PI/180)*(offset+50));
             params.topMargin = (int) (center.y - Math.cos(rotation*(i+1)*Math.PI/180)*offset);
             
-            rl.addView(playerViews[i], params);
+            layout.addView(playerViews[i], params);
 		}
 	}
 	
@@ -51,7 +66,9 @@ public class LoginDialog extends AlertDialog.Builder {
 	}
 	
 	public void setPlayer(Player[] players) {
-		// TODO
+		for(int i=0; i<MAX_PLAYERS; i++) {
+			playerViews[i] = new PlayerView(view.getContext(), players[i]);
+		}
 	}
 }
 	
