@@ -54,7 +54,7 @@ public class MainActivity extends Activity {
 		s.setAdapter(adapter);
 		s.setOnItemSelectedListener(new ZooItemSelectedListener());
 		
-		Button button = (Button) findViewById(R.id.next_button);
+		Button button = (Button) findViewById(R.id.logout_button);
 		button.setOnClickListener(new OnClickListener() {
 		    @Override
 		    public void onClick(View v) {
