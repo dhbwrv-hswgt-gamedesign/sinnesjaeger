@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="de.hrw.zoo.activity.LoginActivity"
+            android:name="de.hrw.zoo.activity.HomeActivity"
             android:label="@string/app_name" >
         </activity>
     </application>

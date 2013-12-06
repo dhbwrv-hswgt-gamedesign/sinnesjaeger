@@ -1,25 +1,30 @@
 package de.hrw.zoo.dialog;
 
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Point;
 import android.view.View;
+import android.view.Window;
 import android.widget.RelativeLayout;
 import de.hrw.zoo.R;
 import de.hrw.zoo.model.Player;
 import de.hrw.zoo.view.PlayerView;
 
-public class LoginDialog extends AlertDialog.Builder {
+public class LoginDialog extends Dialog {
 	
 	private final int MAX_PLAYERS = 5;
 	
 	private View view;
 	private PlayerView[] playerViews = new PlayerView[MAX_PLAYERS];
+	private Point size;
 
-	public LoginDialog(Context context, View view) {
-		super(context);
+	public LoginDialog(Context context, View view, Point size) {
+		super(context, R.style.PlayersDialog);
 		
+		getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+		
+		this.size = size;
 		setView(view);
 
         for(int i=0; i<MAX_PLAYERS; i++) {
@@ -27,14 +32,14 @@ public class LoginDialog extends AlertDialog.Builder {
         }
 	}
 	
-	public Builder setView(View v) {
+	public void setView(View v) {
 		view = v;
-		return super.setView(v);
+		super.setContentView(v);
 	}
 	
-	public AlertDialog show() {
+	public void show() {
 		updatePlayers();
-		return super.show();
+		super.show();
 	}
 	
 	public void updatePlayers() {
@@ -42,7 +47,7 @@ public class LoginDialog extends AlertDialog.Builder {
 		layout.removeAllViews();
 		
 		RelativeLayout.LayoutParams params; 
-		Point center = new Point(1060, 570);
+		Point center = new Point(size.x/2-150, size.y/2-130);
         int rotation = 360/5;
         int offset = 500;
         
