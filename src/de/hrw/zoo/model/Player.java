@@ -2,7 +2,6 @@ package de.hrw.zoo.model;
 
 import java.io.Serializable;
 
-
 public class Player implements Serializable {
 
 	private static final long serialVersionUID = 2151564957284704571L;
@@ -10,9 +9,11 @@ public class Player implements Serializable {
 	private String name;
 	private String token;
 	private String avatar;
+	private int points;
 	
 	public Player(String name) {
 		this.name = name;
+		this.setPoints(0);
 	}
 
 	public String getName() {
@@ -37,5 +38,17 @@ public class Player implements Serializable {
 
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
+	}
+	
+	public int getPoints() {
+		return points;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
+	}
+
+	public void addPoints(int points) {
+		this.setPoints(this.getPoints() + points);
 	}
 }

@@ -1,14 +1,13 @@
 package de.hrw.zoo.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import de.hrw.zoo.R;
-import de.hrw.zoo.dialog.NewPlayerDialog;
-import de.hrw.zoo.listener.OnCreatePlayerListener;
 import de.hrw.zoo.model.Player;
 
 public class PlayerView extends RelativeLayout {
@@ -29,27 +28,12 @@ public class PlayerView extends RelativeLayout {
 		
 		avatar = new ImageView(context);
 		avatar.setImageResource(R.drawable.user_icon);
-		avatar.setOnLongClickListener(new OnLongClickListener() {
-		    @Override
-		    public boolean onLongClick(View v) {
-		    	final NewPlayerDialog dlg = new NewPlayerDialog(v.getContext());
-		    	dlg.setOnCreatePlayerListener(new OnCreatePlayerListener() {
-					@Override
-					public void onCreate(Player player) {
-						data = player;
-						Log.i("Zoo", "new player: "+data);
-						updateData();
-					}
-				});
-		    	dlg.show();
-				return false;
-		    }
-		});
 		
 		LayoutParams params;
 		
 		name = new TextView(context);
 		name.setTextSize(20);
+		name.setTextColor(Color.WHITE);
 		name.setGravity(TEXT_ALIGNMENT_CENTER);
 		
 		clear = new ImageView(context);
@@ -85,11 +69,15 @@ public class PlayerView extends RelativeLayout {
 		updateData();
 	}
 	
+	public void setPlayer(Player player) {
+		this.data = player;
+	}
+	
 	public Player getPlayer() {
 		return data;
 	}
 	
-	private void updateData() {
+	public void updateData() {
 		if(this.data == null) {
 			name.setVisibility(INVISIBLE);
 			avatar.setImageResource(R.drawable.user_icon_empty);

@@ -5,10 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.R.anim;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,160 +17,116 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.RectF;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.RotateAnimation;
-import android.view.animation.ScaleAnimation;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.view.animation.AnimationSet;
+import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import de.hrw.zoo.R;
 import de.hrw.zoo.dialog.LoginDialog;
-import de.hrw.zoo.listener.OnSwipeTouchListener;
+import de.hrw.zoo.listener.OnZooItemSelectedListener;
 
 public class MainActivity extends Activity {
 	
-	private List<Map<String, Object> > list = new ArrayList<Map<String, Object> >();
-	private Point size = new Point();
+	private List<Map<String, Object> > mZooList;
+	private Point mAppSize;
+	private Point mAppCenter;
+	private SelectionWheel mWheel;
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+    	mAppSize = new Point();
+    	getWindowManager().getDefaultDisplay().getSize(mAppSize);
+    	mAppCenter = new Point(mAppSize.x/2, mAppSize.y/2);
         
-    	getWindowManager().getDefaultDisplay().getSize(size);
-        
-        RelativeLayout lay = (RelativeLayout) findViewById(R.id.main_layout);
-        
-        size = new Point();
-    	getWindowManager().getDefaultDisplay().getSize(size);
-    	RectF rect = new RectF(size.x/2-400, size.y/2-400, size.x/2+400, size.y/2+400);
-        final SelectionWheel a = new SelectionWheel(getBaseContext(), rect);
-        lay.addView(a);
-        /*
-        AlphaAnimation alpha = new AlphaAnimation(0f, 1f);
-        alpha.setDuration(2000);
-        a.setAnimation(alpha);
-        alpha.start();
-        */
-        
-        lay.setOnTouchListener(new OnSwipeTouchListener() {
-            public void onSwipeTop() {
-                Log.d("Zoo", "top");
-            }
-            public void onSwipeRight() {
-            	Log.d("Zoo", "right");
-            }
-            public void onSwipeLeft() {
-            	Log.d("Zoo", "left");
-            }
-            public void onSwipeBottom() {
-            	Log.d("Zoo", "bottom");
-            }
-        });
-        
-        //View a = new MyGraphicsView(getBaseContext());
-        //lay.addView(a);
-        //ScaleAnimation zoom = new ScaleAnimation(0, 1, 0, 1,550,550);
-        //zoom.setDuration(2000);
-        //a.setAnimation(zoom);
-        //zoom.start();        
-        
+        RelativeLayout layout = (RelativeLayout) findViewById(R.id.main_layout);
+
+        mWheel = new SelectionWheel(getBaseContext(), mAppCenter);
+        layout.addView(mWheel);
+
+        mZooList = new ArrayList<Map<String, Object> >();
         Map<String, Object> map = new HashMap<String, Object>();
 		map.put("zoo_icon", R.drawable.zoo_stuttgart);
 		map.put("zoo_name", "Stuttgart");
 		map.put("zoo_map", R.drawable.zoo_stuttgart);
-		list.add(map);
+		mZooList.add(map);
 		map = new HashMap<String, Object>();
 		map.put("zoo_icon", R.drawable.zoo_berlin);
 		map.put("zoo_name", "Berlin");
 		map.put("zoo_map", R.drawable.zoo_berlin);
-		list.add(map);
+		mZooList.add(map);
 		
 		Spinner s = (Spinner)findViewById(R.id.location_spinner);
-		
-		SimpleAdapter adapter = new ZooAdapter(getBaseContext(), 
-				(List<? extends Map<String, ?>>) list, 
+		SimpleAdapter adapter = new SimpleAdapter(this, 
+				(List<? extends Map<String, ?>>) mZooList, 
 				R.layout.zoo_list_item,
 				new String[] { "zoo_name" },
-				new int[] { R.id.zoo_name });
+				new int[] { R.id.player_name });
 		s.setAdapter(adapter);
-		s.setOnItemSelectedListener(new ZooItemSelectedListener());
-		
-		Button button = (Button) findViewById(R.id.next_button);
-		button.setOnClickListener(new OnClickListener() {
-		    @Override
-		    public void onClick(View v) {		    	
-		    	View view = getLayoutInflater().inflate(R.layout.fragment_login, null);
-		    	final LoginDialog dlg = new LoginDialog(v.getContext(), view, size);
-		    	dlg.getWindow().setLayout(size.x, size.y);
+		s.setOnItemSelectedListener(new OnZooItemSelectedListener(this));
+
+		TextView text = (TextView) findViewById(R.id.circle_text);
+		text.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				View view = getLayoutInflater().inflate(R.layout.fragment_login, null);
+		    	final LoginDialog dlg = new LoginDialog(v.getContext(), view, mAppCenter);
+		    	dlg.setOnGoClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent i = new Intent(getBaseContext(), HomeActivity.class);
+						i.putExtra("players", dlg.getPlayers());
+						dlg.cancel();
+						startActivity(i);
+					}
+				});
+		    	dlg.getWindow().setLayout(mAppSize.x, mAppSize.y);
 		    	dlg.show();
-		    	/*
-		    	a.getWindow().setBackgroundDrawableResource(android.R.color.holo_red_dark);
-		    	Point size = new Point();
-		    	getWindowManager().getDefaultDisplay().getSize(size);
-		    	a.getWindow().setLayout(size.x, size.y);
-		    	a.getWindow().setBackgroundDrawableResource(R.drawable.main_background);
-		    	*/
-		    }
+			}
 		});
     }
 	
-	private class ZooAdapter extends SimpleAdapter {
-		public ZooAdapter(Context context, List<? extends Map<String, ?>> data,
-				int resource, String[] from, int[] to) {
-			super(context, data, resource, from, to);
-		}
+	public void onContentChanged() {
+		super.onContentChanged();
 		
-	}
-	
-	private class ZooItemSelectedListener implements OnItemSelectedListener {
-		@Override
-		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-			Map<String, Object> map = (Map<String, Object>) parent.getItemAtPosition(position);
-			TextView root = (TextView) findViewById(R.id.circle_text);
-			root.bringToFront();
-			root.setText((String)map.get("zoo_name"));
-		}
-
-		@Override
-		public void onNothingSelected(AdapterView<?> arg0) {
+		if(mWheel != null) {
+			mWheel.update();
 		}
 	}
 }
 
 class SelectionWheel extends View {
 	
-	private List<MyGraphicsView> parts = new ArrayList<MyGraphicsView>();
-	private RectF mRect;
+	//private List<MyGraphicsView> parts = new ArrayList<MyGraphicsView>();
+	//private RectF mRect;
+	private Point mCenter;
 	private RectF innerCircle;
-	private RectF grassCircle;
-	private RectF outerCircle;
+	//private RectF grassCircle;
+	//private RectF outerCircle;
 	private RectF outerStroke;
-	private float offset = 0;
+	//private float offset = 0;
 	private Paint mPaintText;
+	private ValueAnimator animation;
 
-	public SelectionWheel(Context context, RectF rect) {
+	public SelectionWheel(Context context, Point center) {
 		super(context);
-		
-		this.mRect = rect;
-		this.innerCircle = new RectF(rect.left+150, rect.top+150, rect.right-150, rect.bottom-150);
-		this.grassCircle = new RectF(rect.left-40, rect.top-40, rect.right+40, rect.bottom+40);
-		this.outerCircle = new RectF(rect.left-100, rect.top-100, rect.right+100, rect.bottom+100);
-		this.outerStroke = new RectF(rect.left-110, rect.top-110, rect.right+110, rect.bottom+110);
+
+		this.mCenter = center;
+		this.innerCircle = new RectF(mCenter.x-250, mCenter.y-250, mCenter.x+250, mCenter.y+250);
+		//this.grassCircle = new RectF(rect.left-40, rect.top-40, rect.right+40, rect.bottom+40);
+		//this.outerCircle = new RectF(rect.left-100, rect.top-100, rect.right+100, rect.bottom+100);
+		this.outerStroke = new RectF(mCenter.x-250, mCenter.y-250, mCenter.x+250, mCenter.y+250);
 		mPaintText = new Paint(Paint.ANTI_ALIAS_FLAG);
 		
+		/*
 		MyGraphicsView v1 = new MyGraphicsView(getContext(), "URWALD");
 		parts.add(v1);
 		ScaleAnimation s = new ScaleAnimation(0f, 1f, 0f, 1f);
@@ -183,28 +140,52 @@ class SelectionWheel extends View {
 		parts.add(new MyGraphicsView(getContext(), "SAVANNE"));
 		parts.add(new MyGraphicsView(getContext(), "LUFT"));
 		parts.add(new MyGraphicsView(getContext(), "BERG & WALD"));
+		*/
 		
-		update();
+		animation = ValueAnimator.ofFloat(250f, 400f);
+		animation.setInterpolator(new LinearInterpolator());
+		animation.setDuration(1000);
+		animation.addUpdateListener(new AnimatorUpdateListener() {
+			@Override
+			public void onAnimationUpdate(ValueAnimator animation) {
+				mPaintText.setStrokeWidth(10f);
+				mPaintText.setColor(Color.parseColor("#1c5b7b"));
+				mPaintText.setAlpha((int) ((1-animation.getAnimatedFraction())*255));
+				outerStroke.left = mCenter.x - ((Float) animation.getAnimatedValue());
+				outerStroke.right = mCenter.x + ((Float) animation.getAnimatedValue());
+				
+				outerStroke.top = mCenter.y - ((Float) animation.getAnimatedValue());
+				outerStroke.bottom = mCenter.y + ((Float) animation.getAnimatedValue());
+
+				invalidate();
+			}
+		});
+		animation.start();
 	}
 	
 	public void update() {
+		/*
 		float size = 360/parts.size();
 		
 		for(int i=0; i<parts.size(); i++) {
 			parts.get(i).update(offset+(size*i), size-0.5f, mRect);
 			Log.d("Zoo", "Update "+i);
 		}
+		*/
+		if(animation != null)
+			animation.start();
 	}
 	
 	@Override
 	public void onDraw(Canvas canvas) {
 		mPaintText.setStyle(Paint.Style.STROKE);
-		mPaintText.setColor(Color.parseColor("#1c5b7b"));
 		canvas.drawArc(outerStroke, 0, 360, true, mPaintText);
 		
+		/*
 		mPaintText.setStyle(Paint.Style.FILL);
 		mPaintText.setColor(Color.parseColor("#063137"));
 		canvas.drawArc(outerCircle, 0, 360, true, mPaintText);
+		*/
 		
 		/*
 		mPaintText.setColor(Color.parseColor("#246837"));
@@ -216,8 +197,12 @@ class SelectionWheel extends View {
 		}
 		*/
 
+		mPaintText.setStyle(Paint.Style.FILL);
 		mPaintText.setColor(Color.parseColor("#c1e3ea"));
+		mPaintText.setAlpha(255);
 		canvas.drawArc(innerCircle, 0, 360, true, mPaintText);
+		
+		Log.d("Zoo", "Draw");
 		
 	}
 }
@@ -235,8 +220,7 @@ class MyGraphicsView extends View implements OnClickListener {
 		
 		this.text = text;
 		mArc = new Path();
-		//mArc.addCircle(600, 600, 400, Path.Direction.CW);
-		
+
 		mPaintText = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mPaintText.setStyle(Paint.Style.FILL);
 		mPaintText.setTextSize(40f);

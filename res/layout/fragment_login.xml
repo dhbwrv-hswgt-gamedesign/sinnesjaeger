@@ -9,33 +9,30 @@
     android:rowCount="3"
     tools:context=".LoginActivity" >
 
-    <TextView
+    <ImageView
         android:id="@+id/description"
-        android:layout_width="270dp"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_centerInParent="true"
         android:layout_marginLeft="600dp"
-        android:gravity="center"
-        android:lineSpacingExtra="20dp"
-        android:lines="4"
-        android:text="@string/players_description"
-        android:textAllCaps="true"
-        android:textSize="24sp" />
+        android:background="@drawable/login_description"
+        android:textAlignment="center" />
 
     <RelativeLayout
         android:id="@+id/player_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-
-        <Button
-            android:id="@+id/next_button"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/forward_icon"
-            android:textSize="20sp" />
-
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/next_button"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginRight="50dp"
+        android:background="@drawable/los_gehts"
+        android:textSize="20sp" />
 
 </RelativeLayout>

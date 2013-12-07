@@ -24,17 +24,13 @@ public class NewPlayerDialog extends AlertDialog.Builder {
 		
 		setView(nameEdit);
 		
-		setPositiveButton("OK", new DialogInterface.OnClickListener() { 
+		setNeutralButton("Weiter", new DialogInterface.OnClickListener() { 
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
-		    	Player newPlayer = new Player(nameEdit.getText().toString());
-		    	listener.onCreate(newPlayer);
-		    }
-		});
-		setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-		    @Override
-		    public void onClick(DialogInterface dialog, int which) {
-		        dialog.cancel();
+		    	if(!nameEdit.getText().toString().isEmpty()) {
+			    	Player newPlayer = new Player(nameEdit.getText().toString());
+			    	listener.onCreate(newPlayer);
+		    	}
 		    }
 		});
 	}
