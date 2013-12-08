@@ -128,7 +128,7 @@ class SelectionWheel extends View {
 	private Point mCenter;
 	private RectF innerCircle;
 	//private RectF grassCircle;
-	//private RectF outerCircle;
+	private RectF outerCircle;
 	private RectF outerStroke;
 	//private float offset = 0;
 	private Paint mPaintText;
@@ -140,7 +140,7 @@ class SelectionWheel extends View {
 		this.mCenter = center;
 		this.innerCircle = new RectF(mCenter.x-250, mCenter.y-250, mCenter.x+250, mCenter.y+250);
 		//this.grassCircle = new RectF(mCenter.x-400, mCenter.y-400, mCenter.x+400, mCenter.y+400);
-		//this.outerCircle = new RectF(mCenter.x-450, mCenter.y-450, mCenter.x+450, mCenter.y+450);
+		this.outerCircle = new RectF(mCenter.x-235, mCenter.y-235, mCenter.x+235, mCenter.y+235);
 		this.outerStroke = new RectF(mCenter.x-250, mCenter.y-250, mCenter.x+250, mCenter.y+250);
 		mPaintText = new Paint(Paint.ANTI_ALIAS_FLAG);
 		
@@ -196,6 +196,11 @@ class SelectionWheel extends View {
 		mPaintText.setStyle(Paint.Style.FILL);
 		mPaintText.setColor(Color.parseColor("#c1e3ea"));
 		canvas.drawArc(innerCircle, 0, 360, true, mPaintText);
+		
+		mPaintText.setStyle(Paint.Style.STROKE);
+		mPaintText.setStrokeWidth(3f);
+		mPaintText.setColor(Color.parseColor("#4082c3"));
+		canvas.drawArc(outerCircle, 0, 360, true, mPaintText);
 	}
 }
 
