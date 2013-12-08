@@ -17,6 +17,14 @@ public class PlayerList extends ArrayList<Player> {
 	public PlayerList() {
 	}
 	
+	public void resetPoints() {
+		for(Player p: this) {
+			if(p != null) {
+				p.setPoints(0);
+			}
+		}
+	}
+	
 	public boolean save(File path) {
 		try {
 			FileOutputStream fos = new FileOutputStream(path);

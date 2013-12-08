@@ -8,7 +8,8 @@
     <ImageView
         android:id="@+id/abstract_zoo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginLeft="300dp" />
 
     <ListView
         android:id="@+id/players_list"
@@ -16,7 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="10dp" >
+        android:layout_margin="10dp"
+        android:listSelector="@android:color/transparent"  >
 
     </ListView>
 
@@ -26,7 +28,7 @@
         android:layout_height="50dp"
         android:layout_margin="10dp"
         android:layout_toRightOf="@id/players_list"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/icon_gear" />
 
     <LinearLayout
         android:id="@+id/compass_layout"

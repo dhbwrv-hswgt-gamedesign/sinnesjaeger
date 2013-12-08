@@ -100,8 +100,10 @@ public class MainActivity extends Activity {
 					@Override
 					public void onClick(View v) {
 						dlg.getPlayers().save(new File(mStorePath, "players"));
-						Intent i = new Intent(getBaseContext(), HomeActivity.class);
-						startActivity(i);
+						dlg.getPlayers().resetPoints();
+						dlg.cancel();
+						Intent intent = new Intent(getBaseContext(), HomeActivity.class);
+						startActivity(intent);
 					}
 				});
 		    	dlg.getWindow().setLayout(mAppSize.x, mAppSize.y);

@@ -14,7 +14,7 @@ import de.hrw.zoo.model.Player;
 public class PlayerListAdapter extends ArrayAdapter<Player> {
 	
 	private final Context context;
-    private final PlayerList players;
+    private PlayerList players;
 
 	public PlayerListAdapter(Context context, int resource, PlayerList objects) {
 		super(context, resource, objects);
@@ -33,15 +33,21 @@ public class PlayerListAdapter extends ArrayAdapter<Player> {
 		TextView points = (TextView) rowView.findViewById(R.id.player_points);
 
 		if (players.get(position) != null) {
-			avatar.setImageResource(R.drawable.user_icon);
+			avatar.setImageResource(R.drawable.icon_user);
 			name.setText(players.get(position).getName());
 			points.setText(players.get(position).getPoints() + " Punkte");
 		} else {
-			avatar.setImageResource(R.drawable.user_icon_empty);
+			avatar.setImageResource(R.drawable.icon_user_empty);
 			name.setText("");
 			points.setText("");
 		}
 
 		return rowView;
+	}
+	
+	public void notifyDataSetChanged(PlayerList list) {
+		players = list;
+		
+		notifyDataSetChanged();
 	}
 }

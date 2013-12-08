@@ -27,7 +27,7 @@ public class PlayerView extends RelativeLayout {
 		data = (Player) player;
 		
 		avatar = new ImageView(context);
-		avatar.setImageResource(R.drawable.user_icon);
+		avatar.setImageResource(R.drawable.icon_user);
 		
 		LayoutParams params;
 		
@@ -59,7 +59,7 @@ public class PlayerView extends RelativeLayout {
 		params.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		addView(name, params);
 		
-		params = new LayoutParams(250, 250);
+		params = new LayoutParams(230, 230);
 		params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		params.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		addView(avatar, params);
@@ -80,12 +80,12 @@ public class PlayerView extends RelativeLayout {
 	public void updateData() {
 		if(this.data == null) {
 			name.setVisibility(INVISIBLE);
-			avatar.setImageResource(R.drawable.user_icon_empty);
+			avatar.setImageResource(R.drawable.icon_user_empty);
 			clear.setVisibility(INVISIBLE);
 		} else {
 			name.setText(data.getName());
 			name.setVisibility(VISIBLE);
-			avatar.setImageResource(R.drawable.user_icon);
+			avatar.setImageResource(R.drawable.icon_user);
 			clear.setVisibility(VISIBLE);
 		}
 	}

@@ -16,7 +16,7 @@
     <style name="Widget.Spinner" parent="@android:style/Widget.Holo.Spinner">
 	</style>
 	
-    <style name="PlayersDialog"  parent="@android:style/Theme.Holo.Dialog">
+    <style name="PlayersDialog" parent="@android:style/Theme.Holo.Dialog">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
 	</style>

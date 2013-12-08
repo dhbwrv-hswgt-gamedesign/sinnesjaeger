@@ -10,6 +10,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import de.hrw.zoo.R;
 import de.hrw.zoo.list.PlayerList;
 import de.hrw.zoo.listener.OnCreatePlayerListener;
@@ -37,21 +38,25 @@ public class LoginDialog extends Dialog {
 		desc.setOnLongClickListener(new OnLongClickListener() {
 		    @Override
 		    public boolean onLongClick(View v) {
-		    	final NewPlayerDialog dlg = new NewPlayerDialog(v.getContext());
-		    	dlg.setOnCreatePlayerListener(new OnCreatePlayerListener() {
-					@Override
-					public void onCreate(Player player) {
-						Log.i("Zoo", "new player: "+player);
-						for(int i=0; i<playerViews.length; i++) {
-							if(playerViews[i].getPlayer() == null) {
-								playerViews[i].setPlayer(player);
-								playerViews[i].updateData();
-								break;
+		    	if(count() < MAX_PLAYERS) {
+			    	final NewPlayerDialog dlg = new NewPlayerDialog(v.getContext());
+			    	dlg.setOnCreatePlayerListener(new OnCreatePlayerListener() {
+						@Override
+						public void onCreate(Player player) {
+							Log.i("Zoo", "new player: "+player);
+							for(int i=0; i<playerViews.length; i++) {
+								if(playerViews[i].getPlayer() == null) {
+									playerViews[i].setPlayer(player);
+									playerViews[i].updateData();
+									break;
+								}
 							}
 						}
-					}
-				});
-		    	dlg.show();
+					});
+			    	dlg.show();
+		    	} else {
+		    		Toast.makeText(v.getContext(), "Maximale Anzahl Spieler erreicht!", Toast.LENGTH_SHORT).show();
+		    	}
 				return false;
 		    }
 		});
@@ -73,6 +78,18 @@ public class LoginDialog extends Dialog {
 		super.show();
 	}
 	
+	public int count() {
+		int count = 0;
+		
+		for(int i=0; i<MAX_PLAYERS; i++) {
+	        if(playerViews[i].getPlayer() != null) {
+	        	count++;
+	        }
+		}
+		
+		return count;
+	}
+	
 	public void updatePlayers() {
 		RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.player_layout);
 		layout.removeAllViews();
@@ -82,9 +99,9 @@ public class LoginDialog extends Dialog {
         int offset = 450;
         
 		for(int i=0; i<MAX_PLAYERS; i++) {
-	        params = new RelativeLayout.LayoutParams(300, 300);
-            params.leftMargin = (int) (mCenter.x + Math.sin((rotation*(i))*Math.PI/180)*offset)-150;
-            params.topMargin = (int) (mCenter.y - Math.cos((rotation*(i))*Math.PI/180)*offset)-125;
+	        params = new RelativeLayout.LayoutParams(350, 300);
+            params.leftMargin = (int) (mCenter.x + Math.sin((rotation*(i))*Math.PI/180)*offset)-175;
+            params.topMargin = (int) (mCenter.y - Math.cos((rotation*(i))*Math.PI/180)*offset)-110;
             
             layout.addView(playerViews[i], params);
 		}
