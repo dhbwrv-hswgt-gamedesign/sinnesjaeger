@@ -8,14 +8,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.hrw.zoo.R;
+import de.hrw.zoo.list.PlayerList;
 import de.hrw.zoo.model.Player;
 
 public class PlayerListAdapter extends ArrayAdapter<Player> {
 	
 	private final Context context;
-    private final Player players[];
+    private final PlayerList players;
 
-	public PlayerListAdapter(Context context, int resource, Player[] objects) {
+	public PlayerListAdapter(Context context, int resource, PlayerList objects) {
 		super(context, resource, objects);
 		
 		this.context = context;
@@ -31,10 +32,10 @@ public class PlayerListAdapter extends ArrayAdapter<Player> {
 		TextView name = (TextView) rowView.findViewById(R.id.player_name);
 		TextView points = (TextView) rowView.findViewById(R.id.player_points);
 
-		if (players[position] != null) {
+		if (players.get(position) != null) {
 			avatar.setImageResource(R.drawable.user_icon);
-			name.setText(players[position].getName());
-			points.setText(players[position].getPoints() + " Punkte");
+			name.setText(players.get(position).getName());
+			points.setText(players.get(position).getPoints() + " Punkte");
 		} else {
 			avatar.setImageResource(R.drawable.user_icon_empty);
 			name.setText("");

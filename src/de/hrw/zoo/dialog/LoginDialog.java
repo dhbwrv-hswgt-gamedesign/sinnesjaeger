@@ -5,12 +5,13 @@ import android.content.Context;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnLongClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import de.hrw.zoo.R;
+import de.hrw.zoo.list.PlayerList;
 import de.hrw.zoo.listener.OnCreatePlayerListener;
 import de.hrw.zoo.model.Player;
 import de.hrw.zoo.view.PlayerView;
@@ -93,19 +94,22 @@ public class LoginDialog extends Dialog {
 		mStartButton.setOnClickListener(listener);
 	}
 	
-	public Player[] getPlayers() {
-		Player[] players = new Player[MAX_PLAYERS];
+	public PlayerList getPlayers() {
+		PlayerList players = new PlayerList();
 		
 		for(int i=0; i<MAX_PLAYERS; i++) {
-			players[i] = playerViews[i].getPlayer();
+			players.add(playerViews[i].getPlayer());
 		}
 		
 		return players;
 	}
 	
-	public void setPlayer(Player[] players) {
-		for(int i=0; i<MAX_PLAYERS; i++) {
-			playerViews[i] = new PlayerView(view.getContext(), players[i]);
+	public void setPlayers(PlayerList players) {
+		if(players.size() <= 5) {
+			for(int i=0; i<players.size(); i++) {
+				playerViews[i].setPlayer(players.get(i));
+				playerViews[i].updateData();
+			}
 		}
 	}
 }

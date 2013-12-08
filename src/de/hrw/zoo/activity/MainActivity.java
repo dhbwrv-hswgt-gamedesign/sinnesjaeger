@@ -1,15 +1,17 @@
 package de.hrw.zoo.activity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.R.anim;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -21,7 +23,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AnimationSet;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
@@ -29,11 +30,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import de.hrw.zoo.R;
 import de.hrw.zoo.dialog.LoginDialog;
+import de.hrw.zoo.list.PlayerList;
 import de.hrw.zoo.listener.OnZooItemSelectedListener;
 
 public class MainActivity extends Activity {
 	
 	private List<Map<String, Object> > mZooList;
+	private File mStorePath;
 	private Point mAppSize;
 	private Point mAppCenter;
 	private SelectionWheel mWheel;
@@ -42,6 +45,12 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        mStorePath = new File(getFilesDir(),"zoo");
+        if(!mStorePath.exists()) {
+        	mStorePath.mkdir();
+        }
+        new File(mStorePath, "players").delete();
 
     	mAppSize = new Point();
     	getWindowManager().getDefaultDisplay().getSize(mAppSize);
@@ -78,13 +87,20 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				View view = getLayoutInflater().inflate(R.layout.fragment_login, null);
-		    	final LoginDialog dlg = new LoginDialog(v.getContext(), view, mAppCenter);
+				final LoginDialog dlg = new LoginDialog(v.getContext(), view, mAppCenter);
+				dlg.setPlayers(PlayerList.Load(new File(mStorePath, "players")));
+
+				dlg.setOnDismissListener(new OnDismissListener() {
+					@Override
+					public void onDismiss(DialogInterface dialog) {
+						dlg.getPlayers().save(new File(mStorePath, "players"));
+					}
+				});
 		    	dlg.setOnGoClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						dlg.getPlayers().save(new File(mStorePath, "players"));
 						Intent i = new Intent(getBaseContext(), HomeActivity.class);
-						i.putExtra("players", dlg.getPlayers());
-						dlg.cancel();
 						startActivity(i);
 					}
 				});
@@ -121,8 +137,8 @@ class SelectionWheel extends View {
 
 		this.mCenter = center;
 		this.innerCircle = new RectF(mCenter.x-250, mCenter.y-250, mCenter.x+250, mCenter.y+250);
-		//this.grassCircle = new RectF(rect.left-40, rect.top-40, rect.right+40, rect.bottom+40);
-		//this.outerCircle = new RectF(rect.left-100, rect.top-100, rect.right+100, rect.bottom+100);
+		//this.grassCircle = new RectF(mCenter.x-400, mCenter.y-400, mCenter.x+400, mCenter.y+400);
+		//this.outerCircle = new RectF(mCenter.x-450, mCenter.y-450, mCenter.x+450, mCenter.y+450);
 		this.outerStroke = new RectF(mCenter.x-250, mCenter.y-250, mCenter.x+250, mCenter.y+250);
 		mPaintText = new Paint(Paint.ANTI_ALIAS_FLAG);
 		
@@ -148,9 +164,6 @@ class SelectionWheel extends View {
 		animation.addUpdateListener(new AnimatorUpdateListener() {
 			@Override
 			public void onAnimationUpdate(ValueAnimator animation) {
-				mPaintText.setStrokeWidth(10f);
-				mPaintText.setColor(Color.parseColor("#1c5b7b"));
-				mPaintText.setAlpha((int) ((1-animation.getAnimatedFraction())*255));
 				outerStroke.left = mCenter.x - ((Float) animation.getAnimatedValue());
 				outerStroke.right = mCenter.x + ((Float) animation.getAnimatedValue());
 				
@@ -164,46 +177,23 @@ class SelectionWheel extends View {
 	}
 	
 	public void update() {
-		/*
-		float size = 360/parts.size();
-		
-		for(int i=0; i<parts.size(); i++) {
-			parts.get(i).update(offset+(size*i), size-0.5f, mRect);
-			Log.d("Zoo", "Update "+i);
-		}
-		*/
-		if(animation != null)
+		if(animation != null) {
 			animation.start();
+		}
 	}
 	
 	@Override
-	public void onDraw(Canvas canvas) {
+	public void onDraw(Canvas canvas) {	
 		mPaintText.setStyle(Paint.Style.STROKE);
+		mPaintText.setStrokeWidth(20f-animation.getAnimatedFraction()*20);
+		mPaintText.setColor(Color.parseColor("#4082c3"));
+		mPaintText.setAlpha((int) ((1-animation.getAnimatedFraction())*255));
 		canvas.drawArc(outerStroke, 0, 360, true, mPaintText);
+		mPaintText.setAlpha(255);
 		
-		/*
-		mPaintText.setStyle(Paint.Style.FILL);
-		mPaintText.setColor(Color.parseColor("#063137"));
-		canvas.drawArc(outerCircle, 0, 360, true, mPaintText);
-		*/
-		
-		/*
-		mPaintText.setColor(Color.parseColor("#246837"));
-		canvas.drawArc(grassCircle, 0, 360, true, mPaintText);
-		
-		for(MyGraphicsView g: parts) {
-			g.draw(canvas);
-			Log.d("Zoo", "Draw");
-		}
-		*/
-
 		mPaintText.setStyle(Paint.Style.FILL);
 		mPaintText.setColor(Color.parseColor("#c1e3ea"));
-		mPaintText.setAlpha(255);
 		canvas.drawArc(innerCircle, 0, 360, true, mPaintText);
-		
-		Log.d("Zoo", "Draw");
-		
 	}
 }
 
@@ -247,6 +237,6 @@ class MyGraphicsView extends View implements OnClickListener {
 	public void onClick(View v) {
 		Log.d("Zoo", "Click");
 	}
-  }
+}
 
 
