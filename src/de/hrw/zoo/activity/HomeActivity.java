@@ -2,12 +2,14 @@ package de.hrw.zoo.activity;
 
 import java.io.File;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -78,19 +80,80 @@ public class HomeActivity extends Activity {
 		});
         
         final RelativeLayout composite = (RelativeLayout) findViewById(R.id.abstract_composite);
+        composite.setOnClickListener(new OnClickListener() {
+        	boolean inZoom = false;
+        	ObjectAnimator ani;
+        	
+			@Override
+			public void onClick(View v) {
+				if(inZoom) {
+					ani = ObjectAnimator.ofFloat(v, "scaleX", v.getScaleX(), 1f);
+					ani.setDuration(2000);
+					ani.start();
+					ani = ObjectAnimator.ofFloat(v, "scaleY", v.getScaleY(), 1f);
+					ani.setDuration(2000);
+					ani.start();
+					ani = ObjectAnimator.ofFloat(v, "translationY", v.getTranslationY(), 0);
+					ani.setDuration(2000);
+					ani.start();
+					
+					inZoom = false;
+				} else {
+					ani = ObjectAnimator.ofFloat(v, "scaleX", 1f, 3f);
+					ani.setDuration(2000);
+					ani.start();
+					ani = ObjectAnimator.ofFloat(v, "scaleY", 1f, 3f);
+					ani.setDuration(2000);
+					ani.start();
+					ani = ObjectAnimator.ofFloat(v, "translationY", 0f, v.getHeight()*2);
+					ani.setDuration(2000);
+					ani.start();
+					
+					inZoom = true;
+				}
+			}
+		});
         RelativeLayout l1 = (RelativeLayout) findViewById(R.id.abstract_layout);
         l1.setOnTouchListener(new OnTouchListener() {
-        	float lastX = 0f;
+        	float diffX = 0;
+			float diffY = 0;
+        	double rot = 0;
+        	double lastRot = 0;
+        	
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				switch(event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
-					lastX = event.getX();
+					diffX = event.getX() - mAppCenter.x;
+					diffY = mAppCenter.y - event.getY();
+					rot = Math.abs(Math.toDegrees(Math.atan(diffY/diffX)));
+					if(diffX>0 && diffY>0) {
+						rot = 0+rot;
+					} else if(diffX<0 && diffY>0) {
+						rot = 180-rot;
+					} else if(diffX<0 && diffY<0) {
+						rot = 180+rot;
+					} else if(diffX>0 && diffY<0) {
+						rot = 360-rot;
+					}
+					lastRot = rot;
 					break;
 				case MotionEvent.ACTION_MOVE:
-					float diff = lastX-event.getX();
-					composite.setRotation(composite.getRotation()-(diff/20));
-					lastX = event.getX();
+					diffX = event.getX() - mAppCenter.x;
+					diffY = mAppCenter.y - event.getY();
+					rot = Math.abs(Math.toDegrees(Math.atan(diffY/diffX)));
+					if(diffX>0 && diffY>0) {
+						rot = 0+rot;
+					} else if(diffX<0 && diffY>0) {
+						rot = 180-rot;
+					} else if(diffX<0 && diffY<0) {
+						rot = 180+rot;
+					} else if(diffX>0 && diffY<0) {
+						rot = 360-rot;
+					}
+					Log.d("Zoo", ""+diffX+" | "+diffY+" | "+rot);
+					composite.setRotation((float) (composite.getRotation()+(lastRot-rot)));
+					lastRot = rot;
 					break;
 				}
 				return true;
