@@ -7,10 +7,12 @@
 
     <ListView
         android:id="@+id/players_list"
-        android:layout_width="300dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:divider="@android:color/transparent"
         android:listSelector="@android:color/transparent" >
+
     </ListView>
 
     <RelativeLayout
@@ -25,9 +27,51 @@
             android:layout_centerInParent="true" >
 
             <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="400dp"
+                android:layout_height="400dp"
+                android:src="@drawable/wheel_part" />
+
+            <ImageView
+                android:id="@+id/ImageView01"
+                android:layout_width="400dp"
+                android:layout_height="400dp"
+                android:rotation="60"
+                android:src="@drawable/wheel_part" />
+
+            <ImageView
+                android:id="@+id/ImageView02"
+                android:layout_width="400dp"
+                android:layout_height="400dp"
+                android:rotation="120"
+                android:src="@drawable/wheel_part" />
+
+            <ImageView
+                android:id="@+id/ImageView03"
+                android:layout_width="400dp"
+                android:layout_height="400dp"
+                android:rotation="180"
+                android:src="@drawable/wheel_part" />
+
+            <ImageView
+                android:id="@+id/ImageView04"
+                android:layout_width="400dp"
+                android:layout_height="400dp"
+                android:rotation="240"
+                android:src="@drawable/wheel_part" />
+
+            <ImageView
+                android:id="@+id/ImageView05"
+                android:layout_width="400dp"
+                android:layout_height="400dp"
+                android:rotation="300"
+                android:src="@drawable/wheel_part" />
+
+            <ImageView
                 android:id="@+id/abstract_zoo"
-                android:layout_width="300dp"
-                android:layout_height="300dp"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_centerInParent="true"
                 android:src="@drawable/circle" />
 
             <TextView
@@ -39,8 +83,8 @@
                 android:text="Large Text"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@android:color/black" />
-
         </RelativeLayout>
+
     </RelativeLayout>
 
     <ImageView
