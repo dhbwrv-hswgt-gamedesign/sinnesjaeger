@@ -5,22 +5,43 @@
     android:layout_height="match_parent"
     android:background="@drawable/main_background" >
 
-    <ImageView
-        android:id="@+id/abstract_zoo"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="300dp" />
-
     <ListView
         android:id="@+id/players_list"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:layout_margin="10dp"
-        android:listSelector="@android:color/transparent"  >
-
+        android:listSelector="@android:color/transparent" >
     </ListView>
+
+    <RelativeLayout
+        android:id="@+id/abstract_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:id="@+id/abstract_composite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" >
+
+            <ImageView
+                android:id="@+id/abstract_zoo"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:src="@drawable/circle" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="126dp"
+                android:text="Large Text"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/black" />
+
+        </RelativeLayout>
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/edit_players"

@@ -8,10 +8,13 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import de.hrw.zoo.R;
 import de.hrw.zoo.adapter.PlayerListAdapter;
 import de.hrw.zoo.dialog.LoginDialog;
@@ -71,6 +74,26 @@ public class HomeActivity extends Activity {
 				});
 		    	dlg.getWindow().setLayout(mAppSize.x, mAppSize.y);
 		    	dlg.show();
+			}
+		});
+        
+        final RelativeLayout composite = (RelativeLayout) findViewById(R.id.abstract_composite);
+        RelativeLayout l1 = (RelativeLayout) findViewById(R.id.abstract_layout);
+        l1.setOnTouchListener(new OnTouchListener() {
+        	float lastX = 0f;
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				switch(event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					lastX = event.getX();
+					break;
+				case MotionEvent.ACTION_MOVE:
+					float diff = lastX-event.getX();
+					composite.setRotation(composite.getRotation()-(diff/20));
+					lastX = event.getX();
+					break;
+				}
+				return true;
 			}
 		});
     }
