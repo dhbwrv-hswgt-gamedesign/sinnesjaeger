@@ -2,6 +2,7 @@ package de.hrw.zoo.activity;
 
 import java.io.File;
 
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,8 +16,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import de.hrw.zoo.R;
 import de.hrw.zoo.adapter.PlayerListAdapter;
 import de.hrw.zoo.dialog.LoginDialog;
@@ -28,7 +31,6 @@ public class HomeActivity extends Activity {
 	private File mStorePath;
 	private Point mAppSize;
 	private Point mAppCenter;
-	private ListView mPlayerList;
 	private PlayerListAdapter mPlayerAdapter;
 
 	@Override
@@ -45,14 +47,18 @@ public class HomeActivity extends Activity {
     	getWindowManager().getDefaultDisplay().getSize(mAppSize);
     	mAppCenter = new Point(mAppSize.x/2, mAppSize.y/2);
         
-        mPlayerList = (ListView) findViewById(R.id.players_list);
+    	final LinearLayout filtersLayout = (LinearLayout) findViewById(R.id.filters_layout);
+    	final LinearLayout compassLayout = (LinearLayout) findViewById(R.id.compass_layout);
+        final RelativeLayout composite = (RelativeLayout) findViewById(R.id.abstract_composite);
+        final TextView button = (TextView) findViewById(R.id.dummy_button);
+        final ListView playersList = (ListView) findViewById(R.id.players_list);
+        final ImageView playersEdit = (ImageView) findViewById(R.id.edit_players);
 
         players = PlayerList.Load(new File(mStorePath, "players"));        
         mPlayerAdapter = new PlayerListAdapter(this, R.layout.player_list_item, players);
-        mPlayerList.setAdapter(mPlayerAdapter);        
+        playersList.setAdapter(mPlayerAdapter);        
         
-        ImageView edit = (ImageView) findViewById(R.id.edit_players);
-        edit.setOnClickListener(new OnClickListener() {
+        playersEdit.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				View view = getLayoutInflater().inflate(R.layout.fragment_login, null);
@@ -79,35 +85,45 @@ public class HomeActivity extends Activity {
 			}
 		});
         
-        final RelativeLayout composite = (RelativeLayout) findViewById(R.id.abstract_composite);
-        composite.setOnClickListener(new OnClickListener() {
+        
+        button.setOnClickListener(new OnClickListener() {
         	boolean inZoom = false;
-        	ObjectAnimator ani;
-        	
+        	AnimatorSet set;
+
 			@Override
 			public void onClick(View v) {
 				if(inZoom) {
-					ani = ObjectAnimator.ofFloat(v, "scaleX", v.getScaleX(), 1f);
-					ani.setDuration(2000);
-					ani.start();
-					ani = ObjectAnimator.ofFloat(v, "scaleY", v.getScaleY(), 1f);
-					ani.setDuration(2000);
-					ani.start();
-					ani = ObjectAnimator.ofFloat(v, "translationY", v.getTranslationY(), 0);
-					ani.setDuration(2000);
-					ani.start();
+					set = new AnimatorSet();
+					
+					ObjectAnimator aniScaleX = ObjectAnimator.ofFloat(composite, "scaleX", composite.getScaleX(), 1f);
+					aniScaleX.setDuration(2000);
+					ObjectAnimator aniScaleY = ObjectAnimator.ofFloat(composite, "scaleY", composite.getScaleY(), 1f);
+					aniScaleY.setDuration(2000);
+					ObjectAnimator aniTransY = ObjectAnimator.ofFloat(composite, "translationY", composite.getTranslationY(), 0f);
+					aniTransY.setDuration(2000);
+					ObjectAnimator aniAlpha = ObjectAnimator.ofFloat(filtersLayout, "alpha", 0f, 1f);
+					aniAlpha.setStartDelay(1000);
+					set.play(aniAlpha);
+					aniAlpha.setDuration(1000);
+					
+					set.playTogether(aniScaleX, aniScaleY, aniTransY, aniAlpha);
+					set.start();
 					
 					inZoom = false;
 				} else {
-					ani = ObjectAnimator.ofFloat(v, "scaleX", 1f, 3f);
-					ani.setDuration(2000);
-					ani.start();
-					ani = ObjectAnimator.ofFloat(v, "scaleY", 1f, 3f);
-					ani.setDuration(2000);
-					ani.start();
-					ani = ObjectAnimator.ofFloat(v, "translationY", 0f, v.getHeight()*2);
-					ani.setDuration(2000);
-					ani.start();
+					set = new AnimatorSet();
+					
+					ObjectAnimator aniScaleX = ObjectAnimator.ofFloat(composite, "scaleX", composite.getScaleX(), 3f);
+					aniScaleX.setDuration(2000);
+					ObjectAnimator aniScaleY = ObjectAnimator.ofFloat(composite, "scaleY", composite.getScaleY(), 3f);
+					aniScaleY.setDuration(2000);
+					ObjectAnimator aniTransY = ObjectAnimator.ofFloat(composite, "translationY", 0f, composite.getHeight());
+					aniTransY.setDuration(2000);
+					ObjectAnimator aniAlpha = ObjectAnimator.ofFloat(filtersLayout, "alpha", 1f, 0f);
+					aniAlpha.setDuration(1000);
+					
+					set.playTogether(aniScaleX, aniScaleY, aniTransY, aniAlpha);
+					set.start();
 					
 					inZoom = true;
 				}
@@ -119,13 +135,14 @@ public class HomeActivity extends Activity {
 			float diffY = 0;
         	double rot = 0;
         	double lastRot = 0;
+        	ObjectAnimator ani;
         	
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				switch(event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
-					diffX = event.getX() - mAppCenter.x;
-					diffY = mAppCenter.y - event.getY();
+					diffX = event.getX() - (composite.getX()+composite.getWidth()/2);
+					diffY = (composite.getY()+composite.getHeight()/2) - event.getY();
 					rot = Math.abs(Math.toDegrees(Math.atan(diffY/diffX)));
 					if(diffX>0 && diffY>0) {
 						rot = 0+rot;
@@ -139,8 +156,8 @@ public class HomeActivity extends Activity {
 					lastRot = rot;
 					break;
 				case MotionEvent.ACTION_MOVE:
-					diffX = event.getX() - mAppCenter.x;
-					diffY = mAppCenter.y - event.getY();
+					diffX = event.getX() - (composite.getX()+composite.getWidth()/2);
+					diffY = (composite.getY()+composite.getHeight()/2) - event.getY();
 					rot = Math.abs(Math.toDegrees(Math.atan(diffY/diffX)));
 					if(diffX>0 && diffY>0) {
 						rot = 0+rot;
@@ -151,9 +168,16 @@ public class HomeActivity extends Activity {
 					} else if(diffX>0 && diffY<0) {
 						rot = 360-rot;
 					}
-					Log.d("Zoo", ""+diffX+" | "+diffY+" | "+rot);
 					composite.setRotation((float) (composite.getRotation()+(lastRot-rot)));
 					lastRot = rot;
+					break;
+				case MotionEvent.ACTION_UP:
+					float start = composite.getRotation();
+					float end = Math.round(start / 60) * 60;
+					Log.d("Zoo", start+" | "+end);
+					ani = ObjectAnimator.ofFloat(composite, "rotation", start, end);
+					ani.setDuration(300);
+					ani.start();
 					break;
 				}
 				return true;
@@ -167,15 +191,15 @@ public class HomeActivity extends Activity {
 
 		alertDialog.setTitle("Beenden?");
 		alertDialog.setMessage("Wollen Sie das Spiel wirklich beenden?");
-		alertDialog.setIcon(R.drawable.delete_icon);
+		//alertDialog.setIcon(R.drawable.delete_icon);
 
-		alertDialog.setPositiveButton("JA", new DialogInterface.OnClickListener() {
+		alertDialog.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				HomeActivity.this.finish();
 			}
 		});
 
-		alertDialog.setNegativeButton("NEIN", new DialogInterface.OnClickListener() {
+		alertDialog.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.cancel();
 			}

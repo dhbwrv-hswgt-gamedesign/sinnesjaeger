@@ -75,14 +75,18 @@
                 android:src="@drawable/circle" />
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/dummy_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginBottom="126dp"
+                android:layout_marginTop="10dp"
+                android:padding="20dp"
                 android:text="Large Text"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/white" />
+
         </RelativeLayout>
 
     </RelativeLayout>
@@ -120,6 +124,54 @@
             android:contentDescription="@string/filter_hear"
             android:padding="10dp"
             android:src="@drawable/ic_launcher" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/filters_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" >
+
+        <ImageView
+            android:id="@+id/player_1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:contentDescription="@string/filter_see"
+            android:padding="10dp"
+            android:src="@drawable/ok_icon" />
+
+        <ImageView
+            android:id="@+id/player_2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:contentDescription="@string/filter_hear"
+            android:padding="10dp"
+            android:src="@drawable/ok_icon" />
+
+        <ImageView
+            android:id="@+id/filter_touch"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:contentDescription="@string/filter_touch"
+            android:padding="10dp"
+            android:src="@drawable/ok_icon" />
+
+        <ImageView
+            android:id="@+id/filter_6sense"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:contentDescription="@string/filter_6sense"
+            android:padding="10dp"
+            android:src="@drawable/ok_icon" />
+
+        <ImageView
+            android:id="@+id/filter_all"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:contentDescription="@string/filter_all"
+            android:padding="10dp"
+            android:src="@drawable/ok_icon" />
     </LinearLayout>
 
 </RelativeLayout>

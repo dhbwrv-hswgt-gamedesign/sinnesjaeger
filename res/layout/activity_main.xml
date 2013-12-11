@@ -6,7 +6,7 @@
     android:background="@drawable/main_background" >
 
     <LinearLayout
-        android:id="@+id/players_layout"
+        android:id="@+id/filters_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
