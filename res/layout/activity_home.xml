@@ -27,63 +27,31 @@
             android:layout_centerInParent="true" >
 
             <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="400dp"
-                android:layout_height="400dp"
-                android:src="@drawable/wheel_part" />
+                android:id="@+id/wheel_bg"
+                android:layout_width="600dp"
+                android:layout_height="600dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/wheel_complete" />
 
-            <ImageView
-                android:id="@+id/ImageView01"
-                android:layout_width="400dp"
-                android:layout_height="400dp"
-                android:rotation="60"
-                android:src="@drawable/wheel_part" />
-
-            <ImageView
-                android:id="@+id/ImageView02"
-                android:layout_width="400dp"
-                android:layout_height="400dp"
-                android:rotation="120"
-                android:src="@drawable/wheel_part" />
-
-            <ImageView
-                android:id="@+id/ImageView03"
-                android:layout_width="400dp"
-                android:layout_height="400dp"
-                android:rotation="180"
-                android:src="@drawable/wheel_part" />
-
-            <ImageView
-                android:id="@+id/ImageView04"
-                android:layout_width="400dp"
-                android:layout_height="400dp"
-                android:rotation="240"
-                android:src="@drawable/wheel_part" />
-
-            <ImageView
-                android:id="@+id/ImageView05"
-                android:layout_width="400dp"
-                android:layout_height="400dp"
-                android:rotation="300"
-                android:src="@drawable/wheel_part" />
-
-            <ImageView
-                android:id="@+id/abstract_zoo"
+            <TextView
+                android:id="@+id/wheel_part_text"
                 android:layout_width="250dp"
                 android:layout_height="250dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/circle" />
+                android:background="@drawable/circle"
+                android:gravity="center"
+                android:text="LUFT"
+                android:textColor="@android:color/black"
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/dummy_button"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="126dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="110dp"
                 android:padding="20dp"
-                android:text="Large Text"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@android:color/white" />
 
@@ -133,45 +101,55 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" >
 
-        <ImageView
-            android:id="@+id/player_1"
+        <ImageButton
+            android:id="@+id/filter_sehen"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginRight="10dp"
+            android:background="@android:color/transparent"
             android:contentDescription="@string/filter_see"
             android:padding="10dp"
-            android:src="@drawable/ok_icon" />
+            android:src="@drawable/filter_sehen" />
 
-        <ImageView
-            android:id="@+id/player_2"
+        <ImageButton
+            android:id="@+id/filter_hoeren"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginRight="10dp"
+            android:background="@android:color/transparent"
             android:contentDescription="@string/filter_hear"
             android:padding="10dp"
-            android:src="@drawable/ok_icon" />
+            android:src="@drawable/filter_hoeren" />
 
-        <ImageView
-            android:id="@+id/filter_touch"
+        <ImageButton
+            android:id="@+id/filter_spueren"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginRight="10dp"
+            android:background="@android:color/transparent"
             android:contentDescription="@string/filter_touch"
             android:padding="10dp"
-            android:src="@drawable/ok_icon" />
+            android:src="@drawable/filter_spueren" />
 
-        <ImageView
-            android:id="@+id/filter_6sense"
+        <ImageButton
+            android:id="@+id/filter_sixthsense"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginRight="10dp"
+            android:background="@android:color/transparent"
             android:contentDescription="@string/filter_6sense"
             android:padding="10dp"
-            android:src="@drawable/ok_icon" />
+            android:src="@drawable/filter_sixthsense" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/filter_all"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:background="@android:color/transparent"
             android:contentDescription="@string/filter_all"
             android:padding="10dp"
-            android:src="@drawable/ok_icon" />
+            android:src="@drawable/filter_all" />
+
     </LinearLayout>
 
 </RelativeLayout>

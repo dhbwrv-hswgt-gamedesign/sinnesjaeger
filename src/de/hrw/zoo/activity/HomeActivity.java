@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -50,9 +51,13 @@ public class HomeActivity extends Activity {
     	final LinearLayout filtersLayout = (LinearLayout) findViewById(R.id.filters_layout);
     	final LinearLayout compassLayout = (LinearLayout) findViewById(R.id.compass_layout);
         final RelativeLayout composite = (RelativeLayout) findViewById(R.id.abstract_composite);
+        final ImageView wheel = (ImageView) findViewById(R.id.wheel_bg);
         final TextView button = (TextView) findViewById(R.id.dummy_button);
         final ListView playersList = (ListView) findViewById(R.id.players_list);
         final ImageView playersEdit = (ImageView) findViewById(R.id.edit_players);
+        final TextView wheelText = (TextView) findViewById(R.id.wheel_part_text);
+        Typeface miso = Typeface.createFromAsset(getAssets(), "fonts/miso.otf");
+        wheelText.setTypeface(miso);
 
         players = PlayerList.Load(new File(mStorePath, "players"));        
         mPlayerAdapter = new PlayerListAdapter(this, R.layout.player_list_item, players);
@@ -168,15 +173,32 @@ public class HomeActivity extends Activity {
 					} else if(diffX>0 && diffY<0) {
 						rot = 360-rot;
 					}
-					composite.setRotation((float) (composite.getRotation()+(lastRot-rot)));
+					wheel.setRotation((float) (wheel.getRotation()+(lastRot-rot)));
+					
+					double tmp = Math.abs(wheel.getRotation() % 360);
+					Log.d("Zoo", ""+tmp);
+					if(tmp > 330 || tmp < 30) {
+						wheelText.setText("LUFT");
+					} else if(tmp > 30 && tmp < 90) {
+						wheelText.setText("BERG & WALD");
+					} else if(tmp > 90 && tmp < 150) {
+						wheelText.setText("URWALD");
+					} else if(tmp > 150 && tmp < 210) {
+						wheelText.setText("EIS");
+					} else if(tmp > 210 && tmp < 270) {
+						wheelText.setText("WASSER");
+					} else if(tmp > 270 && tmp < 330) {
+						wheelText.setText("SAVANNE");
+					}
+					
 					lastRot = rot;
 					break;
 				case MotionEvent.ACTION_UP:
-					float start = composite.getRotation();
+					float start = wheel.getRotation();
 					float end = Math.round(start / 60) * 60;
 					Log.d("Zoo", start+" | "+end);
-					ani = ObjectAnimator.ofFloat(composite, "rotation", start, end);
-					ani.setDuration(300);
+					ani = ObjectAnimator.ofFloat(wheel, "rotation", start, end);
+					ani.setDuration(700);
 					ani.start();
 					break;
 				}

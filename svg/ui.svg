@@ -7,6 +7,7 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="210mm"
@@ -14,10 +15,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   inkscape:export-filename="F:\Develop\Zoo\res\drawable-xxhdpi\user_icon_empty.png"
+   inkscape:export-filename="F:\Develop\Zoo\res\drawable-xxhdpi\wheel_part_luft.png"
    inkscape:export-xdpi="222"
    inkscape:export-ydpi="222"
-   sodipodi:docname="Neues Dokument 1">
+   sodipodi:docname="ui.svg">
   <defs
      id="defs4">
     <mask
@@ -45,9 +46,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8"
-     inkscape:cx="167.41253"
-     inkscape:cy="149.65902"
+     inkscape:zoom="3.959798"
+     inkscape:cx="221.59902"
+     inkscape:cy="280.1928"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -90,6 +91,10 @@
        orientation="1,0"
        position="0,257.85714"
        id="guide3870" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="250,367.85714"
+       id="guide3793" />
   </sodipodi:namedview>
   <metadata
      id="metadata7">
@@ -107,6 +112,19 @@
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1">
+    <path
+       sodipodi:type="arc"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="path2985-1-1-4"
+       sodipodi:cx="127.78429"
+       sodipodi:cy="148.78073"
+       sodipodi:rx="75.256363"
+       sodipodi:ry="78.286819"
+       d="m 203.04065,148.78073 a 75.256363,78.286819 0 1 1 -150.512726,0 75.256363,78.286819 0 1 1 150.512726,0 z"
+       transform="matrix(0.66439565,0,0,0.63867712,165.10068,657.33933)"
+       inkscape:export-filename="F:\Develop\Zoo\res\drawable-xxhdpi\wheel_part_savanne.png"
+       inkscape:export-xdpi="1350"
+       inkscape:export-ydpi="1350" />
     <path
        sodipodi:type="arc"
        style="fill:#ffffff;fill-opacity:0.24705882;fill-rule:nonzero;stroke:#d9f1ff;stroke-width:3.09026551000000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
@@ -157,5 +175,78 @@
        inkscape:export-filename="F:\Develop\Zoo\res\drawable-xxhdpi\icon_user.png"
        inkscape:export-xdpi="230.45482"
        inkscape:export-ydpi="230.45482" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#d9f1ff;fill-opacity:1;fill-rule:nonzero;stroke:#d9f1ff;stroke-width:3.09026551000000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path2985-1-1"
+       sodipodi:cx="127.78429"
+       sodipodi:cy="148.78073"
+       sodipodi:rx="75.256363"
+       sodipodi:ry="78.286819"
+       d="m 203.04065,148.78073 a 75.256363,78.286819 0 1 1 -150.512726,0 75.256363,78.286819 0 1 1 150.512726,0 z"
+       transform="matrix(0.65128509,0,0,0.62607407,66.775999,659.21442)"
+       inkscape:export-filename="F:\Develop\Zoo\res\drawable-xxhdpi\login_description.png"
+       inkscape:export-xdpi="460.90964"
+       inkscape:export-ydpi="460.90964" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Miso;-inkscape-font-specification:Miso"
+       x="150"
+       y="734.29279"
+       id="text3782"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3784"
+         x="150"
+         y="734.29279">FAHRE MIT DEINEN</tspan><tspan
+         sodipodi:role="line"
+         x="150"
+         y="749.29279"
+         id="tspan3786">SPIELFIGUREN ÜBER</tspan><tspan
+         sodipodi:role="line"
+         x="150"
+         y="764.29279"
+         id="tspan3788">DAS TABLET UM DICH</tspan><tspan
+         sodipodi:role="line"
+         x="150"
+         y="779.29279"
+         id="tspan3790">EINZULOGGEN</tspan></text>
+    <path
+       sodipodi:type="arc"
+       style="fill:#382d23;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="path2985-1-1-1"
+       sodipodi:cx="127.78429"
+       sodipodi:cy="148.78073"
+       sodipodi:rx="75.256363"
+       sodipodi:ry="78.286819"
+       d="m 90.49787,80.778332 a 75.256363,78.286819 0 0 1 74.57284,2e-6 l -37.28642,68.002396 z"
+       transform="matrix(0.66439565,0,0,0.63867712,165.10068,657.33934)"
+       inkscape:export-filename="F:\Develop\Zoo\res\drawable-xxhdpi\login_description.png"
+       inkscape:export-xdpi="460.90964"
+       inkscape:export-ydpi="460.90964"
+       sodipodi:start="4.1940262"
+       sodipodi:end="5.2307518" />
+    <text
+       xml:space="preserve"
+       style="font-size:7px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Miso;-inkscape-font-specification:Miso;writing-mode:lr"
+       id="text3788"
+       sodipodi:linespacing="125%"
+       transform="translate(-4.7716446e-6,-3.6273923e-7)"><textPath
+         xlink:href="#path2985-1-1-1-7"
+         startOffset="50%"
+         id="textPath3813">SAVANNE</textPath></text>
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:none"
+       id="path2985-1-1-1-7"
+       sodipodi:cx="127.78429"
+       sodipodi:cy="148.78073"
+       sodipodi:rx="75.256363"
+       sodipodi:ry="78.286819"
+       d="m 203.04065,148.78073 a 75.256363,78.286819 0 1 1 -150.512726,0 75.256363,78.286819 0 1 1 150.512726,0 z"
+       transform="matrix(0,0.39605743,-0.38072618,0,306.64472,692.94642)"
+       inkscape:export-filename="F:\Develop\Zoo\res\drawable-xxhdpi\login_description.png"
+       inkscape:export-xdpi="460.90964"
+       inkscape:export-ydpi="460.90964" />
   </g>
 </svg>

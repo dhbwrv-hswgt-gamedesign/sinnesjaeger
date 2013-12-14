@@ -5,6 +5,7 @@ import java.util.Map;
 import android.app.Activity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import de.hrw.zoo.R;

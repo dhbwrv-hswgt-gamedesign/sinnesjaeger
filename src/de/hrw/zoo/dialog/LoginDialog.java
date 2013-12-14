@@ -30,6 +30,7 @@ public class LoginDialog extends Dialog {
 		super(context, R.style.PlayersDialog);
 		
 		getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setBackgroundDrawableResource(R.color.filter_background);
 		
 		this.mCenter = center;
 		setView(view);
