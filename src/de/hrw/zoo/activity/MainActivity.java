@@ -135,7 +135,7 @@ public class MainActivity extends Activity {
 			}
 		});
 		
-        /*
+        
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (mNfcAdapter == null) {
             // Stop here, we definitely need NFC
@@ -149,7 +149,6 @@ public class MainActivity extends Activity {
         	Toast.makeText(this, "NFC is enabled.", Toast.LENGTH_LONG).show();
         }
         handleIntent(getIntent());
-        */
     }
 	
 	private void handleIntent(Intent intent) {
@@ -178,7 +177,7 @@ public class MainActivity extends Activity {
 	}
 	
     private void setupForegroundDispatch(final Activity activity, NfcAdapter adapter) {
-    	/*
+    	
 	  	final Intent intent = new Intent(activity.getApplicationContext(), activity.getClass());
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         final PendingIntent pendingIntent = PendingIntent.getActivity(activity.getApplicationContext(), 0, intent, 0);
@@ -194,7 +193,7 @@ public class MainActivity extends Activity {
             throw new RuntimeException("Check your mime type.");
         }
         adapter.enableForegroundDispatch(activity, pendingIntent, filters, techList);
-		*/
+	
 }
 
 	public void onContentChanged() {
@@ -212,7 +211,7 @@ public class MainActivity extends Activity {
          * It's important, that the activity is in the foreground (resumed). Otherwise
          * an IllegalStateException is thrown.
          */
-        //setupForegroundDispatch(this, mNfcAdapter);
+        setupForegroundDispatch(this, mNfcAdapter);
     }
 
 	@Override
@@ -220,7 +219,7 @@ public class MainActivity extends Activity {
         /**
          * Call this before onPause, otherwise an IllegalArgumentException is thrown as well.
          */
-        //stopForegroundDispatch(this, mNfcAdapter);
+        stopForegroundDispatch(this, mNfcAdapter);
         super.onPause();
     }
     private void stopForegroundDispatch(final Activity activity,

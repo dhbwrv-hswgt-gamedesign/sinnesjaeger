@@ -3,18 +3,19 @@ package de.hrw.zoo.nfc.reader;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
-import de.hrw.zoo.list.PlayerList;
-import de.hrw.zoo.model.Player;
+import de.hrw.zoo.dialog.LoginDialog;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View.OnLongClickListener;
 
 public class NdefReaderTask extends AsyncTask<Tag, Void, String> {
     public static final String MIME_TEXT_PLAIN = "text/plain";
-    public static final String TAG = "ZooApp";
+	public static final String TAG = "ZooApp";
+	private static String result;
 	
     @Override
     protected String doInBackground(Tag... params) {
@@ -58,14 +59,27 @@ public class NdefReaderTask extends AsyncTask<Tag, Void, String> {
         return new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, textEncoding);
     }
     @Override
-    protected void onPostExecute(String result) {
-        if (result != null) {
-
-        	Player player = new Player(result);
-        	PlayerList list = new PlayerList();
-        	//View view = getLayoutInflater().inflate(R.layout.fragment_login, null);
-        	//inal LoginDialog dlg = new LoginDialog(getBaseContext(), view, mAppCenter)
+    protected void onPostExecute(final String result) {
+     if (result != null) {
         	
+        	setStringFromNFC(result);      	      	
+        	OnLongClickListener list = LoginDialog.getOnLongClickListener();
+        	list.onLongClick(LoginDialog.getViewFromHere());
+        	        	   	
         }
     }
+    
+    private void setStringFromNFC(String result2) {
+		NdefReaderTask.setResult(result2);
+		
+	}
+	public static String getStringFomNFC(){
+    	return getResult();
+    }
+	public static String getResult() {
+		return result;
+	}
+	public static void setResult(String result) {
+		NdefReaderTask.result = result;
+	}
 }

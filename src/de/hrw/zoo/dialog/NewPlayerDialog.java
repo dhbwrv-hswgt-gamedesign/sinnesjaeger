@@ -34,6 +34,38 @@ public class NewPlayerDialog extends AlertDialog.Builder {
 		    }
 		});
 	}
+	
+	// NewPlayerDiaglog for NFC Reader
+	public NewPlayerDialog(Context context, final String name){
+		super(context);
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		
+		builder.setTitle("Neuer Spieler");
+        builder.setMessage(name + " hinzufügen?");
+        builder.setCancelable(true);
+        builder.setPositiveButton("Ja",
+                new DialogInterface.OnClickListener() {
+        	@Override
+            public void onClick(DialogInterface dialog, int id) {
+            	if(!name.toString().isEmpty()){
+					Player newPlayer = new Player(name);
+			    	listener.onCreate(newPlayer);
+				}
+            }
+        });
+        builder.setNegativeButton("Nein",
+                new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        if(!alert.isShowing())
+        	alert.show();
+        
+	}
 
 	public void setOnCreatePlayerListener(OnCreatePlayerListener listener) {
 		this.listener = listener;
