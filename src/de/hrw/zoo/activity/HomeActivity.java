@@ -4,6 +4,7 @@ import java.io.File;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,6 +17,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -84,10 +87,16 @@ public class HomeActivity extends Activity {
 		});
         
         final ImageView animal_dummy = (ImageView) findViewById(R.id.animal_example);
+        ObjectAnimator ani = ObjectAnimator.ofFloat(animal_dummy, "translationX", 0, 20, 0);
+		ani.setDuration(2000);
+		ani.setInterpolator(new LinearInterpolator());
+		ani.setRepeatMode(Animation.RESTART);
+		ani.setRepeatCount(Animation.INFINITE);
+		ani.start();
         animal_dummy.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(getBaseContext(), "Tier Detail-Screen", Toast.LENGTH_LONG).show();
+				Toast.makeText(getBaseContext(), "Detail-Screen", Toast.LENGTH_LONG).show();
 			}
 		});
         
