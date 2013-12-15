@@ -1,13 +1,10 @@
 package de.hrw.zoo.activity;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
@@ -15,41 +12,33 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.IntentFilter;
 import android.content.DialogInterface.OnDismissListener;
-import android.content.IntentFilter.MalformedMimeTypeException;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.IntentFilter.MalformedMimeTypeException;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.LinearInterpolator;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.hrw.zoo.R;
+import de.hrw.zoo.adapter.ZooListAdapter;
 import de.hrw.zoo.dialog.LoginDialog;
 import de.hrw.zoo.list.PlayerList;
 import de.hrw.zoo.listener.OnZooItemSelectedListener;
-import de.hrw.zoo.model.Player;
 import de.hrw.zoo.nfc.reader.NdefReaderTask;
 
 public class MainActivity extends Activity {
@@ -77,6 +66,8 @@ public class MainActivity extends Activity {
     	mAppSize = new Point();
     	getWindowManager().getDefaultDisplay().getSize(mAppSize);
     	mAppCenter = new Point(mAppSize.x/2, mAppSize.y/2);
+    	
+    	Typeface miso = Typeface.createFromAsset(getAssets(), "fonts/miso.otf");
         
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.main_layout);
 
@@ -86,26 +77,30 @@ public class MainActivity extends Activity {
         mZooList = new ArrayList<Map<String, Object> >();
         Map<String, Object> map = new HashMap<String, Object>();
 		map.put("zoo_icon", R.drawable.zoo_stuttgart);
-		map.put("zoo_name", "Stuttgart");
+		map.put("zoo_name", "Wilhelma");
+		map.put("zoo_comment", "Zoologisch-Botanischer Garten Stuttgart");
 		map.put("zoo_map", R.drawable.zoo_stuttgart);
+		List<String> filters = new ArrayList<String>();
+		filters.add("sehen"); filters.add("hoeren");
+		map.put("zoo_filters", filters);
 		mZooList.add(map);
 		map = new HashMap<String, Object>();
 		map.put("zoo_icon", R.drawable.zoo_berlin);
-		map.put("zoo_name", "Berlin");
+		map.put("zoo_name", "Zoo Berlin");
+		map.put("zoo_comment", "Zoologischer Garten Berlin");
 		map.put("zoo_map", R.drawable.zoo_berlin);
+		filters = new ArrayList<String>();
+		filters.add("sehen"); filters.add("spueren");
+		map.put("zoo_filters", filters);
 		mZooList.add(map);
 		
 		Spinner s = (Spinner)findViewById(R.id.location_spinner);
-		SimpleAdapter adapter = new SimpleAdapter(this, 
-				(List<? extends Map<String, ?>>) mZooList, 
-				R.layout.zoo_list_item,
-				new String[] { "zoo_name" },
-				new int[] { R.id.player_name });
+		ZooListAdapter adapter = new ZooListAdapter(this, R.layout.zoo_list_item, miso);
+		adapter.addAll(mZooList);
 		s.setAdapter(adapter);
 		s.setOnItemSelectedListener(new OnZooItemSelectedListener(this));
 
 		TextView text = (TextView) findViewById(R.id.circle_text);
-		Typeface miso = Typeface.createFromAsset(getAssets(), "fonts/miso.otf");
 		text.setTypeface(miso);
 		text.setOnClickListener(new OnClickListener() {
 			@Override
@@ -135,12 +130,11 @@ public class MainActivity extends Activity {
 			}
 		});
 		
-        /*
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (mNfcAdapter == null) {
             // Stop here, we definitely need NFC
             Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
-            finish();
+            //finish();
             return;
         }
         if (!mNfcAdapter.isEnabled()) {
@@ -148,54 +142,8 @@ public class MainActivity extends Activity {
         } else {
         	Toast.makeText(this, "NFC is enabled.", Toast.LENGTH_LONG).show();
         }
-        handleIntent(getIntent());
-        */
+        //handleIntent(getIntent());
     }
-	
-	private void handleIntent(Intent intent) {
-		String action = intent.getAction();
-        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
-            String type = intent.getType();
-            if (MIME_TEXT_PLAIN.equals(type)) {
-                Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-                new NdefReaderTask().execute(tag);
-            } else {
-                Log.d(TAG, "Wrong mime type: " + type);
-            }
-        } else if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)) {
-            // In case we would still use the Tech Discovered Intent
-            Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            String[] techList = tag.getTechList();
-            String searchedTech = Ndef.class.getName();
-            for (String tech : techList) {
-                if (searchedTech.equals(tech)) {
-                    new NdefReaderTask().execute(tag);
-                    break;
-                }
-            }
-        }
-		
-	}
-	
-    private void setupForegroundDispatch(final Activity activity, NfcAdapter adapter) {
-    	/*
-	  	final Intent intent = new Intent(activity.getApplicationContext(), activity.getClass());
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        final PendingIntent pendingIntent = PendingIntent.getActivity(activity.getApplicationContext(), 0, intent, 0);
-        IntentFilter[] filters = new IntentFilter[1];
-        String[][] techList = new String[][]{};
-        // Notice that this is the same filter as in our manifest.
-        filters[0] = new IntentFilter();
-        filters[0].addAction(NfcAdapter.ACTION_NDEF_DISCOVERED);
-        filters[0].addCategory(Intent.CATEGORY_DEFAULT);
-        try {
-            filters[0].addDataType(MIME_TEXT_PLAIN);
-        } catch (MalformedMimeTypeException e) {
-            throw new RuntimeException("Check your mime type.");
-        }
-        adapter.enableForegroundDispatch(activity, pendingIntent, filters, techList);
-		*/
-}
 
 	public void onContentChanged() {
 		super.onContentChanged();
@@ -223,13 +171,7 @@ public class MainActivity extends Activity {
         //stopForegroundDispatch(this, mNfcAdapter);
         super.onPause();
     }
-    private void stopForegroundDispatch(final Activity activity,
-			NfcAdapter adapter) {
-    	adapter.disableForegroundDispatch(activity);
-		
-	}
-    
-
+	
 	@Override
     protected void onNewIntent(Intent intent) {
         /**
@@ -239,20 +181,72 @@ public class MainActivity extends Activity {
          *
          * In our case this method gets called, when the user attaches a Tag to the device.
          */
-        handleIntent(intent);
+        //handleIntent(intent);
     }
+	
+	@SuppressWarnings("unused")
+	private void setupForegroundDispatch(final Activity activity,
+			NfcAdapter adapter) {
+		final Intent intent = new Intent(activity.getApplicationContext(),
+				activity.getClass());
+		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		final PendingIntent pendingIntent = PendingIntent.getActivity(
+				activity.getApplicationContext(), 0, intent, 0);
+		IntentFilter[] filters = new IntentFilter[1];
+		String[][] techList = new String[][] {};
+		// Notice that this is the same filter as in our manifest.
+		filters[0] = new IntentFilter();
+		filters[0].addAction(NfcAdapter.ACTION_NDEF_DISCOVERED);
+		filters[0].addCategory(Intent.CATEGORY_DEFAULT);
+		try {
+			filters[0].addDataType(MIME_TEXT_PLAIN);
+		} catch (MalformedMimeTypeException e) {
+			throw new RuntimeException("Check your mime type.");
+		}
+		adapter.enableForegroundDispatch(activity, pendingIntent, filters,
+				techList);
+	}
+	
+    @SuppressWarnings("unused")
+	private void stopForegroundDispatch(final Activity activity,
+			NfcAdapter adapter) {
+    	adapter.disableForegroundDispatch(activity);
+		
+	}
+    
+    @SuppressWarnings("unused")
+	private void handleIntent(Intent intent) {
+		String action = intent.getAction();
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
+            String type = intent.getType();
+            if (MIME_TEXT_PLAIN.equals(type)) {
+                Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+                new NdefReaderTask().execute(tag);
+            } else {
+                Log.d(TAG, "Wrong mime type: " + type);
+            }
+        } else if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)) {
+            // In case we would still use the Tech Discovered Intent
+            Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            String[] techList = tag.getTechList();
+            String searchedTech = Ndef.class.getName();
+            for (String tech : techList) {
+                if (searchedTech.equals(tech)) {
+                    new NdefReaderTask().execute(tag);
+                    break;
+                }
+            }
+        }
+		
+	}
 }
 
 class SelectionWheel extends View {
 	
-	//private List<MyGraphicsView> parts = new ArrayList<MyGraphicsView>();
-	//private RectF mRect;
 	private Point mCenter;
 	private RectF innerCircle;
-	//private RectF grassCircle;
 	private RectF outerCircle;
 	private RectF outerStroke;
-	//private float offset = 0;
 	private Paint mPaintText;
 	private ValueAnimator animation;
 
@@ -261,26 +255,9 @@ class SelectionWheel extends View {
 
 		this.mCenter = center;
 		this.innerCircle = new RectF(mCenter.x-250, mCenter.y-250, mCenter.x+250, mCenter.y+250);
-		//this.grassCircle = new RectF(mCenter.x-400, mCenter.y-400, mCenter.x+400, mCenter.y+400);
 		this.outerCircle = new RectF(mCenter.x-235, mCenter.y-235, mCenter.x+235, mCenter.y+235);
 		this.outerStroke = new RectF(mCenter.x-250, mCenter.y-250, mCenter.x+250, mCenter.y+250);
 		mPaintText = new Paint(Paint.ANTI_ALIAS_FLAG);
-		
-		/*
-		MyGraphicsView v1 = new MyGraphicsView(getContext(), "URWALD");
-		parts.add(v1);
-		ScaleAnimation s = new ScaleAnimation(0f, 1f, 0f, 1f);
-		s.setDuration(2000);
-		s.setStartOffset(3000);
-		v1.setAnimation(s);
-		s.start();
-		
-		parts.add(new MyGraphicsView(getContext(), "EIS"));
-		parts.add(new MyGraphicsView(getContext(), "WASSER"));
-		parts.add(new MyGraphicsView(getContext(), "SAVANNE"));
-		parts.add(new MyGraphicsView(getContext(), "LUFT"));
-		parts.add(new MyGraphicsView(getContext(), "BERG & WALD"));
-		*/
 		
 		animation = ValueAnimator.ofFloat(250f, 400f);
 		animation.setInterpolator(new LinearInterpolator());
@@ -323,48 +300,6 @@ class SelectionWheel extends View {
 		mPaintText.setStrokeWidth(3f);
 		mPaintText.setColor(Color.parseColor("#4082c3"));
 		canvas.drawArc(outerCircle, 0, 360, true, mPaintText);
-	}
-}
-
-class MyGraphicsView extends View implements OnClickListener {
-    private String text;
-    private Path mArc;
-    private RectF rect;
-    private Paint mPaintText;
-    private float startAngle = 0;
-    private float sweepAngle = 0;
-
-    public MyGraphicsView(Context context, String text) {
-		super(context);     
-		
-		this.text = text;
-		mArc = new Path();
-
-		mPaintText = new Paint(Paint.ANTI_ALIAS_FLAG);
-		mPaintText.setStyle(Paint.Style.FILL);
-		mPaintText.setTextSize(40f);
-    }
-    
-    public void update(float startAngle, float sweepAngle, RectF rect) {
-    	this.startAngle = startAngle;
-    	this.sweepAngle = sweepAngle;
-    	this.rect = rect;
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-    	mArc.addArc(rect, startAngle, sweepAngle);
-    	mPaintText.setColor(Color.DKGRAY);
-    	canvas.drawArc(rect, startAngle, sweepAngle, true, mPaintText);
-    	mPaintText.setColor(Color.WHITE);
-    	mPaintText.setTextAlign(Paint.Align.CENTER);
-    	canvas.drawTextOnPath(text, mArc, 0, 90, mPaintText);      
-    	invalidate();
-    }
-
-	@Override
-	public void onClick(View v) {
-		Log.d("Zoo", "Click");
 	}
 }
 

@@ -12,7 +12,6 @@
         android:layout_margin="10dp"
         android:divider="@android:color/transparent"
         android:listSelector="@android:color/transparent" >
-
     </ListView>
 
     <RelativeLayout
@@ -54,9 +53,12 @@
                 android:padding="20dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@android:color/white" />
-
         </RelativeLayout>
 
+        <requestFocus
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="144dp"
+            android:layout_toRightOf="@+id/abstract_composite" />
     </RelativeLayout>
 
     <ImageView
@@ -67,6 +69,16 @@
         android:layout_toRightOf="@id/players_list"
         android:src="@drawable/icon_gear" />
 
+    <ImageButton
+        android:id="@+id/menu_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/menu_btn" />
+
     <LinearLayout
         android:id="@+id/compass_layout"
         android:layout_width="wrap_content"
@@ -76,22 +88,40 @@
         android:orientation="vertical" >
 
         <ImageView
-            android:id="@+id/compass"
+            android:id="@+id/map_icon"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_margin="10dp"
             android:contentDescription="@string/filter_see"
-            android:padding="10dp"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/icon_map" />
 
-        <ImageView
-            android:id="@+id/map"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+        <LinearLayout
+            android:id="@+id/archivments_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:contentDescription="@string/filter_hear"
-            android:padding="10dp"
-            android:src="@drawable/ic_launcher" />
+            android:background="@drawable/archivments_background"
+            android:padding="10dp" >
+
+            <ImageView
+                android:id="@+id/ImageView02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_launcher" />
+
+            <ImageView
+                android:id="@+id/ImageView01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_launcher" />
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_launcher" />
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -149,7 +179,12 @@
             android:contentDescription="@string/filter_all"
             android:padding="10dp"
             android:src="@drawable/filter_all" />
-
     </LinearLayout>
+
+    <requestFocus
+        android:layout_alignBottom="@+id/edit_players"
+        android:layout_alignLeft="@+id/menu_button"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="22dp" />
 
 </RelativeLayout>

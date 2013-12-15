@@ -28,9 +28,9 @@ public class PlayerListAdapter extends ArrayAdapter<Player> {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater.inflate(R.layout.player_list_item, parent, false);
 
-		ImageView avatar = (ImageView) rowView.findViewById(R.id.player_avatar);
-		TextView name = (TextView) rowView.findViewById(R.id.player_name);
-		TextView points = (TextView) rowView.findViewById(R.id.player_points);
+		ImageView avatar = (ImageView) rowView.findViewById(R.id.zoo_icon);
+		TextView name = (TextView) rowView.findViewById(R.id.menu_title);
+		TextView points = (TextView) rowView.findViewById(R.id.zoo_comment);
 
 		if (players.get(position) != null) {
 			avatar.setImageResource(R.drawable.icon_user);

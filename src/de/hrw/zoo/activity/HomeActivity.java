@@ -1,6 +1,10 @@
 package de.hrw.zoo.activity;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -16,12 +20,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import de.hrw.zoo.R;
+import de.hrw.zoo.adapter.MenuAdapter;
 import de.hrw.zoo.adapter.PlayerListAdapter;
 import de.hrw.zoo.dialog.LoginDialog;
 import de.hrw.zoo.list.PlayerList;
@@ -49,13 +56,14 @@ public class HomeActivity extends Activity {
     	mAppCenter = new Point(mAppSize.x/2, mAppSize.y/2);
         
     	final LinearLayout filtersLayout = (LinearLayout) findViewById(R.id.filters_layout);
-    	final LinearLayout compassLayout = (LinearLayout) findViewById(R.id.compass_layout);
         final RelativeLayout composite = (RelativeLayout) findViewById(R.id.abstract_composite);
+        final ImageButton menu = (ImageButton) findViewById(R.id.menu_button);
         final ImageView wheel = (ImageView) findViewById(R.id.wheel_bg);
         final TextView button = (TextView) findViewById(R.id.dummy_button);
         final ListView playersList = (ListView) findViewById(R.id.players_list);
         final ImageView playersEdit = (ImageView) findViewById(R.id.edit_players);
         final TextView wheelText = (TextView) findViewById(R.id.wheel_part_text);
+        
         Typeface miso = Typeface.createFromAsset(getAssets(), "fonts/miso.otf");
         wheelText.setTypeface(miso);
 

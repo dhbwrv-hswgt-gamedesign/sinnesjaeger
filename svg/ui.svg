@@ -38,6 +38,32 @@
          style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
          sodipodi:type="arc" />
     </mask>
+    <mask
+       maskUnits="userSpaceOnUse"
+       id="mask3843">
+      <g
+         id="g3845"
+         style="fill:#ffffff;fill-opacity:1"
+         transform="matrix(1.5051273,0,0,1.5657364,-97.984803,-1264.0806)">
+        <circle
+           transform="matrix(3.2645599,0,0,3.2645599,110.76652,874.98232)"
+           d="m 19.676,8.3870001 c 0,4.2293969 -3.428604,7.6579999 -7.658,7.6579999 -4.229397,0 -7.6580003,-3.428603 -7.6580003,-7.6579999 0,-4.2293966 3.4286033,-7.65800001 7.6580003,-7.65800001 4.229396,0 7.658,3.42860341 7.658,7.65800001 z"
+           style="fill:#ffffff;fill-opacity:1"
+           sodipodi:ry="7.658"
+           sodipodi:rx="7.658"
+           sodipodi:cy="8.3870001"
+           sodipodi:cx="12.018"
+           cx="12.018"
+           cy="8.3870001"
+           r="7.658"
+           id="circle3847" />
+        <path
+           style="fill:#ffffff;fill-opacity:1"
+           inkscape:connector-curvature="0"
+           d="m 164.76197,924.44659 c -4.28462,3.21281 -9.36935,5.07487 -14.83291,5.07487 -5.53213,0 -10.67891,-1.91548 -14.99293,-5.19316 -21.83789,2.37718 -20.4173,27.65612 -20.4173,27.65612 L 184.5,952.36218 c 0,-22.01653 -13.71277,-26.85101 -19.73803,-27.91559 z"
+           id="path3849" />
+      </g>
+    </mask>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -47,8 +73,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="3.959798"
-     inkscape:cx="221.59902"
-     inkscape:cy="280.1928"
+     inkscape:cx="173.23797"
+     inkscape:cy="179.17755"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -140,30 +166,6 @@
        inkscape:export-ydpi="230.45482" />
     <path
        sodipodi:type="arc"
-       style="fill:#d9f1ff;fill-opacity:1;stroke:none"
-       id="path3763"
-       sodipodi:cx="150"
-       sodipodi:cy="902.36218"
-       sodipodi:rx="15"
-       sodipodi:ry="20"
-       d="m 165,902.36218 a 15,20 0 1 1 -30,0 15,20 0 1 1 30,0 z"
-       transform="matrix(1.2027027,0,0,0.96843348,-30.405405,15.067387)"
-       inkscape:export-xdpi="230"
-       inkscape:export-ydpi="230"
-       inkscape:export-filename="F:\Develop\Zoo\res\drawable-xxhdpi\icon_user.png" />
-    <path
-       sodipodi:type="arc"
-       style="fill:#d9f1ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
-       id="path3765"
-       sodipodi:cx="150"
-       sodipodi:cy="934.50507"
-       sodipodi:rx="26.428572"
-       sodipodi:ry="32.142857"
-       d="m 176.42857,934.50507 a 26.428572,32.142857 0 1 1 -52.85714,0 26.428572,32.142857 0 1 1 52.85714,0 z"
-       transform="matrix(1.2027027,0,0,1.2187028,-30.405405,-193.05146)"
-       mask="url(#mask3846)" />
-    <path
-       sodipodi:type="arc"
        style="fill:#ffffff;fill-opacity:0.24705882;fill-rule:nonzero;stroke:#d9f1ff;stroke-width:3.09026551;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="path2985-1"
        sodipodi:cx="127.78429"
@@ -248,5 +250,19 @@
        inkscape:export-filename="F:\Develop\Zoo\res\drawable-xxhdpi\login_description.png"
        inkscape:export-xdpi="460.90964"
        inkscape:export-ydpi="460.90964" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#d9f1ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="path2985-17"
+       sodipodi:cx="127.78429"
+       sodipodi:cy="148.78073"
+       sodipodi:rx="75.256363"
+       sodipodi:ry="78.286819"
+       d="m 203.04065,148.78073 a 75.256363,78.286819 0 1 1 -150.512726,0 75.256363,78.286819 0 1 1 150.512726,0 z"
+       transform="matrix(0.66439565,0,0,0.63867712,65.100677,807.33933)"
+       inkscape:export-filename="F:\Develop\Zoo\res\drawable-xxhdpi\icon_user.png"
+       inkscape:export-xdpi="230.45482"
+       inkscape:export-ydpi="230.45482"
+       mask="url(#mask3843)" />
   </g>
 </svg>
