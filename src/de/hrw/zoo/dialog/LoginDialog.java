@@ -15,16 +15,20 @@ import de.hrw.zoo.R;
 import de.hrw.zoo.list.PlayerList;
 import de.hrw.zoo.listener.OnCreatePlayerListener;
 import de.hrw.zoo.model.Player;
+import de.hrw.zoo.nfc.reader.NdefReaderTask;
 import de.hrw.zoo.view.PlayerView;
 
 public class LoginDialog extends Dialog {
 	
+	private static Context context;
+
 	private final int MAX_PLAYERS = 5;
 	
-	private View view;
+	private static View view;
 	private PlayerView[] playerViews = new PlayerView[MAX_PLAYERS];
 	private Point mCenter;
 	private Button mStartButton;
+	private static OnLongClickListener listener;
 
 	public LoginDialog(Context context, View view, Point center) {
 		super(context, R.style.PlayersDialog);
@@ -34,13 +38,16 @@ public class LoginDialog extends Dialog {
 		
 		this.mCenter = center;
 		setView(view);
-		
+		setContext(view.getContext());
+				
 		ImageView desc = (ImageView) findViewById(R.id.description);
-		desc.setOnLongClickListener(new OnLongClickListener() {
-		    @Override
-		    public boolean onLongClick(View v) {
-		    	if(count() < MAX_PLAYERS) {
-			    	final NewPlayerDialog dlg = new NewPlayerDialog(v.getContext());
+		
+		listener = new OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) {
+				if(count() < MAX_PLAYERS) {
+			    	final NewPlayerDialog dlg = new NewPlayerDialog(v.getContext(), NdefReaderTask.getStringFomNFC());
 			    	dlg.setOnCreatePlayerListener(new OnCreatePlayerListener() {
 						@Override
 						public void onCreate(Player player) {
@@ -60,7 +67,9 @@ public class LoginDialog extends Dialog {
 		    	}
 				return false;
 		    }
-		});
+		};
+				
+		desc.setOnLongClickListener(listener);
 		
 		mStartButton = (Button) findViewById(R.id.next_button);
 
@@ -72,6 +81,12 @@ public class LoginDialog extends Dialog {
 	public void setView(View v) {
 		view = v;
 		super.setContentView(v);
+	}
+	
+	
+	public static View getViewFromHere()
+	{
+		return view;
 	}
 	
 	public void show() {
@@ -129,6 +144,27 @@ public class LoginDialog extends Dialog {
 				playerViews[i].updateData();
 			}
 		}
+	}
+	
+
+	public static Context getContextView() {
+		return context;
+	}
+
+	public static void setContextView(Context context) {
+		LoginDialog.context = context;
+	}
+	
+	public static Context getContextFromHere() {
+		return getContextView();
+	}
+
+	public void setContext(Context context) {
+		LoginDialog.setContextView(context);
+	}
+	
+	public static OnLongClickListener getOnLongClickListener(){
+		return listener;
 	}
 }
 	
