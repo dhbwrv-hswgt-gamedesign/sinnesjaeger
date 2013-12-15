@@ -25,12 +25,27 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" >
 
-            <ImageView
-                android:id="@+id/wheel_bg"
-                android:layout_width="600dp"
-                android:layout_height="600dp"
-                android:layout_centerInParent="true"
-                android:src="@drawable/wheel_complete" />
+            <RelativeLayout
+                android:id="@+id/wheel_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <ImageView
+                    android:id="@+id/wheel_bg"
+                    android:layout_width="600dp"
+                    android:layout_height="600dp"
+                    android:src="@drawable/wheel_complete" />
+
+                <ImageView
+                    android:id="@+id/animal_example"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="250dp"
+                    android:layout_marginTop="40dp"
+                    android:rotation="-5"
+                    android:src="@drawable/ic_launcher" />
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/wheel_part_text"
@@ -39,9 +54,10 @@
                 android:layout_centerInParent="true"
                 android:background="@drawable/circle"
                 android:gravity="center"
-                android:text="LUFT"
+                android:text="Luft"
+                android:textAllCaps="true"
                 android:textColor="@android:color/black"
-                android:textSize="30sp" />
+                android:textSize="36sp" />
 
             <TextView
                 android:id="@+id/dummy_button"
@@ -60,14 +76,6 @@
             android:layout_marginLeft="144dp"
             android:layout_toRightOf="@+id/abstract_composite" />
     </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/edit_players"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:layout_toRightOf="@id/players_list"
-        android:src="@drawable/icon_gear" />
 
     <ImageButton
         android:id="@+id/menu_button"
@@ -182,7 +190,6 @@
     </LinearLayout>
 
     <requestFocus
-        android:layout_alignBottom="@+id/edit_players"
         android:layout_alignLeft="@+id/menu_button"
         android:layout_marginBottom="12dp"
         android:layout_marginLeft="22dp" />

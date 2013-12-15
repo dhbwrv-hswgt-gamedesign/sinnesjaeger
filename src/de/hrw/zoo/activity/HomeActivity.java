@@ -1,10 +1,6 @@
 package de.hrw.zoo.activity;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -25,10 +21,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import de.hrw.zoo.R;
-import de.hrw.zoo.adapter.MenuAdapter;
 import de.hrw.zoo.adapter.PlayerListAdapter;
 import de.hrw.zoo.dialog.LoginDialog;
 import de.hrw.zoo.list.PlayerList;
@@ -57,12 +52,44 @@ public class HomeActivity extends Activity {
         
     	final LinearLayout filtersLayout = (LinearLayout) findViewById(R.id.filters_layout);
         final RelativeLayout composite = (RelativeLayout) findViewById(R.id.abstract_composite);
-        final ImageButton menu = (ImageButton) findViewById(R.id.menu_button);
-        final ImageView wheel = (ImageView) findViewById(R.id.wheel_bg);
+        final ImageButton menuButton = (ImageButton) findViewById(R.id.menu_button);
+        final RelativeLayout wheel = (RelativeLayout) findViewById(R.id.wheel_layout);
         final TextView button = (TextView) findViewById(R.id.dummy_button);
         final ListView playersList = (ListView) findViewById(R.id.players_list);
-        final ImageView playersEdit = (ImageView) findViewById(R.id.edit_players);
         final TextView wheelText = (TextView) findViewById(R.id.wheel_part_text);
+        
+        final ImageButton filter_sehen = (ImageButton) findViewById(R.id.filter_sehen);
+        final ImageButton filter_hoeren = (ImageButton) findViewById(R.id.filter_hoeren);
+        final ImageButton filter_spueren = (ImageButton) findViewById(R.id.filter_spueren);
+        final ImageButton filter_sixthsense = (ImageButton) findViewById(R.id.filter_sixthsense);
+        final ImageButton filter_all = (ImageButton) findViewById(R.id.filter_all);
+        
+        filter_all.setOnClickListener(new OnClickListener() {
+        	boolean active = true;
+			@Override
+			public void onClick(View v) {
+				if(active) {
+					filter_sehen.setAlpha(0.3f);
+					filter_hoeren.setAlpha(0.3f);
+					filter_spueren.setAlpha(0.3f);
+					filter_sixthsense.setAlpha(0.3f);
+				} else {
+					filter_sehen.setAlpha(1.0f);
+					filter_hoeren.setAlpha(1.0f);
+					filter_spueren.setAlpha(1.0f);
+					filter_sixthsense.setAlpha(1.0f);
+				}
+				active = !active;
+			}
+		});
+        
+        final ImageView animal_dummy = (ImageView) findViewById(R.id.animal_example);
+        animal_dummy.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getBaseContext(), "Tier Detail-Screen", Toast.LENGTH_LONG).show();
+			}
+		});
         
         Typeface miso = Typeface.createFromAsset(getAssets(), "fonts/miso.otf");
         wheelText.setTypeface(miso);
@@ -71,7 +98,7 @@ public class HomeActivity extends Activity {
         mPlayerAdapter = new PlayerListAdapter(this, R.layout.player_list_item, players);
         playersList.setAdapter(mPlayerAdapter);        
         
-        playersEdit.setOnClickListener(new OnClickListener() {
+        menuButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				View view = getLayoutInflater().inflate(R.layout.fragment_login, null);
@@ -186,17 +213,17 @@ public class HomeActivity extends Activity {
 					double tmp = Math.abs(wheel.getRotation() % 360);
 					Log.d("Zoo", ""+tmp);
 					if(tmp > 330 || tmp < 30) {
-						wheelText.setText("LUFT");
+						wheelText.setText("Luft");
 					} else if(tmp > 30 && tmp < 90) {
-						wheelText.setText("BERG & WALD");
+						wheelText.setText("Berg & Wald");
 					} else if(tmp > 90 && tmp < 150) {
-						wheelText.setText("URWALD");
+						wheelText.setText("Urwald");
 					} else if(tmp > 150 && tmp < 210) {
-						wheelText.setText("EIS");
+						wheelText.setText("Eis");
 					} else if(tmp > 210 && tmp < 270) {
-						wheelText.setText("WASSER");
+						wheelText.setText("Wasser");
 					} else if(tmp > 270 && tmp < 330) {
-						wheelText.setText("SAVANNE");
+						wheelText.setText("Savanne");
 					}
 					
 					lastRot = rot;
