@@ -102,12 +102,26 @@ public class NdefReaderTask extends AsyncTask<Tag, Void, String> {
     			break;
 
     		case 20:
-    			LayoutInflater li = LayoutInflater.from(HomeActivity.getActivityViewHomeActivity()); 		 
-    			View view = li.inflate(R.layout.fragment_detailscreen, null);
+    			Animal animal;
+    			
+    			if(data != null){
+    				animal = new Animal();
+    				
+    				animal.setArt(data.get(5));
+    				animal.setGame(data.get(6));
+    				animal.setId(data.get(1));
+    				animal.setInfo(data.get(4));
+    				animal.setName(data.get(2));
+    				animal.setAvatar(data.get(3));
+    				LayoutInflater li = LayoutInflater.from(HomeActivity.getActivityViewHomeActivity()); 		 
+        			View view = li.inflate(R.layout.fragment_detailscreen, null);
 
-    			final DetailScreenDialog dlg = new DetailScreenDialog( HomeActivity.getThis(), view, HomeActivity.getAppCenter(), new Animal("test", "Pinguin"));
-    			dlg.getWindow().setLayout(HomeActivity.getAppSize().x, HomeActivity.getAppSize().y);
-    			dlg.show();
+        			final DetailScreenDialog dlg = new DetailScreenDialog( HomeActivity.getThis(), view, HomeActivity.getAppCenter(), animal);
+        			dlg.getWindow().setLayout(HomeActivity.getAppSize().x, HomeActivity.getAppSize().y);
+        			dlg.show();
+    			}
+    			
+    			
 
     			break;
 

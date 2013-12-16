@@ -4,18 +4,70 @@ public class Animal {
 	
 	private String art;
 	private String name;
+	private String id;
+	private String game;
+	private String info;
+	private String points;
+	private String avatar;
+
 	
 	
-	
-	public Animal(String art, String name){
-		setArt(art);
-		setName(name);
+	public Animal(){
+		
 	}
 
 
 
 	public String getArt() {
 		return art;
+	}
+
+
+
+	public String getId() {
+		return id;
+	}
+
+
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+
+
+	public String getGame() {
+		return game;
+	}
+
+
+
+	public void setGame(String game) {
+		this.game = game;
+	}
+
+
+
+	public String getInfo() {
+		return info;
+	}
+
+
+
+	public void setInfo(String info) {
+		this.info = info;
+	}
+
+
+
+	public String getPoints() {
+		return points;
+	}
+
+
+
+	public void setPoints(String points) {
+		this.points = points;
 	}
 
 
@@ -34,6 +86,17 @@ public class Animal {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+
+
+	public void setAvatar(String string) {
+		// TODO Auto-generated method stub
+		avatar = string;
+	}
+	
+	public String getAvatar(){
+		return avatar;
 	}
 	
 	
