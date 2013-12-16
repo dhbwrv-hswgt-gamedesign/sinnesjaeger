@@ -131,7 +131,7 @@
             android:layout_height="80dp"
             android:layout_margin="10dp"
             android:contentDescription="@string/filter_see"
-            android:src="@drawable/icon_map" />
+            android:src="@drawable/icon_compass" />
     </LinearLayout>
 
     <LinearLayout

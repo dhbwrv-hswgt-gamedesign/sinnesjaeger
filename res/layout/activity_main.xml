@@ -1,75 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_layout"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/main_background" >
 
-    <LinearLayout
-        android:id="@+id/filters_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" >
+    <RelativeLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
-        <ImageView
-            android:id="@+id/filter_sehen"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+        <LinearLayout
+            android:id="@+id/filters_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" >
+
+            <ImageView
+                android:id="@+id/filter_sehen"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:contentDescription="@string/filter_see"
+                android:padding="10dp"
+                android:src="@drawable/filter_sehen_btn" />
+
+            <ImageView
+                android:id="@+id/filter_hoeren"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:contentDescription="@string/filter_hear"
+                android:padding="10dp"
+                android:src="@drawable/filter_hoeren_btn" />
+
+            <ImageView
+                android:id="@+id/filter_spueren"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:contentDescription="@string/filter_touch"
+                android:padding="10dp"
+                android:src="@drawable/filter_spueren_btn" />
+
+            <ImageView
+                android:id="@+id/filter_sixthsense"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:contentDescription="@string/filter_6sense"
+                android:padding="10dp"
+                android:src="@drawable/filter_sixthsense_btn" />
+        </LinearLayout>
+
+        <Spinner
+            android:id="@+id/location_spinner"
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginRight="10dp"
-            android:contentDescription="@string/filter_see"
-            android:padding="10dp"
-            android:src="@drawable/filter_sehen_btn" />
+            android:layout_marginTop="10dp"
+            android:icon="@drawable/dropdown_btn" />
 
-        <ImageView
-            android:id="@+id/filter_hoeren"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginRight="10dp"
-            android:contentDescription="@string/filter_hear"
-            android:padding="10dp"
-            android:src="@drawable/filter_hoeren_btn" />
-
-        <ImageView
-            android:id="@+id/filter_spueren"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginRight="10dp"
-            android:contentDescription="@string/filter_touch"
-            android:padding="10dp"
-            android:src="@drawable/filter_spueren_btn" />
-
-        <ImageView
-            android:id="@+id/filter_sixthsense"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginRight="10dp"
-            android:contentDescription="@string/filter_6sense"
-            android:padding="10dp"
-            android:src="@drawable/filter_sixthsense_btn" />
-
-    </LinearLayout>
-
-    <Spinner
-        android:id="@+id/location_spinner"
-        android:layout_width="500dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:icon="@drawable/dropdown_btn" />
-
-    <TextView
-        android:id="@+id/circle_text"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:textAllCaps="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/black"
-        android:textColorHint="@android:color/black"
-        android:textSize="32sp" />
+        <TextView
+            android:id="@+id/circle_text"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textAllCaps="true"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/black"
+            android:textSize="32sp" />
+    </RelativeLayout>
 
 </RelativeLayout>

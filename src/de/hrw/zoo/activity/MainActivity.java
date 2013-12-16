@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
@@ -29,6 +30,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -145,10 +147,10 @@ public class MainActivity extends Activity {
 			Toast.makeText(this, "NFC is enabled.", Toast.LENGTH_LONG).show();
 			mNfcActive = true;
 		}
+		
 		// handleIntent(getIntent());
 	}
 
-	@SuppressWarnings("unused")
 	private void handleIntent(Intent intent) {
 		String action = intent.getAction();
 		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
@@ -174,7 +176,6 @@ public class MainActivity extends Activity {
 
 	}
 
-	@SuppressWarnings("unused")
 	private void setupForegroundDispatch(final Activity activity,
 			NfcAdapter adapter) {
 
