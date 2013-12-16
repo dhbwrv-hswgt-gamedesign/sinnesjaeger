@@ -5,9 +5,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import de.hrw.zoo.activity.DetailActivity;
+import de.hrw.zoo.activity.HomeActivity;
 import de.hrw.zoo.dialog.LoginDialog;
 import de.hrw.zoo.model.Player;
 import de.hrw.zoo.view.PlayerView;
+import android.app.Activity;
+import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.Tag;
@@ -67,25 +71,40 @@ public class NdefReaderTask extends AsyncTask<Tag, Void, String> {
     	ArrayList<String> data;
     	Player player;
      if (result != null) {
-        	PlayerView[] pv = LoginDialog.getPlayerViews();
-        	
-        	setStringFromNFC(result); 
-        	data = generateStringArray(result);
-        	
-        	for(int i = 0; i < LoginDialog.getPlayerViews().length;i++){
-        		
-        		if(pv[i].getPlayer() == null)
-        		{
-        			player = new Player(data.get(1));
-        			player.setAvatar(data.get(2));
-        			player.setToken(data.get(0));
-        			player.setPoints(Integer.parseInt(data.get(3)));
-        			pv[i].setPlayer(player);
-        			pv[i].updateData();
-        			break;
-        		}
-        		
-        	}    	  	        	   	
+ 	 
+    	 PlayerView[] pv = LoginDialog.getPlayerViews();
+    	 setStringFromNFC(result); 
+      	 data = generateStringArray(result);
+      	     	     	 
+    	 switch(Integer.parseInt(data.get(0))){
+    	    	 
+    	 case 10:
+    		 for(int i = 0; i < LoginDialog.getPlayerViews().length;i++){
+         		
+         		if(pv[i].getPlayer() == null)
+         		{
+         			player = new Player(data.get(2));
+         			player.setAvatar(data.get(3));
+         			player.setToken(data.get(1));
+         			player.setPoints(Integer.parseInt(data.get(4)));
+         			pv[i].setPlayer(player);
+         			pv[i].updateData();
+         			break;
+         		}	
+     		}  
+    	  break;
+    		 
+    	 case 20:
+    		 Intent i = new Intent(HomeActivity.getActivityViewHomeActivity().getBaseContext(), DetailActivity.class);
+    		 HomeActivity.getActivityViewHomeActivity().startActivity(i);
+    		 
+    		 break;
+    		 
+    	 default:
+    		 break;
+    	 
+    	 }
+        	  	  	        	   	
         }
     }
     

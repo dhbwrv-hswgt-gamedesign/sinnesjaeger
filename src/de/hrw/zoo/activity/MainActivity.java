@@ -94,7 +94,7 @@ public class MainActivity extends Activity {
 		filters.add("sehen"); filters.add("spueren");
 		map.put("zoo_filters", filters);
 		mZooList.add(map);
-		
+
 		Spinner s = (Spinner)findViewById(R.id.location_spinner);
 		ZooListAdapter adapter = new ZooListAdapter(this, R.layout.zoo_list_item, miso);
 		adapter.addAll(mZooList);
