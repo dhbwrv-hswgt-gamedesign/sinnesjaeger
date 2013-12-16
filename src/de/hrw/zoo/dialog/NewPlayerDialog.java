@@ -38,12 +38,11 @@ public class NewPlayerDialog extends AlertDialog.Builder {
 	// NewPlayerDiaglog for NFC Reader
 	public NewPlayerDialog(Context context, final String name){
 		super(context);
-		
-            	if(!name.toString().isEmpty()){
-					Player newPlayer = new Player(name);
-					listener.onCreate(newPlayer);
-            	}
-		
+
+		if(!name.toString().isEmpty()){
+			Player newPlayer = new Player(name);
+			listener.onCreate(newPlayer);
+    	}
 	}
 
 	public void setOnCreatePlayerListener(OnCreatePlayerListener listener) {
