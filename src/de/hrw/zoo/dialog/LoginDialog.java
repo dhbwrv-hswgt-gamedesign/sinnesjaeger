@@ -40,7 +40,7 @@ public class LoginDialog extends Dialog {
 		setView(view);
 		setContext(view.getContext());
 				
-		ImageView desc = (ImageView) findViewById(R.id.description);
+		ImageView desc = (ImageView) findViewById(R.id.circle_background);
 		
 		listener = new OnLongClickListener() {
 			

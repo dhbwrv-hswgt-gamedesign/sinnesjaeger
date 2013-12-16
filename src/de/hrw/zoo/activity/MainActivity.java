@@ -288,7 +288,7 @@ class SelectionWheel extends View {
 	public void onDraw(Canvas canvas) {	
 		mPaintText.setStyle(Paint.Style.STROKE);
 		mPaintText.setStrokeWidth(20f-animation.getAnimatedFraction()*20);
-		mPaintText.setColor(Color.parseColor("#4082c3"));
+		mPaintText.setColor(Color.parseColor("#254D4F"));
 		mPaintText.setAlpha((int) ((1-animation.getAnimatedFraction())*255));
 		canvas.drawArc(outerStroke, 0, 360, true, mPaintText);
 		mPaintText.setAlpha(255);
@@ -299,7 +299,7 @@ class SelectionWheel extends View {
 		
 		mPaintText.setStyle(Paint.Style.STROKE);
 		mPaintText.setStrokeWidth(3f);
-		mPaintText.setColor(Color.parseColor("#4082c3"));
+		mPaintText.setColor(Color.parseColor("#62AE95"));
 		canvas.drawArc(outerCircle, 0, 360, true, mPaintText);
 	}
 }

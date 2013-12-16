@@ -8,6 +8,7 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Point;
 import android.graphics.Typeface;
@@ -19,6 +20,8 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,6 +32,7 @@ import android.widget.Toast;
 import de.hrw.zoo.R;
 import de.hrw.zoo.adapter.PlayerListAdapter;
 import de.hrw.zoo.dialog.LoginDialog;
+import de.hrw.zoo.dialog.PlayerDialog;
 import de.hrw.zoo.list.PlayerList;
 
 public class HomeActivity extends Activity {
@@ -55,7 +59,7 @@ public class HomeActivity extends Activity {
         
     	final LinearLayout filtersLayout = (LinearLayout) findViewById(R.id.filters_layout);
         final RelativeLayout composite = (RelativeLayout) findViewById(R.id.abstract_composite);
-        final ImageButton menuButton = (ImageButton) findViewById(R.id.menu_button);
+        final ImageButton logoutButton = (ImageButton) findViewById(R.id.logout_button);
         final RelativeLayout wheel = (RelativeLayout) findViewById(R.id.wheel_layout);
         final TextView button = (TextView) findViewById(R.id.dummy_button);
         final ListView playersList = (ListView) findViewById(R.id.players_list);
@@ -93,47 +97,54 @@ public class HomeActivity extends Activity {
 		ani.setRepeatMode(Animation.RESTART);
 		ani.setRepeatCount(Animation.INFINITE);
 		ani.start();
-        animal_dummy.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(getBaseContext(), "Detail-Screen", Toast.LENGTH_LONG).show();
-			}
-		});
         
         Typeface miso = Typeface.createFromAsset(getAssets(), "fonts/miso.otf");
         wheelText.setTypeface(miso);
 
         players = PlayerList.Load(new File(mStorePath, "players"));        
         mPlayerAdapter = new PlayerListAdapter(this, R.layout.player_list_item, players);
-        playersList.setAdapter(mPlayerAdapter);        
+        playersList.setAdapter(mPlayerAdapter);
+        playersList.setClickable(true);
         
-        menuButton.setOnClickListener(new OnClickListener() {
+        playersList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onClick(View v) {
-				View view = getLayoutInflater().inflate(R.layout.fragment_login, null);
-				final LoginDialog dlg = new LoginDialog(v.getContext(), view, mAppCenter);
-				dlg.setPlayers(PlayerList.Load(new File(mStorePath, "players")));
-
-				dlg.setOnDismissListener(new OnDismissListener() {
-					@Override
-					public void onDismiss(DialogInterface dialog) {
-						dlg.getPlayers().save(new File(mStorePath, "players"));
-						mPlayerAdapter.notifyDataSetChanged();
-					}
-				});
-		    	dlg.setOnGoClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						dlg.getPlayers().save(new File(mStorePath, "players"));
-						dlg.cancel();
-						mPlayerAdapter.notifyDataSetChanged(dlg.getPlayers());
-					}
-				});
-		    	dlg.getWindow().setLayout(mAppSize.x, mAppSize.y);
-		    	dlg.show();
+			public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
+				if(players.get(position) != null) {
+					View view = getLayoutInflater().inflate(R.layout.fragment_player, null);
+					final PlayerDialog dlg = new PlayerDialog(v.getContext(), view, mAppCenter, players.get(position));
+			    	dlg.getWindow().setLayout(mAppSize.x, mAppSize.y);
+			    	dlg.show();
+				}
 			}
 		});
         
+        logoutButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
+
+				alertDialog.setTitle("Beenden?");
+				alertDialog.setMessage("Wollen Sie das Spiel wirklich beenden?");
+				//alertDialog.setIcon(R.drawable.delete_icon);
+
+				alertDialog.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						HomeActivity.this.finish();
+						Intent intent = new Intent(Intent.ACTION_MAIN);
+					    intent.addCategory(Intent.CATEGORY_HOME);
+					    startActivity(intent);
+					}
+				});
+
+				alertDialog.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.cancel();
+					}
+				});
+
+				alertDialog.show();
+			}
+		});
         
         button.setOnClickListener(new OnClickListener() {
         	boolean inZoom = false;

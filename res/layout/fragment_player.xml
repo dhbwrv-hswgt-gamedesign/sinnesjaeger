@@ -1,0 +1,111 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="fill"
+    android:columnCount="3"
+    android:orientation="horizontal"
+    android:rowCount="3"
+    tools:context=".LoginActivity" >
+
+    <ImageView
+        android:id="@+id/circle_background"
+        android:layout_width="450dp"
+        android:layout_height="450dp"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="600dp"
+        android:background="@drawable/circle"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/player_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/circle_background"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="100dp"
+        android:text="TextView"
+        android:textColor="@android:color/black"
+        android:textSize="40sp" />
+
+    <ImageView
+        android:id="@+id/player_avatar"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_alignTop="@+id/circle_background"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
+        android:src="@drawable/ic_launcher" />
+
+    <RelativeLayout
+        android:id="@+id/circle_points"
+        android:layout_width="wrap_content"
+        android:layout_height="700dp"
+        android:layout_centerInParent="true"
+        android:rotation="0" >
+
+        <ImageView
+            android:id="@+id/circle_points_bg"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/circle" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/circle_archivments"
+        android:layout_width="wrap_content"
+        android:layout_height="700dp"
+        android:layout_centerInParent="true"
+        android:rotation="72" >
+
+        <ImageView
+            android:id="@+id/circle_archivments_bg"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/circle" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/circle_save"
+        android:layout_width="wrap_content"
+        android:layout_height="700dp"
+        android:layout_centerInParent="true"
+        android:rotation="144" >
+
+        <ImageView
+            android:id="@+id/circle_save_bg"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/circle" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/circle_back"
+        android:layout_width="wrap_content"
+        android:layout_height="700dp"
+        android:layout_centerInParent="true"
+        android:rotation="-144" >
+
+        <ImageView
+            android:id="@+id/circle_back_bg"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/circle" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/circle_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="700dp"
+        android:layout_centerInParent="true"
+        android:rotation="-72" >
+
+        <ImageView
+            android:id="@+id/circle_profile_bg"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/circle" />
+    </RelativeLayout>
+
+</RelativeLayout>
