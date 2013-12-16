@@ -51,6 +51,7 @@ public class MainActivity extends Activity {
     public static final String MIME_TEXT_PLAIN = "text/plain";
     public static final String TAG = "ZooApp";
     private NfcAdapter mNfcAdapter;
+    private boolean mNfcActive;
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,11 +131,11 @@ public class MainActivity extends Activity {
 			}
 		});
 		
+		mNfcActive = false;
 		mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 		if (mNfcAdapter == null) {
 			// Stop here, we definitely need NFC
-			Toast.makeText(this, "This device doesn't support NFC.",
-					Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
 			//finish();
 			return;
 		}
@@ -142,6 +143,7 @@ public class MainActivity extends Activity {
 			Toast.makeText(this, "NFC is disabled", Toast.LENGTH_LONG).show();
 		} else {
 			Toast.makeText(this, "NFC is enabled.", Toast.LENGTH_LONG).show();
+			mNfcActive = true;
 		}
 		// handleIntent(getIntent());
 	}
@@ -194,12 +196,11 @@ public class MainActivity extends Activity {
 		}
 		adapter.enableForegroundDispatch(activity, pendingIntent, filters, techList);
 	}
-	
-	@SuppressWarnings("unused")
-	private void stopForegroundDispatch(final Activity activity,
-			NfcAdapter adapter) {
-    	adapter.disableForegroundDispatch(activity);
-		
+
+	private void stopForegroundDispatch(final Activity activity, NfcAdapter adapter) {
+		if(mNfcActive) {
+			adapter.disableForegroundDispatch(activity);
+		}
 	}
 
 	public void onContentChanged() {
@@ -217,7 +218,9 @@ public class MainActivity extends Activity {
          * It's important, that the activity is in the foreground (resumed). Otherwise
          * an IllegalStateException is thrown.
          */
-        setupForegroundDispatch(this, mNfcAdapter);
+        if(mNfcActive) {
+        	setupForegroundDispatch(this, mNfcAdapter);
+        }
     }
 
 	@Override
@@ -225,7 +228,9 @@ public class MainActivity extends Activity {
         /**
          * Call this before onPause, otherwise an IllegalArgumentException is thrown as well.
          */
-        stopForegroundDispatch(this, mNfcAdapter);
+		if(mNfcActive) {
+			stopForegroundDispatch(this, mNfcAdapter);
+		}
         super.onPause();
     }
 	
@@ -238,7 +243,9 @@ public class MainActivity extends Activity {
          *
          * In our case this method gets called, when the user attaches a Tag to the device.
          */
-        handleIntent(intent);
+		if(mNfcActive) {
+			handleIntent(intent);
+		}
     }
 }
 
