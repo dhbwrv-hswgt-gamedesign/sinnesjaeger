@@ -4,13 +4,15 @@ import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 import de.hrw.zoo.dialog.LoginDialog;
+import de.hrw.zoo.model.Player;
+import de.hrw.zoo.view.PlayerView;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View.OnLongClickListener;
+
 
 public class NdefReaderTask extends AsyncTask<Tag, Void, String> {
     public static final String MIME_TEXT_PLAIN = "text/plain";
@@ -61,12 +63,28 @@ public class NdefReaderTask extends AsyncTask<Tag, Void, String> {
     @Override
     protected void onPostExecute(final String result) {
      if (result != null) {
+        	PlayerView[] pv = LoginDialog.getPlayerViews();
+        	setStringFromNFC(result);  
         	
-        	setStringFromNFC(result);      	      	
-        	OnLongClickListener list = LoginDialog.getOnLongClickListener();
-        	list.onLongClick(LoginDialog.getViewFromHere());
+        	for(int i = 0; i < LoginDialog.getPlayerViews().length;i++){
+        		
+        		if(pv[i].getPlayer() == null)
+        		{
+        			pv[i].setPlayer(new Player(result));
+        			pv[i].updateData();
+        			break;
+        		}
+        		
+        	}    	
+        
         	        	   	
         }
+    }
+    
+    private void writeOnTag(NdefRecord record)
+    {
+    	
+    	
     }
     
     private void setStringFromNFC(String result2) {

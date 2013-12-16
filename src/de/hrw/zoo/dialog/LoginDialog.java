@@ -22,10 +22,10 @@ public class LoginDialog extends Dialog {
 	
 	private static Context context;
 
-	private final int MAX_PLAYERS = 5;
+	private final static int MAX_PLAYERS = 5;
 	
 	private static View view;
-	private PlayerView[] playerViews = new PlayerView[MAX_PLAYERS];
+	private static PlayerView[] playerViews = new PlayerView[MAX_PLAYERS];
 	private Point mCenter;
 	private Button mStartButton;
 	private static OnLongClickListener listener;
@@ -47,7 +47,7 @@ public class LoginDialog extends Dialog {
 			@Override
 			public boolean onLongClick(View v) {
 				if(count() < MAX_PLAYERS) {
-			    	final NewPlayerDialog dlg = new NewPlayerDialog(v.getContext(), NdefReaderTask.getStringFomNFC());
+			    	final NewPlayerDialog dlg = new NewPlayerDialog(v.getContext());
 			    	dlg.setOnCreatePlayerListener(new OnCreatePlayerListener() {
 						@Override
 						public void onCreate(Player player) {
@@ -76,6 +76,11 @@ public class LoginDialog extends Dialog {
         for(int i=0; i<MAX_PLAYERS; i++) {
             playerViews[i] = new PlayerView(view.getContext(), null);
         }
+	}
+	
+	public static PlayerView[] getPlayerViews(){
+		return playerViews;
+		
 	}
 	
 	public void setView(View v) {
