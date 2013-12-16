@@ -120,14 +120,6 @@ public class HomeActivity extends Activity {
 				active = !active;
 			}
 		});
-        
-        final ImageView animal_dummy = (ImageView) findViewById(R.id.animal_example);
-        ObjectAnimator ani = ObjectAnimator.ofFloat(animal_dummy, "translationX", 0, 20, 0);
-		ani.setDuration(2000);
-		ani.setInterpolator(new LinearInterpolator());
-		ani.setRepeatMode(Animation.RESTART);
-		ani.setRepeatCount(Animation.INFINITE);
-		ani.start();
        
         wheelText.setTypeface(miso);
 
@@ -176,6 +168,46 @@ public class HomeActivity extends Activity {
 			}
 		});
         
+        final ImageView animalFledermaus = (ImageView) findViewById(R.id.animal_fledermaus);
+        animalFledermaus.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				ObjectAnimator aniFledermaus = ObjectAnimator.ofFloat(animalFledermaus, "translationX", 0, 20, 0);
+				aniFledermaus.setDuration(2000);
+				aniFledermaus.setInterpolator(new LinearInterpolator());
+				aniFledermaus.setRepeatMode(Animation.RESTART);
+				aniFledermaus.setRepeatCount(2);
+				aniFledermaus.start();
+			}
+		});
+    	final ImageView animalPinguin = (ImageView) findViewById(R.id.animal_pinguin);
+    	animalPinguin.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				ObjectAnimator aniFledermaus = ObjectAnimator.ofFloat(animalPinguin, "translationY", 0, 20, 0);
+				aniFledermaus.setDuration(2000);
+				aniFledermaus.setInterpolator(new LinearInterpolator());
+				aniFledermaus.setRepeatMode(Animation.RESTART);
+				aniFledermaus.setRepeatCount(2);
+				aniFledermaus.start();
+			}
+		});
+    	final ImageView animalSchlange = (ImageView) findViewById(R.id.animal_schlange);
+    	animalSchlange.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				ObjectAnimator aniFledermaus = ObjectAnimator.ofFloat(animalSchlange, "ScaleY", 1f, 0.5f, 1f);
+				aniFledermaus.setDuration(2000);
+				aniFledermaus.setInterpolator(new LinearInterpolator());
+				aniFledermaus.setRepeatMode(Animation.RESTART);
+				aniFledermaus.setRepeatCount(2);
+				aniFledermaus.start();
+			}
+		});
+    	animalFledermaus.setEnabled(false);
+		animalPinguin.setEnabled(false);
+		animalSchlange.setEnabled(false);
+        
         button.setOnClickListener(new OnClickListener() {
         	boolean inZoom = false;
         	AnimatorSet set;
@@ -199,6 +231,10 @@ public class HomeActivity extends Activity {
 					set.playTogether(aniScaleX, aniScaleY, aniTransY, aniAlpha);
 					set.start();
 					
+					animalFledermaus.setEnabled(false);
+					animalPinguin.setEnabled(false);
+					animalSchlange.setEnabled(false);
+					
 					inZoom = false;
 				} else {
 					set = new AnimatorSet();
@@ -214,6 +250,10 @@ public class HomeActivity extends Activity {
 					
 					set.playTogether(aniScaleX, aniScaleY, aniTransY, aniAlpha);
 					set.start();
+					
+					animalFledermaus.setEnabled(true);
+					animalPinguin.setEnabled(true);
+					animalSchlange.setEnabled(true);
 					
 					inZoom = true;
 				}
@@ -281,7 +321,7 @@ public class HomeActivity extends Activity {
 				case MotionEvent.ACTION_UP:
 					float start = wheel.getRotation();
 					float end = Math.round(start / 60) * 60;
-					Log.d("Zoo", start+" | "+end);
+					//Log.d("Zoo", start+" | "+end);
 					ani = ObjectAnimator.ofFloat(wheel, "rotation", start, end);
 					ani.setDuration(700);
 					ani.start();
