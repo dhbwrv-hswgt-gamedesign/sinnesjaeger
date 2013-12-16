@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnDismissListener;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,11 +35,13 @@ public class PlayerListAdapter extends ArrayAdapter<Player> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		Typeface miso = Typeface.createFromAsset(context.getAssets(), "fonts/miso.otf");
+		
 		View rowView = inflater.inflate(R.layout.player_list_item, parent, false);
 
 		ImageView avatar = (ImageView) rowView.findViewById(R.id.zoo_icon);
 		TextView name = (TextView) rowView.findViewById(R.id.menu_title);
-		//TextView points = (TextView) rowView.findViewById(R.id.zoo_comment);
+		name.setTypeface(miso);
 
 		if (players.get(position) != null) {
 			name.setText(players.get(position).getName());

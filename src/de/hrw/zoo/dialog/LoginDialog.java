@@ -3,6 +3,7 @@ package de.hrw.zoo.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnLongClickListener;

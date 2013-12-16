@@ -2,6 +2,7 @@ package de.hrw.zoo.view;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,6 +25,8 @@ public class PlayerView extends RelativeLayout {
 	public PlayerView(Context context, Player player) {
 		this(context);
 		
+		Typeface miso = Typeface.createFromAsset(context.getAssets(), "fonts/miso.otf");
+		
 		data = (Player) player;
 		
 		avatar = new ImageView(context);
@@ -32,9 +35,10 @@ public class PlayerView extends RelativeLayout {
 		LayoutParams params;
 		
 		name = new TextView(context);
-		name.setTextSize(20);
+		name.setTextSize(24);
 		name.setTextColor(Color.WHITE);
 		name.setGravity(TEXT_ALIGNMENT_CENTER);
+		name.setTypeface(miso);
 		
 		clear = new ImageView(context);
 		clear.setImageResource(R.drawable.delete_icon);
@@ -52,7 +56,7 @@ public class PlayerView extends RelativeLayout {
 		params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		addView(clear, params);
 		
-		params = new LayoutParams(300, 50);
+		params = new LayoutParams(300, 30);
 		params.height = LayoutParams.WRAP_CONTENT;
 		params.width = LayoutParams.WRAP_CONTENT;
 		params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
