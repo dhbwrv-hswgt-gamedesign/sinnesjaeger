@@ -1,7 +1,9 @@
 package de.hrw.zoo.nfc.reader;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import de.hrw.zoo.dialog.LoginDialog;
 import de.hrw.zoo.model.Player;
@@ -62,29 +64,42 @@ public class NdefReaderTask extends AsyncTask<Tag, Void, String> {
     }
     @Override
     protected void onPostExecute(final String result) {
+    	ArrayList<String> data;
+    	Player player;
      if (result != null) {
         	PlayerView[] pv = LoginDialog.getPlayerViews();
-        	setStringFromNFC(result);  
+        	
+        	setStringFromNFC(result); 
+        	data = generateStringArray(result);
         	
         	for(int i = 0; i < LoginDialog.getPlayerViews().length;i++){
         		
         		if(pv[i].getPlayer() == null)
         		{
-        			pv[i].setPlayer(new Player(result));
+        			player = new Player(data.get(1));
+        			player.setAvatar(data.get(2));
+        			player.setToken(data.get(0));
+        			player.setPoints(Integer.parseInt(data.get(3)));
+        			pv[i].setPlayer(player);
         			pv[i].updateData();
         			break;
         		}
         		
-        	}    	
-        
-        	        	   	
+        	}    	  	        	   	
         }
     }
     
-    private void writeOnTag(NdefRecord record)
-    {
+    private ArrayList<String> generateStringArray(String result){
+    	ArrayList<String> data = new ArrayList<String>();
     	
+    	String[]test=(result.split(";"));
     	
+    	for(int i = 0; i < test.length; i++)
+    	{
+    		data.add(test[i]);
+    	}
+    	
+    	return data;
     }
     
     private void setStringFromNFC(String result2) {
