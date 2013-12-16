@@ -46,10 +46,10 @@
     <ImageView
         android:id="@+id/player_avatar"
         android:layout_width="wrap_content"
-        android:layout_height="150dp"
+        android:layout_height="130dp"
         android:layout_alignTop="@+id/circle_background"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="100dp"
         android:src="@drawable/ic_launcher" />
 
     <RelativeLayout

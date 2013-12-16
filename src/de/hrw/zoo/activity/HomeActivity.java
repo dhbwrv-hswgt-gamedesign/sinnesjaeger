@@ -233,35 +233,35 @@ public class HomeActivity extends Activity {
 				case MotionEvent.ACTION_DOWN:
 					diffX = event.getX() - (composite.getX()+composite.getWidth()/2);
 					diffY = (composite.getY()+composite.getHeight()/2) - event.getY();
-					rot = Math.abs(Math.toDegrees(Math.atan(diffY/diffX)));
+					rot = Math.toDegrees(Math.atan(diffY/diffX));
 					if(diffX>0 && diffY>0) {
 						rot = 0+rot;
 					} else if(diffX<0 && diffY>0) {
-						rot = 180-rot;
+						rot = 180+rot;
 					} else if(diffX<0 && diffY<0) {
 						rot = 180+rot;
 					} else if(diffX>0 && diffY<0) {
-						rot = 360-rot;
+						rot = 360+rot;
 					}
 					lastRot = rot;
 					break;
 				case MotionEvent.ACTION_MOVE:
 					diffX = event.getX() - (composite.getX()+composite.getWidth()/2);
 					diffY = (composite.getY()+composite.getHeight()/2) - event.getY();
-					rot = Math.abs(Math.toDegrees(Math.atan(diffY/diffX)));
+					rot = Math.toDegrees(Math.atan(diffY/diffX));
+					Log.d("Zoo", ""+rot);
 					if(diffX>0 && diffY>0) {
 						rot = 0+rot;
 					} else if(diffX<0 && diffY>0) {
-						rot = 180-rot;
+						rot = 180+rot;
 					} else if(diffX<0 && diffY<0) {
 						rot = 180+rot;
 					} else if(diffX>0 && diffY<0) {
-						rot = 360-rot;
+						rot = 360+rot;
 					}
 					wheel.setRotation((float) (wheel.getRotation()+(lastRot-rot)));
-					
 					double tmp = Math.abs(wheel.getRotation() % 360);
-					Log.d("Zoo", ""+tmp);
+					//Log.d("Zoo", wheel.getRotation()+" | "+tmp);
 					if(tmp > 330 || tmp < 30) {
 						wheelText.setText("Luft");
 					} else if(tmp > 30 && tmp < 90) {

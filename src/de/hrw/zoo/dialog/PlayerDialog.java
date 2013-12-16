@@ -31,7 +31,7 @@ public class PlayerDialog extends Dialog {
 		
 		Typeface miso = Typeface.createFromAsset(context.getAssets(), "fonts/miso.otf");
 		Typeface miso_bold = Typeface.createFromAsset(context.getAssets(), "fonts/miso-bold.otf");
-		Typeface baskerville = Typeface.createFromAsset(context.getAssets(), "fonts/Baskerville.ttc");
+		Typeface baskerville = Typeface.createFromAsset(context.getAssets(), "fonts/baskerv.ttf");
 		
 		if(player != null) {
 			TextView points = (TextView) findViewById(R.id.circle_points_text);
@@ -40,7 +40,26 @@ public class PlayerDialog extends Dialog {
 			text.setTypeface(miso_bold);
 			TextView name = (TextView) findViewById(R.id.player_name);
 			name.setText(player.getName());
-			name.setTypeface(baskerville, Typeface.ITALIC);
+			name.setTypeface(baskerville);
+			
+			ImageView avatar = (ImageView) findViewById(R.id.player_avatar);
+			switch(player.getAvatar()) {
+			case 0:
+				avatar.setImageResource(R.drawable.player_adler);
+				break;
+			case 1:
+				avatar.setImageResource(R.drawable.player_bear);
+				break;
+			case 2:
+				avatar.setImageResource(R.drawable.player_elefant);
+				break;
+			case 3:
+				avatar.setImageResource(R.drawable.player_eule);
+				break;
+			case 4:
+				avatar.setImageResource(R.drawable.player_fuchs);
+				break;
+			}
 		}
 		
 		ImageView back = (ImageView) findViewById(R.id.circle_back_bg);
