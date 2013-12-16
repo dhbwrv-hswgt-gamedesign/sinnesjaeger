@@ -5,12 +5,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import de.hrw.zoo.activity.DetailActivity;
+import de.hrw.zoo.R;
 import de.hrw.zoo.activity.HomeActivity;
+import de.hrw.zoo.dialog.DetailScreenDialog;
 import de.hrw.zoo.dialog.LoginDialog;
+import de.hrw.zoo.dialog.PlayerDialog;
+import de.hrw.zoo.model.Animal;
 import de.hrw.zoo.model.Player;
 import de.hrw.zoo.view.PlayerView;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -18,6 +22,8 @@ import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 
 
 public class NdefReaderTask extends AsyncTask<Tag, Void, String> {
@@ -95,8 +101,12 @@ public class NdefReaderTask extends AsyncTask<Tag, Void, String> {
     	  break;
     		 
     	 case 20:
-    		 Intent i = new Intent(HomeActivity.getActivityViewHomeActivity().getBaseContext(), DetailActivity.class);
-    		 HomeActivity.getActivityViewHomeActivity().startActivity(i);
+    		 LayoutInflater li = LayoutInflater.from(HomeActivity.getActivityViewHomeActivity()); 		 
+    		 View view = li.inflate(R.layout.fragment_detailscreen, null);
+    		 
+			 final DetailScreenDialog dlg = new DetailScreenDialog( HomeActivity.getThis(), view, HomeActivity.getAppCenter(), new Animal("test", "Pinguin"));
+		     dlg.getWindow().setLayout(HomeActivity.getAppSize().x, HomeActivity.getAppSize().y);
+		     dlg.show();
     		 
     		 break;
     		 

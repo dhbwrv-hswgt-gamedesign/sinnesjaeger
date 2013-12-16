@@ -47,20 +47,33 @@ public class HomeActivity extends Activity {
 	private static Activity act;
 	private PlayerList players = new PlayerList();
 	private File mStorePath;
-	private Point mAppSize;
-	private Point mAppCenter;
+	private static Point mAppSize;
+	private static Point mAppCenter;
 	private PlayerListAdapter mPlayerAdapter;
 	private NfcAdapter mNfcAdapter;
     public static final String MIME_TEXT_PLAIN = "text/plain";
     public static final String TAG = "ZooApp";
     private boolean mNfcActive;
-	private Context context;;
+	private Context context;
+	private static HomeActivity home;
 
+	public static Point getAppSize(){
+		return mAppSize;
+	}
+	
+	public static Point getAppCenter(){
+		return mAppCenter;
+	}
+	
+	public static HomeActivity getThis(){
+		return home;
+	}
+	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        
+        home = this;
         mStorePath = new File(getFilesDir(),"zoo");
         if(!mStorePath.exists()) {
         	mStorePath.mkdir();

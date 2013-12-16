@@ -10,7 +10,7 @@
     tools:context=".LoginActivity" >
 
     <ImageView
-        android:id="@+id/circle_background"
+        android:id="@+id/circle_background_detail"
         android:layout_width="450dp"
         android:layout_height="450dp"
         android:layout_centerInParent="true"
@@ -22,7 +22,7 @@
         android:id="@+id/player_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/circle_background"
+        android:layout_alignBottom="@+id/circle_background_detail"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="100dp"
         android:text="TextView"
@@ -30,16 +30,16 @@
         android:textSize="40sp" />
 
     <ImageView
-        android:id="@+id/player_avatar"
+        android:id="@+id/animal_avatar"
         android:layout_width="wrap_content"
         android:layout_height="150dp"
-        android:layout_alignTop="@+id/circle_background"
+        android:layout_alignTop="@+id/circle_background_detail"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="75dp"
         android:src="@drawable/ic_launcher" />
 
     <RelativeLayout
-        android:id="@+id/circle_points"
+        android:id="@+id/circle_info"
         android:layout_width="wrap_content"
         android:layout_height="700dp"
         android:layout_centerInParent="true"
@@ -89,20 +89,6 @@
 
         <ImageView
             android:id="@+id/circle_back_2_bg"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:src="@drawable/circle" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/circle_info"
-        android:layout_width="wrap_content"
-        android:layout_height="700dp"
-        android:layout_centerInParent="true"
-        android:rotation="-72" >
-
-        <ImageView
-            android:id="@+id/info_bg"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:src="@drawable/circle" />
