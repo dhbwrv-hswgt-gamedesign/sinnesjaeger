@@ -62,7 +62,7 @@ public class PlayerDialog extends Dialog {
 			}
 		}
 		
-		ImageView back = (ImageView) findViewById(R.id.circle_back_bg);
+		ImageView back = (ImageView) findViewById(R.id.circle_background);
 		back.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

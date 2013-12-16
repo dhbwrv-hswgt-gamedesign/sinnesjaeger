@@ -31,10 +31,10 @@
                 <ImageView
                     android:id="@+id/animal_fledermaus"
                     android:layout_width="75dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="250dp"
-                    android:layout_marginTop="40dp"
-                    android:rotation="-5"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="430dp"
+                    android:layout_marginTop="140dp"
+                    android:rotation="50"
                     android:src="@drawable/tier_fledermaus" />
                 
                 <ImageView
@@ -50,8 +50,8 @@
                     android:id="@+id/animal_schlange"
                     android:layout_width="75dp"
                     android:layout_height="50dp"
-                    android:layout_marginLeft="440dp"
-                    android:layout_marginTop="400dp"
+                    android:layout_marginLeft="435dp"
+                    android:layout_marginTop="395dp"
                     android:rotation="130"
                     android:src="@drawable/tier_schlange" />
 
