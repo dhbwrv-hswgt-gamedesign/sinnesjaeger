@@ -99,23 +99,92 @@ public class HomeActivity extends Activity {
         final ImageButton filter_sixthsense = (ImageButton) findViewById(R.id.filter_sixthsense);
         final ImageButton filter_all = (ImageButton) findViewById(R.id.filter_all);
         
+        final ImageView animalFledermaus = (ImageView) findViewById(R.id.animal_fledermaus);
+        final ImageView animalPinguin = (ImageView) findViewById(R.id.animal_pinguin);
+        final ImageView animalSchlange = (ImageView) findViewById(R.id.animal_schlange);
       
         act = this;
+        
+        filter_sehen.setOnClickListener(new OnClickListener() {
+        	boolean active = true;
+			@Override
+			public void onClick(View v) {
+				if(active) {
+					filter_sehen.setAlpha(0.3f);
+				} else {
+					filter_sehen.setAlpha(1.0f);
+				}
+				active = !active;
+			}
+		});
+		
+        filter_hoeren.setOnClickListener(new OnClickListener() {
+			boolean active = true;
+			@Override
+			public void onClick(View v) {
+				if(active) {
+					filter_hoeren.setAlpha(0.3f);
+					animalFledermaus.setAlpha(0f);
+				} else {
+					filter_hoeren.setAlpha(1.0f);
+					animalFledermaus.setAlpha(1f);
+				}
+				active = !active;
+			}
+		});
+		
+        filter_spueren.setOnClickListener(new OnClickListener() {
+			boolean active = true;
+			@Override
+			public void onClick(View v) {
+				if(active) {
+					filter_spueren.setAlpha(0.3f);
+					animalSchlange.setAlpha(0f);
+				} else {
+					filter_spueren.setAlpha(1.0f);
+					animalSchlange.setAlpha(1f);
+				}
+				active = !active;
+			}
+		});
+		
+        filter_sixthsense.setOnClickListener(new OnClickListener() {
+			boolean active = true;
+			@Override
+			public void onClick(View v) {
+				if(active) {
+					filter_sixthsense.setAlpha(0.3f);
+				} else {
+					filter_sixthsense.setAlpha(1.0f);
+				}
+				active = !active;
+			}
+		});
         
         filter_all.setOnClickListener(new OnClickListener() {
         	boolean active = true;
 			@Override
 			public void onClick(View v) {
 				if(active) {
-					filter_sehen.setAlpha(0.3f);
-					filter_hoeren.setAlpha(0.3f);
-					filter_spueren.setAlpha(0.3f);
-					filter_sixthsense.setAlpha(0.3f);
+					if(filter_sehen.getAlpha() == 1)
+						filter_sehen.callOnClick();
+					if(filter_hoeren.getAlpha() == 1)
+						filter_hoeren.callOnClick();
+					if(filter_spueren.getAlpha() == 1)
+						filter_spueren.callOnClick();
+					if(filter_sixthsense.getAlpha() == 1)
+						filter_sixthsense.callOnClick();
+					animalPinguin.setAlpha(0f);
 				} else {
-					filter_sehen.setAlpha(1.0f);
-					filter_hoeren.setAlpha(1.0f);
-					filter_spueren.setAlpha(1.0f);
-					filter_sixthsense.setAlpha(1.0f);
+					if(filter_sehen.getAlpha() == 0.3f)
+						filter_sehen.callOnClick();
+					if(filter_hoeren.getAlpha() == 0.3f)
+						filter_hoeren.callOnClick();
+					if(filter_spueren.getAlpha() == 0.3f)
+						filter_spueren.callOnClick();
+					if(filter_sixthsense.getAlpha() == 0.3f)
+						filter_sixthsense.callOnClick();
+					animalPinguin.setAlpha(1f);
 				}
 				active = !active;
 			}
@@ -168,7 +237,7 @@ public class HomeActivity extends Activity {
 			}
 		});
         
-        final ImageView animalFledermaus = (ImageView) findViewById(R.id.animal_fledermaus);
+        
         animalFledermaus.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -180,7 +249,7 @@ public class HomeActivity extends Activity {
 				aniFledermaus.start();
 			}
 		});
-    	final ImageView animalPinguin = (ImageView) findViewById(R.id.animal_pinguin);
+    	
     	animalPinguin.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -192,7 +261,7 @@ public class HomeActivity extends Activity {
 				aniFledermaus.start();
 			}
 		});
-    	final ImageView animalSchlange = (ImageView) findViewById(R.id.animal_schlange);
+    	
     	animalSchlange.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
