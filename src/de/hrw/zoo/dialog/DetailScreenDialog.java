@@ -26,7 +26,6 @@ public class DetailScreenDialog extends Dialog {
 		getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setBackgroundDrawableResource(R.color.filter_background);
 		
-		Typeface miso = Typeface.createFromAsset(context.getAssets(), "fonts/miso.otf");
 		Typeface miso_bold = Typeface.createFromAsset(context.getAssets(), "fonts/miso-bold.otf");
 		Typeface baskerville = Typeface.createFromAsset(context.getAssets(), "fonts/baskerv.ttf");
 		
@@ -40,14 +39,15 @@ public class DetailScreenDialog extends Dialog {
 			text.setTypeface(miso_bold);
 			TextView name = (TextView) findViewById(R.id.animal_name);
 			name.setText(animal.getName());
+			text.setText(animal.getArt());
 			name.setTypeface(baskerville);
 			ImageView game = (ImageView) findViewById(R.id.circle_game_bg);
 			
 			Log.d("Zoo", animal.getGame());
 			
-			if(animal.getGame().equals("1")){
+			if(animal.getGame().equals("0")){
 				game.setVisibility(View.INVISIBLE);
-				game.setAlpha(0);
+				
 			}
 			
 			ImageView avatar = (ImageView) findViewById(R.id.animal_avatar);
@@ -60,6 +60,14 @@ public class DetailScreenDialog extends Dialog {
 				break;
 			}
 		}
+		
+		ImageView back = (ImageView) findViewById(R.id.circle_background);
+		back.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dismiss();
+			}
+		});
 	}
 	
 	public void setView(View v) {

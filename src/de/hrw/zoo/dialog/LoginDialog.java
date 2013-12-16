@@ -3,7 +3,6 @@ package de.hrw.zoo.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Point;
-import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -16,7 +15,6 @@ import de.hrw.zoo.R;
 import de.hrw.zoo.list.PlayerList;
 import de.hrw.zoo.listener.OnCreatePlayerListener;
 import de.hrw.zoo.model.Player;
-import de.hrw.zoo.nfc.reader.NdefReaderTask;
 import de.hrw.zoo.view.PlayerView;
 
 public class LoginDialog extends Dialog {

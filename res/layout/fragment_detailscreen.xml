@@ -94,8 +94,9 @@
             android:id="@+id/circle_game_bg"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:src="@drawable/circle_save"
-            android:rotation="-144" />
+            android:rotation="-144"
+            android:src="@drawable/circle_play" />
+
     </RelativeLayout>
 
     <RelativeLayout
