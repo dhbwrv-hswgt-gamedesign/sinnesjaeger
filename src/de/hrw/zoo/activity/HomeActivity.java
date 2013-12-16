@@ -82,6 +82,8 @@ public class HomeActivity extends Activity {
         mAppSize = new Point();
     	getWindowManager().getDefaultDisplay().getSize(mAppSize);
     	mAppCenter = new Point(mAppSize.x/2, mAppSize.y/2);
+    	
+        final Typeface miso = Typeface.createFromAsset(getAssets(), "fonts/miso.otf");
         
     	final LinearLayout filtersLayout = (LinearLayout) findViewById(R.id.filters_layout);
         final RelativeLayout composite = (RelativeLayout) findViewById(R.id.abstract_composite);
@@ -126,8 +128,7 @@ public class HomeActivity extends Activity {
 		ani.setRepeatMode(Animation.RESTART);
 		ani.setRepeatCount(Animation.INFINITE);
 		ani.start();
-        
-        Typeface miso = Typeface.createFromAsset(getAssets(), "fonts/miso.otf");
+       
         wheelText.setTypeface(miso);
 
         players = PlayerList.Load(new File(mStorePath, "players"));        

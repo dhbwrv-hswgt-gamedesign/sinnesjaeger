@@ -72,50 +72,51 @@ public class NdefReaderTask extends AsyncTask<Tag, Void, String> {
         // Get the Text
         return new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, textEncoding);
     }
+    
     @Override
     protected void onPostExecute(final String result) {
     	ArrayList<String> data;
     	Player player;
-     if (result != null) {
- 	 
-    	 PlayerView[] pv = LoginDialog.getPlayerViews();
-    	 setStringFromNFC(result); 
-      	 data = generateStringArray(result);
-      	     	     	 
-    	 switch(Integer.parseInt(data.get(0))){
-    	    	 
-    	 case 10:
-    		 for(int i = 0; i < LoginDialog.getPlayerViews().length;i++){
-         		
-         		if(pv[i].getPlayer() == null)
-         		{
-         			player = new Player(data.get(2));
-         			player.setAvatar(data.get(3));
-         			player.setToken(data.get(1));
-         			player.setPoints(Integer.parseInt(data.get(4)));
-         			pv[i].setPlayer(player);
-         			pv[i].updateData();
-         			break;
-         		}	
-     		}  
-    	  break;
-    		 
-    	 case 20:
-    		 LayoutInflater li = LayoutInflater.from(HomeActivity.getActivityViewHomeActivity()); 		 
-    		 View view = li.inflate(R.layout.fragment_detailscreen, null);
-    		 
-			 final DetailScreenDialog dlg = new DetailScreenDialog( HomeActivity.getThis(), view, HomeActivity.getAppCenter(), new Animal("test", "Pinguin"));
-		     dlg.getWindow().setLayout(HomeActivity.getAppSize().x, HomeActivity.getAppSize().y);
-		     dlg.show();
-    		 
-    		 break;
-    		 
-    	 default:
-    		 break;
-    	 
-    	 }
-        	  	  	        	   	
-        }
+    	if (result != null) {
+
+    		PlayerView[] pv = LoginDialog.getPlayerViews();
+    		setStringFromNFC(result); 
+    		data = generateStringArray(result);
+
+    		switch(Integer.parseInt(data.get(0))){
+
+    		case 10:
+    			for(int i = 0; i < LoginDialog.getPlayerViews().length;i++){
+
+    				if(pv[i].getPlayer() == null)
+    				{
+    					player = new Player(data.get(2));
+    					player.setAvatar(Integer.parseInt(data.get(3)));
+    					player.setToken(Integer.parseInt(data.get(1)));
+    					player.setPoints(Integer.parseInt(data.get(4)));
+    					pv[i].setPlayer(player);
+    					pv[i].updateData();
+    					break;
+    				}	
+    			}  
+    			break;
+
+    		case 20:
+    			LayoutInflater li = LayoutInflater.from(HomeActivity.getActivityViewHomeActivity()); 		 
+    			View view = li.inflate(R.layout.fragment_detailscreen, null);
+
+    			final DetailScreenDialog dlg = new DetailScreenDialog( HomeActivity.getThis(), view, HomeActivity.getAppCenter(), new Animal("test", "Pinguin"));
+    			dlg.getWindow().setLayout(HomeActivity.getAppSize().x, HomeActivity.getAppSize().y);
+    			dlg.show();
+
+    			break;
+
+    		default:
+    			break;
+
+    		}
+
+    	}
     }
     
     private ArrayList<String> generateStringArray(String result){

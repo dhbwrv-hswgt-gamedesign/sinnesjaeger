@@ -41,13 +41,30 @@ public class PlayerListAdapter extends ArrayAdapter<Player> {
 		//TextView points = (TextView) rowView.findViewById(R.id.zoo_comment);
 
 		if (players.get(position) != null) {
-			avatar.setImageResource(R.drawable.icon_user);
 			name.setText(players.get(position).getName());
-			//points.setText(players.get(position).getPoints() + " Punkte");
+			switch(players.get(position).getAvatar()) {
+			case 0:
+				avatar.setImageResource(R.drawable.avatar_adler);
+				break;
+			case 1:
+				avatar.setImageResource(R.drawable.avatar_baer);
+				break;
+			case 2:
+				avatar.setImageResource(R.drawable.avatar_elefant);
+				break;
+			case 3:
+				avatar.setImageResource(R.drawable.avatar_eule);
+				break;
+			case 4:
+				avatar.setImageResource(R.drawable.avatar_fuchs);
+				break;
+			default:
+				avatar.setImageResource(R.drawable.avatar_empty);
+				break;
+			}
 		} else {
-			avatar.setImageResource(R.drawable.icon_user_empty);
+			avatar.setImageResource(R.drawable.avatar_empty);
 			name.setText("");
-			//points.setText("");
 		}
 
 		return rowView;

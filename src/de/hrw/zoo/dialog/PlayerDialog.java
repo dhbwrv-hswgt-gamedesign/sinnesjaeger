@@ -2,9 +2,12 @@ package de.hrw.zoo.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 import de.hrw.zoo.R;
 import de.hrw.zoo.model.Player;
@@ -26,10 +29,27 @@ public class PlayerDialog extends Dialog {
 		this.player = player;
 		setView(view);
 		
+		Typeface miso = Typeface.createFromAsset(context.getAssets(), "fonts/miso.otf");
+		Typeface miso_bold = Typeface.createFromAsset(context.getAssets(), "fonts/miso-bold.otf");
+		Typeface baskerville = Typeface.createFromAsset(context.getAssets(), "fonts/Baskerville.ttc");
+		
 		if(player != null) {
+			TextView points = (TextView) findViewById(R.id.circle_points_text);
+			points.setTypeface(miso, Typeface.BOLD);
+			TextView text = (TextView) findViewById(R.id.player_text);
+			text.setTypeface(miso_bold);
 			TextView name = (TextView) findViewById(R.id.player_name);
 			name.setText(player.getName());
+			name.setTypeface(baskerville, Typeface.ITALIC);
 		}
+		
+		ImageView back = (ImageView) findViewById(R.id.circle_back_bg);
+		back.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dismiss();
+			}
+		});
 	}
 	
 	public void setView(View v) {

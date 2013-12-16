@@ -80,12 +80,31 @@ public class PlayerView extends RelativeLayout {
 	public void updateData() {
 		if(this.data == null) {
 			name.setVisibility(INVISIBLE);
-			avatar.setImageResource(R.drawable.icon_user_empty);
+			avatar.setImageResource(R.drawable.avatar_empty);
 			clear.setVisibility(INVISIBLE);
 		} else {
 			name.setText(data.getName());
 			name.setVisibility(VISIBLE);
-			avatar.setImageResource(R.drawable.icon_user);
+			switch(data.getAvatar()) {
+			case 0:
+				avatar.setImageResource(R.drawable.avatar_adler);
+				break;
+			case 1:
+				avatar.setImageResource(R.drawable.avatar_baer);
+				break;
+			case 2:
+				avatar.setImageResource(R.drawable.avatar_elefant);
+				break;
+			case 3:
+				avatar.setImageResource(R.drawable.avatar_eule);
+				break;
+			case 4:
+				avatar.setImageResource(R.drawable.avatar_fuchs);
+				break;
+			default:
+				avatar.setImageResource(R.drawable.avatar_empty);
+				break;
+			}
 			clear.setVisibility(VISIBLE);
 		}
 	}

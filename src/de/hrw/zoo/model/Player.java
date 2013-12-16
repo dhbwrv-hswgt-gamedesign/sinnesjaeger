@@ -7,13 +7,14 @@ public class Player implements Serializable {
 	private static final long serialVersionUID = 2151564957284704571L;
 	
 	private String name;
-	private String token;
-	private String avatar;
+	private long token;
+	private int avatar;
 	private int points;
 	
 	public Player(String name) {
 		this.name = name;
 		this.setPoints(0);
+		this.avatar = 0;
 	}
 
 	public String getName() {
@@ -24,19 +25,19 @@ public class Player implements Serializable {
 		this.name = name;
 	}
 
-	public String getToken() {
+	public long getToken() {
 		return token;
 	}
 
-	public void setToken(String token) {
+	public void setToken(long token) {
 		this.token = token;
 	}
 
-	public String getAvatar() {
+	public int getAvatar() {
 		return avatar;
 	}
 
-	public void setAvatar(String avatar) {
+	public void setAvatar(int avatar) {
 		this.avatar = avatar;
 	}
 	
