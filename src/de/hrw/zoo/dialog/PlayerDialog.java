@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import de.hrw.zoo.R;
 import de.hrw.zoo.model.Player;
 
@@ -62,11 +63,35 @@ public class PlayerDialog extends Dialog {
 			}
 		}
 		
-		ImageView back = (ImageView) findViewById(R.id.circle_background);
+		ImageView back = (ImageView) findViewById(R.id.circle_back_2_bg);
 		back.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				dismiss();
+			}
+		});
+		
+		ImageView save = (ImageView) findViewById(R.id.circle_game_bg);
+		save.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(v.getContext(), "Spielstand gespeichert.", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		ImageView archivments = (ImageView) findViewById(R.id.circle_video_bg);
+		archivments.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(v.getContext(), "Archivments anzeigen.", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		ImageView profile = (ImageView) findViewById(R.id.circle_info_bg);
+		profile.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(v.getContext(), "Profil ändern.", Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
