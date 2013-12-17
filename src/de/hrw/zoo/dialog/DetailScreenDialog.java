@@ -36,11 +36,11 @@ public class DetailScreenDialog extends Dialog {
 		if(animal != null) {
 			
 			TextView text = (TextView) findViewById(R.id.animal_species);
-			text.setTypeface(miso_bold);
+			text.setTypeface(baskerville);
 			TextView name = (TextView) findViewById(R.id.animal_name);
 			name.setText(animal.getName());
 			text.setText(animal.getArt());
-			name.setTypeface(baskerville);
+			name.setTypeface(miso_bold);
 			ImageView game = (ImageView) findViewById(R.id.circle_game_bg);
 			
 			Log.d("Zoo", animal.getGame());
