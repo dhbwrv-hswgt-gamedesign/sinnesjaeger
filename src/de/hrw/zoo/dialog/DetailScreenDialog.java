@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import de.hrw.zoo.R;
 import de.hrw.zoo.model.Animal;
 import de.hrw.zoo.model.Player;
@@ -29,20 +30,24 @@ public class DetailScreenDialog extends Dialog {
 		Typeface miso_bold = Typeface.createFromAsset(context.getAssets(), "fonts/miso-bold.otf");
 		Typeface baskerville = Typeface.createFromAsset(context.getAssets(), "fonts/baskerv.ttf");
 		
+
+
+		
 		this.mCenter = center;
 		this.animal = animal;
 		setView(view);
 		
 		if(animal != null) {
-			
+			ImageView game = (ImageView) findViewById(R.id.circle_game_bg);
+			ImageView info = (ImageView) findViewById(R.id.circle_info_bg);
+			ImageView video = (ImageView) findViewById(R.id.circle_video_bg);
 			TextView text = (TextView) findViewById(R.id.animal_species);
 			text.setTypeface(baskerville);
 			TextView name = (TextView) findViewById(R.id.animal_name);
 			name.setText(animal.getName());
 			text.setText(animal.getArt());
 			name.setTypeface(miso_bold);
-			ImageView game = (ImageView) findViewById(R.id.circle_game_bg);
-			
+					
 			Log.d("Zoo", animal.getGame());
 			
 			if(animal.getGame().equals("0")){
@@ -59,15 +64,44 @@ public class DetailScreenDialog extends Dialog {
 				avatar.setImageResource(R.drawable.detail_pinguin);
 				break;
 			}
+			
+			info.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Toast.makeText(v.getContext(), "Informationen anzeigen.", Toast.LENGTH_SHORT).show();
+				}
+			});
+
+			video.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Toast.makeText(v.getContext(), "Video anzeigen.", Toast.LENGTH_SHORT).show();
+				}
+			});
+			
+			game.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Toast.makeText(v.getContext(), "Spiel starten.", Toast.LENGTH_SHORT).show();
+				}
+			});
 		}
 		
-		ImageView back = (ImageView) findViewById(R.id.circle_background);
+		ImageView back = (ImageView) findViewById(R.id.circle_back_2_bg);
 		back.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				dismiss();
 			}
 		});
+		
+		
 	}
 	
 	public void setView(View v) {
