@@ -181,6 +181,8 @@ public class HomeActivity extends Activity {
 					if(filter_sixthsense.getAlpha() == 1)
 						filter_sixthsense.callOnClick();
 					animalPinguin.setAlpha(0f);
+					
+					filter_all.setAlpha(0.3f);
 				} else {
 					if(filter_sehen.getAlpha() == 0.3f)
 						filter_sehen.callOnClick();
@@ -191,10 +193,14 @@ public class HomeActivity extends Activity {
 					if(filter_sixthsense.getAlpha() == 0.3f)
 						filter_sixthsense.callOnClick();
 					animalPinguin.setAlpha(1f);
+					
+					filter_all.setAlpha(1f);
 				}
 				active = !active;
 			}
 		});
+        
+        filter_all.callOnClick();
        
         wheelText.setTypeface(miso);
 
