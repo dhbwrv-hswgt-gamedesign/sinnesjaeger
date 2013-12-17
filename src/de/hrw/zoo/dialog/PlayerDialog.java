@@ -87,7 +87,7 @@ public class PlayerDialog extends Dialog {
 			}
 		});
 		
-		ImageView profile = (ImageView) findViewById(R.id.circle_info_bg);
+		ImageView profile = (ImageView) findViewById(R.id.info_bg);
 		profile.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
