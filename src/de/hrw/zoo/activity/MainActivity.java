@@ -84,7 +84,7 @@ public class MainActivity extends Activity {
 		map.put("zoo_comment", "Zoologisch-Botanischer Garten Stuttgart");
 		map.put("zoo_map", R.drawable.zoo_stuttgart);
 		List<String> filters = new ArrayList<String>();
-		filters.add("sehen"); filters.add("hoeren");
+		filters.add("sehen"); filters.add("hoeren"); filters.add("spueren");
 		map.put("zoo_filters", filters);
 		mZooList.add(map);
 		map = new HashMap<String, Object>();

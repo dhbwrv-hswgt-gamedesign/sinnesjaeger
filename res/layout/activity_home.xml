@@ -45,15 +45,37 @@
                     android:layout_marginTop="535dp"
                     android:rotation="180"
                     android:src="@drawable/tier_pinguin" />
-                
+
                 <ImageView
                     android:id="@+id/animal_schlange"
                     android:layout_width="75dp"
                     android:layout_height="50dp"
-                    android:layout_marginLeft="435dp"
-                    android:layout_marginTop="395dp"
-                    android:rotation="130"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/animal_fledermaus"
+                    android:layout_marginLeft="81dp"
+                    android:rotation="-55"
                     android:src="@drawable/tier_schlange" />
+
+                <ImageView
+                    android:id="@+id/animal_adler"
+                    android:layout_width="75dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignRight="@+id/animal_pinguin"
+                    android:layout_marginRight="26dp"
+                    android:layout_marginTop="60dp"
+                    android:src="@drawable/tier_adler" />
+
+                <ImageView
+                    android:id="@+id/animal_schmetterling"
+                    android:layout_width="75dp"
+                    android:layout_height="25dp"
+                    android:layout_alignBottom="@+id/animal_pinguin"
+                    android:layout_alignLeft="@+id/animal_fledermaus"
+                    android:layout_marginBottom="159dp"
+                    android:layout_marginLeft="15dp"
+                    android:rotation="100"
+                    android:src="@drawable/tier_schmetterlinge" />
 
             </RelativeLayout>
 
@@ -94,6 +116,7 @@
         android:layout_margin="10dp"
         android:clickable="true"
         android:divider="@android:color/transparent"
+        android:listSelector="@android:color/transparent"
         tools:listitem="@layout/player_list_item" >
 
     </ListView>
@@ -106,6 +129,7 @@
         android:layout_alignParentTop="true"
         android:layout_margin="20dp"
         android:background="@android:color/transparent"
+        android:padding="10dp"
         android:src="@drawable/logout" />
 
     <LinearLayout

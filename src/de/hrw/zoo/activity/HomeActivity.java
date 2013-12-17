@@ -102,6 +102,8 @@ public class HomeActivity extends Activity {
         final ImageView animalFledermaus = (ImageView) findViewById(R.id.animal_fledermaus);
         final ImageView animalPinguin = (ImageView) findViewById(R.id.animal_pinguin);
         final ImageView animalSchlange = (ImageView) findViewById(R.id.animal_schlange);
+        final ImageView animalAlder = (ImageView) findViewById(R.id.animal_adler);
+        final ImageView animalSchmetterling = (ImageView) findViewById(R.id.animal_schmetterling);
       
         act = this;
         
@@ -111,8 +113,12 @@ public class HomeActivity extends Activity {
 			public void onClick(View v) {
 				if(active) {
 					filter_sehen.setAlpha(0.3f);
+					animalAlder.setAlpha(0f);
+					animalSchmetterling.setAlpha(0f);
 				} else {
 					filter_sehen.setAlpha(1.0f);
+					animalAlder.setAlpha(1f);
+					animalSchmetterling.setAlpha(1f);
 				}
 				active = !active;
 			}
@@ -273,9 +279,36 @@ public class HomeActivity extends Activity {
 				aniFledermaus.start();
 			}
 		});
+    	
+    	animalAlder.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				ObjectAnimator aniAdler = ObjectAnimator.ofFloat(animalAlder, "TranslationY", 0, 20, 0);
+				aniAdler.setDuration(2000);
+				aniAdler.setInterpolator(new LinearInterpolator());
+				aniAdler.setRepeatMode(Animation.RESTART);
+				aniAdler.setRepeatCount(2);
+				aniAdler.start();
+			}
+		});
+    	
+    	animalSchmetterling.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				ObjectAnimator aniSchmetterling = ObjectAnimator.ofFloat(animalSchmetterling, "ScaleX", 1f, 0.5f, 1f);
+				aniSchmetterling.setDuration(2000);
+				aniSchmetterling.setInterpolator(new LinearInterpolator());
+				aniSchmetterling.setRepeatMode(Animation.RESTART);
+				aniSchmetterling.setRepeatCount(2);
+				aniSchmetterling.start();
+			}
+		});    	
+    	
     	animalFledermaus.setEnabled(false);
 		animalPinguin.setEnabled(false);
 		animalSchlange.setEnabled(false);
+		animalAlder.setEnabled(false);
+		animalSchmetterling.setEnabled(false);
         
         button.setOnClickListener(new OnClickListener() {
         	boolean inZoom = false;
@@ -303,6 +336,8 @@ public class HomeActivity extends Activity {
 					animalFledermaus.setEnabled(false);
 					animalPinguin.setEnabled(false);
 					animalSchlange.setEnabled(false);
+					animalAlder.setEnabled(false);
+					animalSchmetterling.setEnabled(false);
 					
 					inZoom = false;
 				} else {
@@ -323,6 +358,8 @@ public class HomeActivity extends Activity {
 					animalFledermaus.setEnabled(true);
 					animalPinguin.setEnabled(true);
 					animalSchlange.setEnabled(true);
+					animalAlder.setEnabled(true);
+					animalSchmetterling.setEnabled(true);
 					
 					inZoom = true;
 				}
