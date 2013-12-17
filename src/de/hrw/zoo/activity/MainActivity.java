@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -132,6 +133,18 @@ public class MainActivity extends Activity {
 		    	dlg.show();
 			}
 		});
+		
+		ImageView logo = (ImageView) findViewById(R.id.splash_logo);
+		ObjectAnimator ani2 = ObjectAnimator.ofFloat(logo, "Alpha", 1f, 0f);
+		ani2.setStartDelay(2000);
+		ani2.setDuration(500);
+		ani2.start();
+		
+		ObjectAnimator ani = ObjectAnimator.ofFloat(layout, "Alpha", 0f, 1f);
+		ani.setStartDelay(2800);
+		ani.setDuration(500);
+		ani.start();
+		Log.d("Zoo", "ani started");
 		
 		mNfcActive = false;
 		mNfcAdapter = NfcAdapter.getDefaultAdapter(this);

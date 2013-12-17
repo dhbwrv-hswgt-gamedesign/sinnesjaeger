@@ -38,6 +38,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.hrw.zoo.R;
 import de.hrw.zoo.adapter.PlayerListAdapter;
+import de.hrw.zoo.dialog.MapDialog;
 import de.hrw.zoo.dialog.PlayerDialog;
 import de.hrw.zoo.list.PlayerList;
 import de.hrw.zoo.nfc.reader.NdefReaderTask;
@@ -104,8 +105,21 @@ public class HomeActivity extends Activity {
         final ImageView animalSchlange = (ImageView) findViewById(R.id.animal_schlange);
         final ImageView animalAlder = (ImageView) findViewById(R.id.animal_adler);
         final ImageView animalSchmetterling = (ImageView) findViewById(R.id.animal_schmetterling);
+        
+        final ImageView mapIcon = (ImageView) findViewById(R.id.map_icon);
       
         act = this;
+        
+        mapIcon.setOnClickListener(new OnClickListener() {
+        	boolean active = false;
+			@Override
+			public void onClick(View v) {
+				View view = getLayoutInflater().inflate(R.layout.fragment_map, null);
+				final MapDialog dlg = new MapDialog(v.getContext(), view, mapIcon);
+		    	dlg.getWindow().setLayout(mAppSize.x, mAppSize.y);
+		    	dlg.show();
+			}
+		});
         
         filter_sehen.setOnClickListener(new OnClickListener() {
         	boolean active = true;

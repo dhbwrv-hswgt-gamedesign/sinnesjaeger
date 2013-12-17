@@ -2,4 +2,5 @@
 <resources>
     <color name="filter_background">#66333333</color>
     <color name="menu_background">#ff37495b</color>
+    <color name="trans_background">#00ffffff</color>
 </resources>

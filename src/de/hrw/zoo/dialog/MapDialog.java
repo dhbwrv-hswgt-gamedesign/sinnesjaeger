@@ -3,6 +3,7 @@ package de.hrw.zoo.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -19,11 +20,14 @@ import de.hrw.zoo.view.PlayerView;
 
 public class MapDialog extends Dialog {
 
-	public MapDialog(Context context, View view, Point center) {
+	public MapDialog(Context context, View view, ImageView mapIcon) {
 		super(context, R.style.PlayersDialog);
 		
 		getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setBackgroundDrawableResource(R.color.filter_background);
+		//getWindow().setBackgroundDrawableResource(R.color.trans_background);
+		getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+		
+		setContentView(view);
 	}
 }
 	
