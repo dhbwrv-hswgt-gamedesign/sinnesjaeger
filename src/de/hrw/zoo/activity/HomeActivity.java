@@ -4,15 +4,11 @@ import java.io.File;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.IntentFilter.MalformedMimeTypeException;
 import android.graphics.Point;
 import android.graphics.Typeface;
@@ -25,8 +21,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
@@ -38,27 +32,32 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.hrw.zoo.R;
 import de.hrw.zoo.adapter.PlayerListAdapter;
+import de.hrw.zoo.animator.AnimalAnimator;
+import de.hrw.zoo.dialog.LogoutDialog;
 import de.hrw.zoo.dialog.MapDialog;
 import de.hrw.zoo.dialog.PlayerDialog;
 import de.hrw.zoo.list.PlayerList;
+import de.hrw.zoo.listener.OnAnimalClickListener;
 import de.hrw.zoo.listener.OnFilterClickListener;
 import de.hrw.zoo.listener.OnFiltersToggleClickListener;
 import de.hrw.zoo.nfc.reader.NdefReaderTask;
 
 public class HomeActivity extends Activity {
 	
-	private static Activity act;
-	private PlayerList players = new PlayerList();
-	private File mStorePath;
-	private static Point mAppSize;
-	private static Point mAppCenter;
-	private PlayerListAdapter mPlayerAdapter;
-	private NfcAdapter mNfcAdapter;
-    public static final String MIME_TEXT_PLAIN = "text/plain";
+	public static final String MIME_TEXT_PLAIN = "text/plain";
     public static final String TAG = "ZooApp";
-    private boolean mNfcActive;
-	private Context context;
-	private static HomeActivity home;
+	
+    private static Point mAppSize;
+	private static Point mAppCenter;
+	private static Activity mAct;
+	
+	private File mStorePath;
+	private PlayerList mPlayers;
+	private PlayerListAdapter mPlayerAdapter;
+	private boolean mNfcActive;
+	private NfcAdapter mNfcAdapter;
+	
+	private Typeface mFontMiso;
 
 	public static Point getAppSize(){
 		return mAppSize;
@@ -68,15 +67,10 @@ public class HomeActivity extends Activity {
 		return mAppCenter;
 	}
 	
-	public static HomeActivity getThis(){
-		return home;
-	}
-	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        home = this;
         
         mStorePath = new File(getFilesDir(),"zoo");
         if(!mStorePath.exists()) {
@@ -87,13 +81,13 @@ public class HomeActivity extends Activity {
     	getWindowManager().getDefaultDisplay().getSize(mAppSize);
     	mAppCenter = new Point(mAppSize.x/2, mAppSize.y/2);
     	
-        final Typeface miso = Typeface.createFromAsset(getAssets(), "fonts/miso.otf");
+        mFontMiso = Typeface.createFromAsset(getAssets(), "fonts/miso.otf");
         
     	final LinearLayout filtersLayout = (LinearLayout) findViewById(R.id.filters_layout);
         final RelativeLayout composite = (RelativeLayout) findViewById(R.id.abstract_composite);
         final ImageButton logoutButton = (ImageButton) findViewById(R.id.logout_button);
         final RelativeLayout wheel = (RelativeLayout) findViewById(R.id.wheel_layout);
-        final TextView button = (TextView) findViewById(R.id.dummy_button);
+        final TextView zoomButton = (TextView) findViewById(R.id.dummy_button);
         final ListView playersList = (ListView) findViewById(R.id.players_list);
         final TextView wheelText = (TextView) findViewById(R.id.wheel_part_text);
         
@@ -111,7 +105,7 @@ public class HomeActivity extends Activity {
         
         final ImageView mapIcon = (ImageView) findViewById(R.id.map_icon);
       
-        act = this;
+        mAct = this;
         
         mapIcon.setOnClickListener(new OnClickListener() {
 			@Override
@@ -141,19 +135,20 @@ public class HomeActivity extends Activity {
         filterAll.setOnClickListener(new OnFiltersToggleClickListener(buttonsFilter, animalsOthers));
         filterAll.callOnClick();
        
-        wheelText.setTypeface(miso);
+        wheelText.setTypeface(mFontMiso);
 
-        players = PlayerList.Load(new File(mStorePath, "players"));        
-        mPlayerAdapter = new PlayerListAdapter(this, R.layout.player_list_item, players);
+        mPlayers = new PlayerList();
+        mPlayers = PlayerList.Load(new File(mStorePath, "players"));
+        mPlayerAdapter = new PlayerListAdapter(this, R.layout.player_list_item, mPlayers);
         playersList.setAdapter(mPlayerAdapter);
         playersList.setClickable(true);
         
         playersList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
-				if(players.get(position) != null) {
+				if(mPlayers.get(position) != null) {
 					View view = getLayoutInflater().inflate(R.layout.fragment_player, null);
-					final PlayerDialog dlg = new PlayerDialog(v.getContext(), view, mAppCenter, players.get(position));
+					final PlayerDialog dlg = new PlayerDialog(v.getContext(), view, mAppCenter, mPlayers.get(position));
 			    	dlg.getWindow().setLayout(mAppSize.x, mAppSize.y);
 			    	dlg.show();
 				}
@@ -163,13 +158,9 @@ public class HomeActivity extends Activity {
         logoutButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
+				LogoutDialog dialog = new LogoutDialog(v.getContext());
 
-				alertDialog.setTitle("Beenden?");
-				alertDialog.setMessage("Wollen Sie das Spiel wirklich beenden?");
-				//alertDialog.setIcon(R.drawable.delete_icon);
-
-				alertDialog.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+				dialog.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						HomeActivity.this.finish();
 						Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -178,76 +169,32 @@ public class HomeActivity extends Activity {
 					}
 				});
 
-				alertDialog.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+				dialog.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.cancel();
 					}
 				});
 
-				alertDialog.show();
+				dialog.show();
 			}
 		});
         
+        AnimalAnimator animation;
         
-        animalFledermaus.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				ObjectAnimator aniFledermaus = ObjectAnimator.ofFloat(animalFledermaus, "translationX", 0, 20, 0);
-				aniFledermaus.setDuration(2000);
-				aniFledermaus.setInterpolator(new LinearInterpolator());
-				aniFledermaus.setRepeatMode(Animation.RESTART);
-				aniFledermaus.setRepeatCount(2);
-				aniFledermaus.start();
-			}
-		});
+        animation = new AnimalAnimator(animalFledermaus, "translationX", 0, 20, 0);
+        animalFledermaus.setOnClickListener(new OnAnimalClickListener(animation));
     	
-    	animalPinguin.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				ObjectAnimator aniFledermaus = ObjectAnimator.ofFloat(animalPinguin, "translationY", 0, 20, 0);
-				aniFledermaus.setDuration(2000);
-				aniFledermaus.setInterpolator(new LinearInterpolator());
-				aniFledermaus.setRepeatMode(Animation.RESTART);
-				aniFledermaus.setRepeatCount(2);
-				aniFledermaus.start();
-			}
-		});
+        animation = new AnimalAnimator(animalPinguin, "translationY", 0, 20, 0);
+    	animalPinguin.setOnClickListener(new OnAnimalClickListener(animation));
     	
-    	animalSchlange.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				ObjectAnimator aniFledermaus = ObjectAnimator.ofFloat(animalSchlange, "ScaleY", 1f, 0.5f, 1f);
-				aniFledermaus.setDuration(2000);
-				aniFledermaus.setInterpolator(new LinearInterpolator());
-				aniFledermaus.setRepeatMode(Animation.RESTART);
-				aniFledermaus.setRepeatCount(2);
-				aniFledermaus.start();
-			}
-		});
+    	animation = new AnimalAnimator(animalSchlange, "ScaleY", 1f, 0.5f, 1f);
+    	animalSchlange.setOnClickListener(new OnAnimalClickListener(animation));
     	
-    	animalAlder.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				ObjectAnimator aniAdler = ObjectAnimator.ofFloat(animalAlder, "TranslationY", 0, 20, 0);
-				aniAdler.setDuration(2000);
-				aniAdler.setInterpolator(new LinearInterpolator());
-				aniAdler.setRepeatMode(Animation.RESTART);
-				aniAdler.setRepeatCount(2);
-				aniAdler.start();
-			}
-		});
+    	animation = new AnimalAnimator(animalAlder, "TranslationY", 0, 20, 0);
+    	animalAlder.setOnClickListener(new OnAnimalClickListener(animation));
     	
-    	animalSchmetterling.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				ObjectAnimator aniSchmetterling = ObjectAnimator.ofFloat(animalSchmetterling, "ScaleX", 1f, 0.5f, 1f);
-				aniSchmetterling.setDuration(2000);
-				aniSchmetterling.setInterpolator(new LinearInterpolator());
-				aniSchmetterling.setRepeatMode(Animation.RESTART);
-				aniSchmetterling.setRepeatCount(2);
-				aniSchmetterling.start();
-			}
-		});    	
+    	animation = new AnimalAnimator(animalSchmetterling, "ScaleX", 1f, 0.5f, 1f);
+    	animalSchmetterling.setOnClickListener(new OnAnimalClickListener(animation));
     	
     	animalFledermaus.setEnabled(false);
 		animalPinguin.setEnabled(false);
@@ -255,7 +202,7 @@ public class HomeActivity extends Activity {
 		animalAlder.setEnabled(false);
 		animalSchmetterling.setEnabled(false);
         
-        button.setOnClickListener(new OnClickListener() {
+        zoomButton.setOnClickListener(new OnClickListener() {
         	boolean inZoom = false;
         	AnimatorSet set;
 
@@ -310,8 +257,9 @@ public class HomeActivity extends Activity {
 				}
 			}
 		});
-        RelativeLayout l1 = (RelativeLayout) findViewById(R.id.abstract_layout);
-        l1.setOnTouchListener(new OnTouchListener() {
+        
+        RelativeLayout layout = (RelativeLayout) findViewById(R.id.abstract_layout);
+        layout.setOnTouchListener(new OnTouchListener() {
         	float diffX = 0;
 			float diffY = 0;
         	double rot = 0;
@@ -324,35 +272,15 @@ public class HomeActivity extends Activity {
 				case MotionEvent.ACTION_DOWN:
 					diffX = event.getX() - (composite.getX()+composite.getWidth()/2);
 					diffY = (composite.getY()+composite.getHeight()/2) - event.getY();
-					rot = Math.toDegrees(Math.atan(diffY/diffX));
-					if(diffX>0 && diffY>0) {
-						rot = 0+rot;
-					} else if(diffX<0 && diffY>0) {
-						rot = 180+rot;
-					} else if(diffX<0 && diffY<0) {
-						rot = 180+rot;
-					} else if(diffX>0 && diffY<0) {
-						rot = 360+rot;
-					}
+					rot = getRotation(diffY, diffX);
 					lastRot = rot;
 					break;
 				case MotionEvent.ACTION_MOVE:
 					diffX = event.getX() - (composite.getX()+composite.getWidth()/2);
 					diffY = (composite.getY()+composite.getHeight()/2) - event.getY();
-					rot = Math.toDegrees(Math.atan(diffY/diffX));
-					Log.d("Zoo", ""+rot);
-					if(diffX>0 && diffY>0) {
-						rot = 0+rot;
-					} else if(diffX<0 && diffY>0) {
-						rot = 180+rot;
-					} else if(diffX<0 && diffY<0) {
-						rot = 180+rot;
-					} else if(diffX>0 && diffY<0) {
-						rot = 360+rot;
-					}
+					rot = getRotation(diffY, diffX);
 					wheel.setRotation((float) (wheel.getRotation()+(lastRot-rot)));
 					double tmp = Math.abs(wheel.getRotation() % 360);
-					//Log.d("Zoo", wheel.getRotation()+" | "+tmp);
 					if(tmp > 330 || tmp < 30) {
 						wheelText.setText("Luft");
 					} else if(tmp > 30 && tmp < 90) {
@@ -372,7 +300,6 @@ public class HomeActivity extends Activity {
 				case MotionEvent.ACTION_UP:
 					float start = wheel.getRotation();
 					float end = Math.round(start / 60) * 60;
-					//Log.d("Zoo", start+" | "+end);
 					ani = ObjectAnimator.ofFloat(wheel, "rotation", start, end);
 					ani.setDuration(700);
 					ani.start();
@@ -403,7 +330,7 @@ public class HomeActivity extends Activity {
 			String type = intent.getType();
 			if (MIME_TEXT_PLAIN.equals(type)) {
 				Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-				new NdefReaderTask().execute(tag);
+				new NdefReaderTask(this).execute(tag);
 			} else {
 				Log.d(TAG, "Wrong mime type: " + type);
 			}
@@ -414,7 +341,7 @@ public class HomeActivity extends Activity {
 			String searchedTech = Ndef.class.getName();
 			for (String tech : techList) {
 				if (searchedTech.equals(tech)) {
-					new NdefReaderTask().execute(tag);
+					new NdefReaderTask(this).execute(tag);
 					break;
 				}
 			}
@@ -489,31 +416,41 @@ public class HomeActivity extends Activity {
 	
 	@Override
 	public void onBackPressed() {
-		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+		LogoutDialog dialog = new LogoutDialog(this);
 
-		alertDialog.setTitle("Beenden?");
-		alertDialog.setMessage("Wollen Sie das Spiel wirklich beenden?");
-		//alertDialog.setIcon(R.drawable.delete_icon);
-
-		alertDialog.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+		dialog.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				HomeActivity.this.finish();
 			}
 		});
 
-		alertDialog.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+		dialog.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.cancel();
 			}
 		});
 
-		alertDialog.show();
+		dialog.show();
 	}
 	
 	
-	public static Activity getActivityViewHomeActivity(){
+	public static Activity getActivityViewHomeActivity() {
+		return mAct;
+	}
 	
-		return act;
+	private double getRotation(float diffX, float diffY) {
+		double rot = Math.toDegrees(Math.atan(diffY/diffX));
+		if(diffX>0 && diffY>0) {
+			rot = 0+rot;
+		} else if(diffX<0 && diffY>0) {
+			rot = 180+rot;
+		} else if(diffX<0 && diffY<0) {
+			rot = 180+rot;
+		} else if(diffX>0 && diffY<0) {
+			rot = 360+rot;
+		}
+		
+		return rot;
 	}
 }
 

@@ -1,22 +1,14 @@
 package de.hrw.zoo.adapter;
 
-import java.io.File;
-
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.hrw.zoo.R;
-import de.hrw.zoo.activity.HomeActivity;
-import de.hrw.zoo.dialog.LoginDialog;
 import de.hrw.zoo.list.PlayerList;
 import de.hrw.zoo.model.Player;
 

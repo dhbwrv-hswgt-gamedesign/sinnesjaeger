@@ -12,14 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.hrw.zoo.R;
 import de.hrw.zoo.model.Animal;
-import de.hrw.zoo.model.Player;
 
 public class DetailScreenDialog extends Dialog {
-	
-	private static Context context;
-	private static View view;
-	private Point mCenter;
-	private Animal animal;
 
 	public DetailScreenDialog(Context context, View view, Point center, Animal animal) {
 		super(context, R.style.DetailScreen);
@@ -29,13 +23,6 @@ public class DetailScreenDialog extends Dialog {
 		
 		Typeface miso_bold = Typeface.createFromAsset(context.getAssets(), "fonts/miso-bold.otf");
 		Typeface baskerville = Typeface.createFromAsset(context.getAssets(), "fonts/baskerv.ttf");
-		
-
-
-		
-		this.mCenter = center;
-		this.animal = animal;
-		setView(view);
 		
 		if(animal != null) {
 			ImageView game = (ImageView) findViewById(R.id.circle_game_bg);
@@ -102,11 +89,6 @@ public class DetailScreenDialog extends Dialog {
 		});
 		
 		
-	}
-	
-	public void setView(View v) {
-		view = v;
-		super.setContentView(v);
 	}
 }
 	

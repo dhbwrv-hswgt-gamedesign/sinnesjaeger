@@ -30,7 +30,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -46,15 +45,19 @@ import de.hrw.zoo.nfc.reader.NdefReaderTask;
 
 public class MainActivity extends Activity {
 	
-	private List<Map<String, Object> > mZooList;
+	public static final String MIME_TEXT_PLAIN = "text/plain";
+    public static final String TAG = "ZooApp";
+    
 	private File mStorePath;
 	private Point mAppSize;
 	private Point mAppCenter;
+	
+	private List<Map<String, Object> > mZooList;
 	private SelectionWheel mWheel;
-    public static final String MIME_TEXT_PLAIN = "text/plain";
-    public static final String TAG = "ZooApp";
+    
+	private boolean mNfcActive;
     private NfcAdapter mNfcAdapter;
-    private boolean mNfcActive;
+    
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,7 +173,7 @@ public class MainActivity extends Activity {
 			String type = intent.getType();
 			if (MIME_TEXT_PLAIN.equals(type)) {
 				Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-				new NdefReaderTask().execute(tag);
+				new NdefReaderTask(this).execute(tag);
 			} else {
 				Log.d(TAG, "Wrong mime type: " + type);
 			}
@@ -181,7 +184,7 @@ public class MainActivity extends Activity {
 			String searchedTech = Ndef.class.getName();
 			for (String tech : techList) {
 				if (searchedTech.equals(tech)) {
-					new NdefReaderTask().execute(tag);
+					new NdefReaderTask(this).execute(tag);
 					break;
 				}
 			}
