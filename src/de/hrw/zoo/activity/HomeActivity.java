@@ -41,6 +41,8 @@ import de.hrw.zoo.adapter.PlayerListAdapter;
 import de.hrw.zoo.dialog.MapDialog;
 import de.hrw.zoo.dialog.PlayerDialog;
 import de.hrw.zoo.list.PlayerList;
+import de.hrw.zoo.listener.OnFilterClickListener;
+import de.hrw.zoo.listener.OnFiltersToggleClickListener;
 import de.hrw.zoo.nfc.reader.NdefReaderTask;
 
 public class HomeActivity extends Activity {
@@ -75,6 +77,7 @@ public class HomeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         home = this;
+        
         mStorePath = new File(getFilesDir(),"zoo");
         if(!mStorePath.exists()) {
         	mStorePath.mkdir();
@@ -94,11 +97,11 @@ public class HomeActivity extends Activity {
         final ListView playersList = (ListView) findViewById(R.id.players_list);
         final TextView wheelText = (TextView) findViewById(R.id.wheel_part_text);
         
-        final ImageButton filter_sehen = (ImageButton) findViewById(R.id.filter_sehen);
-        final ImageButton filter_hoeren = (ImageButton) findViewById(R.id.filter_hoeren);
-        final ImageButton filter_spueren = (ImageButton) findViewById(R.id.filter_spueren);
-        final ImageButton filter_sixthsense = (ImageButton) findViewById(R.id.filter_sixthsense);
-        final ImageButton filter_all = (ImageButton) findViewById(R.id.filter_all);
+        final ImageButton filterSehen = (ImageButton) findViewById(R.id.filter_sehen);
+        final ImageButton filterHoeren = (ImageButton) findViewById(R.id.filter_hoeren);
+        final ImageButton filterSpueren = (ImageButton) findViewById(R.id.filter_spueren);
+        final ImageButton filterSixthSense = (ImageButton) findViewById(R.id.filter_sixthsense);
+        final ImageButton filterAll = (ImageButton) findViewById(R.id.filter_all);
         
         final ImageView animalFledermaus = (ImageView) findViewById(R.id.animal_fledermaus);
         final ImageView animalPinguin = (ImageView) findViewById(R.id.animal_pinguin);
@@ -111,110 +114,32 @@ public class HomeActivity extends Activity {
         act = this;
         
         mapIcon.setOnClickListener(new OnClickListener() {
-        	boolean active = false;
 			@Override
 			public void onClick(View v) {
 				View view = getLayoutInflater().inflate(R.layout.fragment_map, null);
-				final MapDialog dlg = new MapDialog(v.getContext(), view, mapIcon);
+				final MapDialog dlg = new MapDialog(v.getContext(), view);
 		    	dlg.getWindow().setLayout(mAppSize.x, mAppSize.y);
 		    	dlg.show();
 			}
 		});
         
-        filter_sehen.setOnClickListener(new OnClickListener() {
-        	boolean active = true;
-			@Override
-			public void onClick(View v) {
-				if(active) {
-					filter_sehen.setAlpha(0.3f);
-					animalAlder.setAlpha(0f);
-					animalSchmetterling.setAlpha(0f);
-				} else {
-					filter_sehen.setAlpha(1.0f);
-					animalAlder.setAlpha(1f);
-					animalSchmetterling.setAlpha(1f);
-				}
-				active = !active;
-			}
-		});
-		
-        filter_hoeren.setOnClickListener(new OnClickListener() {
-			boolean active = true;
-			@Override
-			public void onClick(View v) {
-				if(active) {
-					filter_hoeren.setAlpha(0.3f);
-					animalFledermaus.setAlpha(0f);
-				} else {
-					filter_hoeren.setAlpha(1.0f);
-					animalFledermaus.setAlpha(1f);
-				}
-				active = !active;
-			}
-		});
-		
-        filter_spueren.setOnClickListener(new OnClickListener() {
-			boolean active = true;
-			@Override
-			public void onClick(View v) {
-				if(active) {
-					filter_spueren.setAlpha(0.3f);
-					animalSchlange.setAlpha(0f);
-				} else {
-					filter_spueren.setAlpha(1.0f);
-					animalSchlange.setAlpha(1f);
-				}
-				active = !active;
-			}
-		});
-		
-        filter_sixthsense.setOnClickListener(new OnClickListener() {
-			boolean active = true;
-			@Override
-			public void onClick(View v) {
-				if(active) {
-					filter_sixthsense.setAlpha(0.3f);
-				} else {
-					filter_sixthsense.setAlpha(1.0f);
-				}
-				active = !active;
-			}
-		});
         
-        filter_all.setOnClickListener(new OnClickListener() {
-        	boolean active = true;
-			@Override
-			public void onClick(View v) {
-				if(active) {
-					if(filter_sehen.getAlpha() == 1)
-						filter_sehen.callOnClick();
-					if(filter_hoeren.getAlpha() == 1)
-						filter_hoeren.callOnClick();
-					if(filter_spueren.getAlpha() == 1)
-						filter_spueren.callOnClick();
-					if(filter_sixthsense.getAlpha() == 1)
-						filter_sixthsense.callOnClick();
-					animalPinguin.setAlpha(0f);
-					
-					filter_all.setAlpha(0.3f);
-				} else {
-					if(filter_sehen.getAlpha() == 0.3f)
-						filter_sehen.callOnClick();
-					if(filter_hoeren.getAlpha() == 0.3f)
-						filter_hoeren.callOnClick();
-					if(filter_spueren.getAlpha() == 0.3f)
-						filter_spueren.callOnClick();
-					if(filter_sixthsense.getAlpha() == 0.3f)
-						filter_sixthsense.callOnClick();
-					animalPinguin.setAlpha(1f);
-					
-					filter_all.setAlpha(1f);
-				}
-				active = !active;
-			}
-		});
+        ImageView[] animalsSehen = {animalAlder, animalSchmetterling};
+        filterSehen.setOnClickListener(new OnFilterClickListener(animalsSehen));
         
-        filter_all.callOnClick();
+        ImageView[] animalsHoeren = {animalFledermaus};
+        filterHoeren.setOnClickListener(new OnFilterClickListener(animalsHoeren));
+        
+        ImageView[] animalsSpueren = {animalSchlange};
+        filterSpueren.setOnClickListener(new OnFilterClickListener(animalsSpueren));
+        
+        ImageView[] animalsSixthSense = {};
+        filterSixthSense.setOnClickListener(new OnFilterClickListener(animalsSixthSense));
+
+        ImageButton[] buttonsFilter = {filterSehen, filterHoeren, filterSpueren, filterSixthSense};
+        ImageView[] animalsOthers = {animalPinguin};
+        filterAll.setOnClickListener(new OnFiltersToggleClickListener(buttonsFilter, animalsOthers));
+        filterAll.callOnClick();
        
         wheelText.setTypeface(miso);
 
