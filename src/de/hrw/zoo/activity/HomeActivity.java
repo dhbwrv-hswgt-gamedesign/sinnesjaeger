@@ -33,14 +33,15 @@ import android.widget.Toast;
 import de.hrw.zoo.R;
 import de.hrw.zoo.adapter.PlayerListAdapter;
 import de.hrw.zoo.animator.AnimalAnimator;
+import de.hrw.zoo.animator.WheelAnimator;
 import de.hrw.zoo.dialog.LogoutDialog;
 import de.hrw.zoo.dialog.MapDialog;
 import de.hrw.zoo.dialog.PlayerDialog;
 import de.hrw.zoo.list.PlayerList;
-import de.hrw.zoo.listener.OnAnimalClickListener;
 import de.hrw.zoo.listener.OnFilterClickListener;
 import de.hrw.zoo.listener.OnFiltersToggleClickListener;
 import de.hrw.zoo.nfc.reader.NdefReaderTask;
+import de.hrw.zoo.view.AnimalView;
 
 public class HomeActivity extends Activity {
 	
@@ -49,7 +50,6 @@ public class HomeActivity extends Activity {
 	
     private static Point mAppSize;
 	private static Point mAppCenter;
-	private static Activity mAct;
 	
 	private File mStorePath;
 	private PlayerList mPlayers;
@@ -97,15 +97,13 @@ public class HomeActivity extends Activity {
         final ImageButton filterSixthSense = (ImageButton) findViewById(R.id.filter_sixthsense);
         final ImageButton filterAll = (ImageButton) findViewById(R.id.filter_all);
         
-        final ImageView animalFledermaus = (ImageView) findViewById(R.id.animal_fledermaus);
-        final ImageView animalPinguin = (ImageView) findViewById(R.id.animal_pinguin);
-        final ImageView animalSchlange = (ImageView) findViewById(R.id.animal_schlange);
-        final ImageView animalAlder = (ImageView) findViewById(R.id.animal_adler);
-        final ImageView animalSchmetterling = (ImageView) findViewById(R.id.animal_schmetterling);
+        final AnimalView animalFledermaus = (AnimalView) findViewById(R.id.animal_fledermaus);
+        final AnimalView animalPinguin = (AnimalView) findViewById(R.id.animal_pinguin);
+        final AnimalView animalSchlange = (AnimalView) findViewById(R.id.animal_schlange);
+        final AnimalView animalAlder = (AnimalView) findViewById(R.id.animal_adler);
+        final AnimalView animalSchmetterling = (AnimalView) findViewById(R.id.animal_schmetterling);
         
         final ImageView mapIcon = (ImageView) findViewById(R.id.map_icon);
-      
-        mAct = this;
         
         mapIcon.setOnClickListener(new OnClickListener() {
 			@Override
@@ -163,9 +161,7 @@ public class HomeActivity extends Activity {
 				dialog.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						HomeActivity.this.finish();
-						Intent intent = new Intent(Intent.ACTION_MAIN);
-					    intent.addCategory(Intent.CATEGORY_HOME);
-					    startActivity(intent);
+						backToHomeScreen();
 					}
 				});
 
@@ -179,22 +175,11 @@ public class HomeActivity extends Activity {
 			}
 		});
         
-        AnimalAnimator animation;
-        
-        animation = new AnimalAnimator(animalFledermaus, "translationX", 0, 20, 0);
-        animalFledermaus.setOnClickListener(new OnAnimalClickListener(animation));
-    	
-        animation = new AnimalAnimator(animalPinguin, "translationY", 0, 20, 0);
-    	animalPinguin.setOnClickListener(new OnAnimalClickListener(animation));
-    	
-    	animation = new AnimalAnimator(animalSchlange, "ScaleY", 1f, 0.5f, 1f);
-    	animalSchlange.setOnClickListener(new OnAnimalClickListener(animation));
-    	
-    	animation = new AnimalAnimator(animalAlder, "TranslationY", 0, 20, 0);
-    	animalAlder.setOnClickListener(new OnAnimalClickListener(animation));
-    	
-    	animation = new AnimalAnimator(animalSchmetterling, "ScaleX", 1f, 0.5f, 1f);
-    	animalSchmetterling.setOnClickListener(new OnAnimalClickListener(animation));
+        animalFledermaus.setAnimator(new AnimalAnimator(animalFledermaus, "translationX", 0, 20, 0));
+        animalPinguin.setAnimator(new AnimalAnimator(animalPinguin, "translationY", 0, 20, 0));
+        animalSchlange.setAnimator(new AnimalAnimator(animalSchlange, "ScaleY", 1f, 0.5f, 1f));
+        animalAlder.setAnimator(new AnimalAnimator(animalAlder, "TranslationY", 0, 20, 0));
+        animalSchmetterling.setAnimator(new AnimalAnimator(animalSchmetterling, "ScaleX", 1f, 0.5f, 1f));
     	
     	animalFledermaus.setEnabled(false);
 		animalPinguin.setEnabled(false);
@@ -204,26 +189,13 @@ public class HomeActivity extends Activity {
         
         zoomButton.setOnClickListener(new OnClickListener() {
         	boolean inZoom = false;
-        	AnimatorSet set;
+        	WheelAnimator ani;
 
 			@Override
 			public void onClick(View v) {
 				if(inZoom) {
-					set = new AnimatorSet();
-					
-					ObjectAnimator aniScaleX = ObjectAnimator.ofFloat(composite, "scaleX", composite.getScaleX(), 1f);
-					aniScaleX.setDuration(2000);
-					ObjectAnimator aniScaleY = ObjectAnimator.ofFloat(composite, "scaleY", composite.getScaleY(), 1f);
-					aniScaleY.setDuration(2000);
-					ObjectAnimator aniTransY = ObjectAnimator.ofFloat(composite, "translationY", composite.getTranslationY(), 0f);
-					aniTransY.setDuration(2000);
-					ObjectAnimator aniAlpha = ObjectAnimator.ofFloat(filtersLayout, "alpha", 0f, 1f);
-					aniAlpha.setStartDelay(1000);
-					set.play(aniAlpha);
-					aniAlpha.setDuration(1000);
-					
-					set.playTogether(aniScaleX, aniScaleY, aniTransY, aniAlpha);
-					set.start();
+					ani = new WheelAnimator(composite, filtersLayout);
+					ani.zoomIn();
 					
 					animalFledermaus.setEnabled(false);
 					animalPinguin.setEnabled(false);
@@ -233,19 +205,8 @@ public class HomeActivity extends Activity {
 					
 					inZoom = false;
 				} else {
-					set = new AnimatorSet();
-					
-					ObjectAnimator aniScaleX = ObjectAnimator.ofFloat(composite, "scaleX", composite.getScaleX(), 3f);
-					aniScaleX.setDuration(2000);
-					ObjectAnimator aniScaleY = ObjectAnimator.ofFloat(composite, "scaleY", composite.getScaleY(), 3f);
-					aniScaleY.setDuration(2000);
-					ObjectAnimator aniTransY = ObjectAnimator.ofFloat(composite, "translationY", 0f, composite.getHeight());
-					aniTransY.setDuration(2000);
-					ObjectAnimator aniAlpha = ObjectAnimator.ofFloat(filtersLayout, "alpha", 1f, 0f);
-					aniAlpha.setDuration(1000);
-					
-					set.playTogether(aniScaleX, aniScaleY, aniTransY, aniAlpha);
-					set.start();
+					ani = new WheelAnimator(composite, filtersLayout);
+					ani.zoomIn();
 					
 					animalFledermaus.setEnabled(true);
 					animalPinguin.setEnabled(true);
@@ -433,11 +394,6 @@ public class HomeActivity extends Activity {
 		dialog.show();
 	}
 	
-	
-	public static Activity getActivityViewHomeActivity() {
-		return mAct;
-	}
-	
 	private double getRotation(float diffX, float diffY) {
 		double rot = Math.toDegrees(Math.atan(diffY/diffX));
 		if(diffX>0 && diffY>0) {
@@ -452,5 +408,12 @@ public class HomeActivity extends Activity {
 		
 		return rot;
 	}
+	
+	private void backToHomeScreen() {
+		Intent intent = new Intent(Intent.ACTION_MAIN);
+	    intent.addCategory(Intent.CATEGORY_HOME);
+	    startActivity(intent);
+	}
+	
 }
 

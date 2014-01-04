@@ -1,10 +1,11 @@
 package de.hrw.zoo.animator;
 
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 
-public class AnimalAnimator {
+public class AnimalAnimator extends ValueAnimator {
 	
 	private ObjectAnimator animation;
 

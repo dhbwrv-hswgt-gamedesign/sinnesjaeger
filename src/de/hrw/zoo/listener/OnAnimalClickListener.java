@@ -1,14 +1,14 @@
 package de.hrw.zoo.listener;
 
-import de.hrw.zoo.animator.AnimalAnimator;
+import android.animation.Animator;
 import android.view.View;
 import android.view.View.OnClickListener;
 
 public class OnAnimalClickListener implements OnClickListener {
 	
-	AnimalAnimator animation;
+	Animator animation;
 	
-	public OnAnimalClickListener(AnimalAnimator animation) {
+	public OnAnimalClickListener(Animator animation) {
 		this.animation = animation;
 	}
 
