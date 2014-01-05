@@ -1,10 +1,8 @@
 package de.hrw.zoo.activity;
 
-import java.io.File;
-
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -41,6 +39,8 @@ import de.hrw.zoo.list.PlayerList;
 import de.hrw.zoo.listener.OnFilterClickListener;
 import de.hrw.zoo.listener.OnFiltersToggleClickListener;
 import de.hrw.zoo.nfc.reader.NdefReaderTask;
+import de.hrw.zoo.util.FileStorage;
+import de.hrw.zoo.util.Storage;
 import de.hrw.zoo.view.AnimalView;
 
 public class HomeActivity extends Activity {
@@ -51,13 +51,15 @@ public class HomeActivity extends Activity {
     private static Point mAppSize;
 	private static Point mAppCenter;
 	
-	private File mStorePath;
+	private Storage mStorage;
 	private PlayerList mPlayers;
 	private PlayerListAdapter mPlayerAdapter;
 	private boolean mNfcActive;
 	private NfcAdapter mNfcAdapter;
 	
 	private Typeface mFontMiso;
+	
+	private Dialog mMapDialog;
 
 	public static Point getAppSize(){
 		return mAppSize;
@@ -72,14 +74,9 @@ public class HomeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         
-        mStorePath = new File(getFilesDir(),"zoo");
-        if(!mStorePath.exists()) {
-        	mStorePath.mkdir();
-        }
+        mStorage = new FileStorage(getFilesDir(), "zoo");
         
-        mAppSize = new Point();
-    	getWindowManager().getDefaultDisplay().getSize(mAppSize);
-    	mAppCenter = new Point(mAppSize.x/2, mAppSize.y/2);
+        measureDisplay();
     	
         mFontMiso = Typeface.createFromAsset(getAssets(), "fonts/miso.otf");
         
@@ -105,13 +102,11 @@ public class HomeActivity extends Activity {
         
         final ImageView mapIcon = (ImageView) findViewById(R.id.map_icon);
         
+        mMapDialog = new MapDialog(this, mAppSize);
         mapIcon.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				View view = getLayoutInflater().inflate(R.layout.fragment_map, null);
-				final MapDialog dlg = new MapDialog(v.getContext(), view);
-		    	dlg.getWindow().setLayout(mAppSize.x, mAppSize.y);
-		    	dlg.show();
+				mMapDialog.show();
 			}
 		});
         
@@ -136,7 +131,7 @@ public class HomeActivity extends Activity {
         wheelText.setTypeface(mFontMiso);
 
         mPlayers = new PlayerList();
-        mPlayers = PlayerList.Load(new File(mStorePath, "players"));
+        mPlayers = PlayerList.Load(mStorage.get("players"));
         mPlayerAdapter = new PlayerListAdapter(this, R.layout.player_list_item, mPlayers);
         playersList.setAdapter(mPlayerAdapter);
         playersList.setClickable(true);
@@ -239,7 +234,7 @@ public class HomeActivity extends Activity {
 				case MotionEvent.ACTION_MOVE:
 					diffX = event.getX() - (composite.getX()+composite.getWidth()/2);
 					diffY = (composite.getY()+composite.getHeight()/2) - event.getY();
-					rot = getRotation(diffY, diffX);
+					rot = -getRotation(diffY, diffX);
 					wheel.setRotation((float) (wheel.getRotation()+(lastRot-rot)));
 					double tmp = Math.abs(wheel.getRotation() % 360);
 					if(tmp > 330 || tmp < 30) {
@@ -284,6 +279,12 @@ public class HomeActivity extends Activity {
 			mNfcActive = true;
 		}
     }
+
+	private void measureDisplay() {
+		mAppSize = new Point();
+    	getWindowManager().getDefaultDisplay().getSize(mAppSize);
+    	mAppCenter = new Point(mAppSize.x/2, mAppSize.y/2);
+	}
 	
 	private void handleIntent(Intent intent) {
 		String action = intent.getAction();

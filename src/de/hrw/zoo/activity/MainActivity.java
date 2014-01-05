@@ -1,6 +1,5 @@
 package de.hrw.zoo.activity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,13 +41,15 @@ import de.hrw.zoo.dialog.LoginDialog;
 import de.hrw.zoo.list.PlayerList;
 import de.hrw.zoo.listener.OnZooItemSelectedListener;
 import de.hrw.zoo.nfc.reader.NdefReaderTask;
+import de.hrw.zoo.util.FileStorage;
+import de.hrw.zoo.util.Storage;
 
 public class MainActivity extends Activity {
 	
 	public static final String MIME_TEXT_PLAIN = "text/plain";
     public static final String TAG = "ZooApp";
     
-	private File mStorePath;
+    private Storage mStorage;
 	private Point mAppSize;
 	private Point mAppCenter;
 	
@@ -64,11 +65,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        mStorePath = new File(getFilesDir(),"zoo");
-        if(!mStorePath.exists()) {
-        	mStorePath.mkdir();
-        }
-        new File(mStorePath, "players").delete();
+        mStorage = new FileStorage(getFilesDir(), "zoo");
+        mStorage.delete("players");
 
     	mAppSize = new Point();
     	getWindowManager().getDefaultDisplay().getSize(mAppSize);
@@ -114,18 +112,18 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				View view = getLayoutInflater().inflate(R.layout.fragment_login, null);
 				final LoginDialog dlg = new LoginDialog(v.getContext(), view, mAppCenter);
-				dlg.setPlayers(PlayerList.Load(new File(mStorePath, "players")));
+				dlg.setPlayers(PlayerList.Load(mStorage.get("players")));
 
 				dlg.setOnDismissListener(new OnDismissListener() {
 					@Override
 					public void onDismiss(DialogInterface dialog) {
-						dlg.getPlayers().save(new File(mStorePath, "players"));
+						dlg.getPlayers().save(mStorage.get("players"));
 					}
 				});
 		    	dlg.setOnGoClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						dlg.getPlayers().save(new File(mStorePath, "players"));
+						dlg.getPlayers().save(mStorage.get("players"));
 						dlg.getPlayers().resetPoints();
 						dlg.cancel();
 						Intent intent = new Intent(getBaseContext(), HomeActivity.class);

@@ -28,7 +28,7 @@
                     android:layout_height="600dp"
                     android:src="@drawable/wheel_complete" />
 
-                <ImageView
+                <de.hrw.zoo.view.AnimalView
                     android:id="@+id/animal_fledermaus"
                     android:layout_width="75dp"
                     android:layout_height="25dp"
@@ -37,7 +37,7 @@
                     android:rotation="50"
                     android:src="@drawable/tier_fledermaus" />
                 
-                <ImageView
+                <de.hrw.zoo.view.AnimalView
                     android:id="@+id/animal_pinguin"
                     android:layout_width="75dp"
                     android:layout_height="40dp"
@@ -46,7 +46,7 @@
                     android:rotation="180"
                     android:src="@drawable/tier_pinguin" />
 
-                <ImageView
+                <de.hrw.zoo.view.AnimalView
                     android:id="@+id/animal_schlange"
                     android:layout_width="75dp"
                     android:layout_height="50dp"
@@ -56,7 +56,7 @@
                     android:rotation="-55"
                     android:src="@drawable/tier_schlange" />
 
-                <ImageView
+                <de.hrw.zoo.view.AnimalView
                     android:id="@+id/animal_adler"
                     android:layout_width="75dp"
                     android:layout_height="30dp"
@@ -66,7 +66,7 @@
                     android:layout_marginTop="60dp"
                     android:src="@drawable/tier_adler" />
 
-                <ImageView
+                <de.hrw.zoo.view.AnimalView
                     android:id="@+id/animal_schmetterling"
                     android:layout_width="75dp"
                     android:layout_height="25dp"

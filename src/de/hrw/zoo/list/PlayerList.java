@@ -1,6 +1,5 @@
 package de.hrw.zoo.list;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -25,7 +24,7 @@ public class PlayerList extends ArrayList<Player> {
 		}
 	}
 	
-	public boolean save(File path) {
+	public boolean save(String path) {
 		try {
 			FileOutputStream fos = new FileOutputStream(path);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -41,7 +40,7 @@ public class PlayerList extends ArrayList<Player> {
 		return true;
 	}
 	
-	static public PlayerList Load(File path) {
+	static public PlayerList Load(String path) {
 		PlayerList pl = new PlayerList();
 		try {
 			FileInputStream fis = new FileInputStream(path);
